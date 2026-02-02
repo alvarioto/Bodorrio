@@ -32,7 +32,7 @@ const AnimatedBusIcon = () => (
             }
         `}</style>
         <svg
-            className="w-24 h-24"
+            className="w-24 h-24 text-secondary-foreground"
             viewBox="-20 -20 552 552"
             preserveAspectRatio="xMidYMid meet"
             aria-label="Autobús animado"
@@ -49,45 +49,47 @@ const AnimatedBusIcon = () => (
 );
 
 const timelineEvents = [
-  { time: '18:00', title: 'Ceremonia', icon: <RingsIcon className="w-24 h-24" /> },
+  { time: '18:00', title: 'Ceremonia', icon: <RingsIcon className="w-24 h-24 text-secondary-foreground" /> },
   { time: '19:30', title: 'Salida del autobús', icon: <AnimatedBusIcon /> },
-  { time: '20:00', title: 'Recepción', icon: <ClinkingGlassesIcon className="w-24 h-24" /> },
-  { time: '22:00', title: 'Cena', icon: <DinnerIcon className="w-24 h-24" /> },
-  { time: '01:00', title: '¡Fiesta!', icon: <PartyIcon className="w-24 h-24" /> },
+  { time: '20:00', title: 'Recepción', icon: <ClinkingGlassesIcon className="w-24 h-24 text-secondary-foreground" /> },
+  { time: '22:00', title: 'Cena', icon: <DinnerIcon className="w-24 h-24 text-secondary-foreground" /> },
+  { time: '01:00', title: '¡Fiesta!', icon: <PartyIcon className="w-24 h-24 text-secondary-foreground" /> },
   { time: '03:00', title: 'Salida primer autobús', icon: <AnimatedBusIcon /> },
-  { time: '06:00', title: 'Fin de fiesta', icon: <EndOfPartyIcon className="w-24 h-24" /> },
+  { time: '06:00', title: 'Fin de fiesta', icon: <EndOfPartyIcon className="w-24 h-24 text-secondary-foreground" /> },
   { time: '06:05', title: 'Salida último autobús', icon: <AnimatedBusIcon /> },
 ];
 
 const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: string, icon: React.ReactNode, isRight: boolean }) => (
-    <div className="relative flex items-center w-full my-16 group">
+    <div className="relative flex items-center my-16 group">
         {isRight ? (
             <>
-                <div className="w-1/2 flex justify-end pr-10 md:pr-16" />
+                <div className="w-1/2" />
                 <div className="absolute left-1/2 -translate-x-1/2 z-10">
-                    <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-primary-foreground transition-transform duration-300 group-hover:scale-105">
+                    <div className="w-40 h-40 rounded-full bg-secondary border-4 border-primary shadow-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                         {icon}
                     </div>
                 </div>
-                <div className="w-1/2 pl-24 md:pl-32">
-                    <p className="font-bold text-2xl md:text-3xl text-primary">{time}</p>
-                    <h4 className="font-headline text-6xl md:text-7xl mt-2">{title}</h4>
+                <div className="w-1/2 pl-28">
+                    <div className="max-w-xs">
+                        <p className="font-bold text-3xl md:text-4xl text-primary">{time}</p>
+                        <h4 className="font-headline text-7xl md:text-8xl mt-2">{title}</h4>
+                    </div>
                 </div>
             </>
         ) : (
             <>
-                <div className="w-1/2 flex justify-end pr-24 md:pr-32 text-right">
-                    <div>
-                        <p className="font-bold text-2xl md:text-3xl text-primary">{time}</p>
-                        <h4 className="font-headline text-6xl md:text-7xl mt-2">{title}</h4>
+                <div className="w-1/2 pr-28 text-right">
+                     <div className="max-w-xs ml-auto">
+                        <p className="font-bold text-3xl md:text-4xl text-primary">{time}</p>
+                        <h4 className="font-headline text-7xl md:text-8xl mt-2">{title}</h4>
                     </div>
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10">
-                    <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-primary-foreground transition-transform duration-300 group-hover:scale-105">
+                    <div className="w-40 h-40 rounded-full bg-secondary border-4 border-primary shadow-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                         {icon}
                     </div>
                 </div>
-                <div className="w-1/2 pl-10 md:pl-16" />
+                <div className="w-1/2" />
             </>
         )}
     </div>
