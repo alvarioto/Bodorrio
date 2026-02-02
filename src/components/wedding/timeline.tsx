@@ -1,13 +1,13 @@
 "use client";
 
 import React from 'react';
-import { BusIcon, DrinksIcon, DinnerIcon, PartyIcon, NightBusIcon, EndOfPartyIcon, BusAwayIcon } from './animated-icons';
+import { BusIcon, ClinkingGlassesIcon, DinnerIcon, PartyIcon, NightBusIcon, EndOfPartyIcon, BusAwayIcon } from './animated-icons';
 import { RingsIcon } from './animated-icons';
 
 const timelineEvents = [
   { time: '18:00', title: 'Ceremonia', icon: <RingsIcon className="w-7 h-7" /> },
   { time: '19:30', title: 'Salida del autobús', icon: <BusIcon /> },
-  { time: '20:00', title: 'Recepción', icon: <DrinksIcon /> },
+  { time: '20:00', title: 'Recepción', icon: <ClinkingGlassesIcon /> },
   { time: '22:00', title: 'Cena', icon: <DinnerIcon /> },
   { time: '01:00', title: '¡Fiesta!', icon: <PartyIcon /> },
   { time: '03:00', title: 'Salida primer autobús', icon: <NightBusIcon /> },

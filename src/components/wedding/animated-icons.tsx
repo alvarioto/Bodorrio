@@ -443,19 +443,152 @@ export const BusIcon = () => (
     </IconWrapper>
 );
 
-export const DrinksIcon = () => (
+export const ClinkingGlassesIcon = ({ className }: { className?: string }) => {
+  const glassLeftRef = React.useRef<SVGGElement>(null);
+  const glassRightRef = React.useRef<SVGGElement>(null);
+  const sparklesRef = React.useRef<SVGGElement>(null);
+
+  React.useEffect(() => {
+    const elL = glassLeftRef.current;
+    const elR = glassRightRef.current;
+    const elS = sparklesRef.current;
+
+    if (!elL || !elR || !elS) return;
+
+    const fr = 25;
+    const op = 105;
+    const durationMs = (op / fr) * 1000;
+
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
+
+    function easeInOut(t: number) {
+      t = clamp01(t);
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    function findSegment(kfs: {t: number, s: any}[], frame: number): [any, any, number] {
+      if (frame <= kfs[0].t) return [kfs[0], kfs[0], 0];
+      for (let i = 0; i < kfs.length - 1; i++) {
+        const k0 = kfs[i],
+          k1 = kfs[i + 1];
+        if (frame >= k0.t && frame <= k1.t) {
+          const span = (k1.t - k0.t) || 1;
+          const tn = (frame - k0.t) / span;
+          return [k0, k1, tn];
+        }
+      }
+      return [kfs[kfs.length - 1], kfs[kfs.length - 1], 0];
+    }
+
+    function sampleVec2(kfs: {t: number, s: number[]}[], frame: number) {
+      const [k0, k1, tn0] = findSegment(kfs, frame);
+      const tn = easeInOut(tn0 as number);
+      return [lerp(k0.s[0], k1.s[0], tn), lerp(k0.s[1], k1.s[1], tn)];
+    }
+
+    function sampleScalar(kfs: {t: number, s: number}[], frame: number) {
+      const [k0, k1, tn0] = findSegment(kfs, frame);
+      const tn = easeInOut(tn0 as number);
+      return lerp(k0.s, k1.s, tn);
+    }
+
+    const BASE_L = { x: 42, y: 8, rot: -14 };
+    const BASE_R = { x: 88, y: 6, rot: 14 };
+    const AX = 0, AY = 110;
+
+    const KF_L_POS = [ { t: 0, s: [0, 0] }, { t: 10, s: [0, 0] }, { t: 14, s: [3, -2] }, { t: 17, s: [-1, 1] }, { t: 24, s: [0, 0] }, { t: 105, s: [0, 0] }, ];
+    const KF_R_POS = [ { t: 0, s: [0, 0] }, { t: 10, s: [0, 0] }, { t: 14, s: [-3, -2] }, { t: 17, s: [1, 1] }, { t: 24, s: [0, 0] }, { t: 105, s: [0, 0] }, ];
+    const KF_L_ROT = [ { t: 0, s: 0 }, { t: 10, s: 0 }, { t: 14, s: 10 }, { t: 17, s: -3 }, { t: 24, s: 0 }, { t: 105, s: 0 }, ];
+    const KF_R_ROT = [ { t: 0, s: 0 }, { t: 10, s: 0 }, { t: 14, s: -10 }, { t: 17, s: 3 }, { t: 24, s: 0 }, { t: 105, s: 0 }, ];
+    const KF_SPARK_O = [ { t: 0, s: 0 }, { t: 12, s: 0 }, { t: 14, s: 1 }, { t: 20, s: 1 }, { t: 28, s: 0 }, { t: 105, s: 0 }, ];
+    const KF_SPARK_S = [ { t: 0, s: 0.9 }, { t: 14, s: 1.15 }, { t: 20, s: 1.0 }, { t: 28, s: 0.9 }, { t: 105, s: 0.9 }, ];
+
+    function setGlassTransform(el: SVGGElement, base: {x:number, y:number, rot:number}, dxy: number[], rotDelta: number) {
+      const x = base.x + dxy[0];
+      const y = base.y + dxy[1];
+      const rot = base.rot + rotDelta;
+      el.setAttribute("transform", `translate(${x},${y}) translate(${AX},${AY}) rotate(${rot}) translate(${-AX},${-AY})`);
+    }
+
+    function setSparkles(frame: number) {
+      const o = sampleScalar(KF_SPARK_O, frame);
+      const s = sampleScalar(KF_SPARK_S, frame);
+      elS.setAttribute("opacity", String(o));
+      elS.setAttribute("transform", `translate(65,22) scale(${s}) translate(-65,-22)`);
+    }
+
+    const t0 = performance.now();
+    let animationFrameId: number;
+
+    function tick(now: number) {
+      const elapsed = (now - t0) % durationMs;
+      const frame = (elapsed / 1000) * fr;
+      const dL = sampleVec2(KF_L_POS, frame);
+      const dR = sampleVec2(KF_R_POS, frame);
+      const rL = sampleScalar(KF_L_ROT, frame);
+      const rR = sampleScalar(KF_R_ROT, frame);
+      setGlassTransform(elL, BASE_L, dL, rL);
+      setGlassTransform(elR, BASE_R, dR, rR);
+      setSparkles(frame);
+      animationFrameId = requestAnimationFrame(tick);
+    }
+    animationFrameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  return (
     <IconWrapper>
-        <svg {...commonProps} width="28" height="28">
-            <path d="M20 28L30 18L40 28" className="animate-[cup-clink_2s_ease-in-out_infinite]" style={{'--cup-rotate': '-5deg'} as React.CSSProperties}/>
-            <path d="M30 28V46" />
-            <path d="M24 46H36" />
-            <path d="M44 28L34 18L24 28" className="animate-[cup-clink_2s_ease-in-out_infinite]" style={{'--cup-rotate': '5deg'} as React.CSSProperties}/>
-            <path d="M34 28V46" />
-            <path d="M28 46H40" />
-            <path d="M32 16L32 12" className="animate-[confetti-fade_2s_ease-in-out_infinite]"/>
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="28" height="28" aria-label="Copas brindando" className={className}>
+        <style>{`
+          g > path, g > line {
+            stroke: hsl(140, 8%, 25%);
+            fill: none;
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            vector-effect: non-scaling-stroke;
+          }
+          .sparkles path {
+            fill: hsl(140, 8%, 25%);
+            stroke: none;
+          }
+          .cap {
+            fill: hsl(140, 8%, 25%);
+            stroke: none;
+          }
+        `}</style>
+        <g ref={sparklesRef} className="sparkles" opacity="0" transform="translate(65,22) scale(0.9) translate(-65,-22)">
+          <path d="M65 13 L66.5 18.5 L72 20 L66.5 21.5 L65 27 L63.5 21.5 L58 20 L63.5 18.5 Z"></path>
+          <path d="M52 22 L52.8 24.6 L55.4 25.4 L52.8 26.2 L52 28.8 L51.2 26.2 L48.6 25.4 L51.2 24.6 Z"></path>
+          <path d="M78 24 L78.7 26.2 L80.9 26.9 L78.7 27.6 L78 29.8 L77.3 27.6 L75.1 26.9 L77.3 26.2 Z"></path>
+          <path d="M60 33 L60.6 35 L62.6 35.6 L60.6 36.2 L60 38.2 L59.4 36.2 L57.4 35.6 L59.4 35 Z"></path>
+          <path d="M70 34 L70.6 36 L72.6 36.6 L70.6 37.2 L70 39.2 L69.4 37.2 L67.4 36.6 L69.4 36 Z"></path>
+        </g>
+        <g ref={glassLeftRef} className="glassLeft" transform="translate(42,8) translate(0,110) rotate(-14) translate(0,-110)">
+          <path d="M-16 10 L16 10 L12 44 Q8 72 0 76 Q-8 72 -12 44 Z"></path>
+          <line x1="-13" y1="24" x2="13" y2="27"></line>
+          <line x1="0" y1="76" x2="0" y2="110"></line>
+          <path d="M-18 110 L18 110"></path>
+          <circle className="cap" cx="-13" cy="24" r="2.0"></circle>
+          <circle className="cap" cx="13"  cy="27" r="2.0"></circle>
+          <circle className="cap" cx="0" cy="76" r="2.05"></circle>
+          <circle className="cap" cx="0" cy="110" r="2.05"></circle>
+        </g>
+        <g ref={glassRightRef} className="glassRight" transform="translate(88,6) translate(0,110) rotate(14) translate(0,-110)">
+          <path d="M-16 10 L16 10 L12 44 Q8 72 0 76 Q-8 72 -12 44 Z"></path>
+          <line x1="-13" y1="24" x2="13" y2="27"></line>
+          <line x1="0" y1="76" x2="0" y2="110"></line>
+          <path d="M-18 110 L18 110"></path>
+          <circle className="cap" cx="-13" cy="24" r="2.0"></circle>
+          <circle className="cap" cx="13" cy="27" r="2.0"></circle>
+          <circle className="cap" cx="0" cy="76" r="2.05"></circle>
+          <circle className="cap" cx="0" cy="110" r="2.05"></circle>
+        </g>
+      </svg>
     </IconWrapper>
-);
+  );
+};
 
 export const DinnerIcon = () => (
     <IconWrapper>
