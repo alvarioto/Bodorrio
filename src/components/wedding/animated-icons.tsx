@@ -426,15 +426,15 @@ export const CameraIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const IconWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-secondary border border-primary shadow-sm flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+export const IconWrapper = ({ children }: { children: React.ReactNode }) => (
+  <div className="absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 rounded-full bg-secondary border border-primary shadow-sm flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
     {children}
   </div>
 );
 
 export const BusIcon = () => (
     <IconWrapper>
-        <svg {...commonProps} width="28" height="28" className="animate-[bus-move_2s_ease-in-out_infinite]">
+        <svg {...commonProps} width="36" height="36" className="animate-[bus-move_2s_ease-in-out_infinite]">
             <rect x="12" y="24" width="40" height="18" rx="4" />
             <path d="M12 32H52" />
             <circle cx="20" cy="48" r="4" className="animate-[wheels-rotate_1s_linear_infinite]" />
@@ -539,7 +539,7 @@ export const ClinkingGlassesIcon = ({ className }: { className?: string }) => {
 
   return (
     <IconWrapper>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="28" height="28" aria-label="Copas brindando" className={className}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="36" height="36" aria-label="Copas brindando" className={className}>
         <style>{`
           g > path, g > line {
             stroke: hsl(140, 8%, 25%);
@@ -592,7 +592,7 @@ export const ClinkingGlassesIcon = ({ className }: { className?: string }) => {
 
 export const DinnerIcon = () => (
     <IconWrapper>
-        <svg {...commonProps} width="28" height="28">
+        <svg {...commonProps} width="36" height="36">
             <circle cx="32" cy="36" r="14" />
             <path d="M20,20 L44,44" strokeDasharray="40" className="animate-[shine-effect_2s_ease-in-out_infinite]"/>
             <path d="M18 20V52" />
@@ -603,7 +603,7 @@ export const DinnerIcon = () => (
 
 export const PartyIcon = () => (
     <IconWrapper>
-        <svg {...commonProps} width="28" height="28" className="animate-[disco-rotate_5s_linear_infinite]">
+        <svg {...commonProps} width="36" height="36" className="animate-[disco-rotate_5s_linear_infinite]">
             <circle cx="32" cy="32" r="14" />
             <path d="M18 32H46" />
             <path d="M32 18V46" />
@@ -615,7 +615,7 @@ export const PartyIcon = () => (
 
 export const EndOfPartyIcon = () => (
     <IconWrapper>
-        <svg {...commonProps} width="28" height="28">
+        <svg {...commonProps} width="36" height="36">
              <path d="M22 22 L42 42 M22 42 L42 22" className="animate-[confetti-fade_3s_ease-in-out_infinite_reverse]"/>
         </svg>
     </IconWrapper>
@@ -624,7 +624,7 @@ export const EndOfPartyIcon = () => (
 
 export const NightBusIcon = () => (
     <IconWrapper>
-        <svg {...commonProps} width="28" height="28" className="animate-[bus-move_4s_ease-in-out_infinite]">
+        <svg {...commonProps} width="36" height="36" className="animate-[bus-move_4s_ease-in-out_infinite]">
             <path d="M48 20 A10 10 0 1 0 48 21" stroke="hsl(130, 20%, 65%)" />
             <rect x="12" y="24" width="40" height="18" rx="4" />
             <path d="M12 32H52" />
@@ -636,7 +636,7 @@ export const NightBusIcon = () => (
 
 export const BusAwayIcon = () => (
      <IconWrapper>
-        <svg {...commonProps} width="28" height="28" className="animate-[bus-away_4s_ease-in-out_forwards]">
+        <svg {...commonProps} width="36" height="36" className="animate-[bus-away_4s_ease-in-out_forwards]">
             <rect x="12" y="24" width="40" height="18" rx="4" />
             <path d="M12 32H52" />
             <circle cx="20" cy="48" r="4" />
