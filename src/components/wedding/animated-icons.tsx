@@ -432,152 +432,62 @@ export const IconWrapper = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-export const ClinkingGlassesIcon = ({ className }: { className?: string }) => {
-  const glassLeftRef = React.useRef<SVGGElement>(null);
-  const glassRightRef = React.useRef<SVGGElement>(null);
-  const sparklesRef = React.useRef<SVGGElement>(null);
-
-  React.useEffect(() => {
-    const elL = glassLeftRef.current;
-    const elR = glassRightRef.current;
-    const elS = sparklesRef.current;
-
-    if (!elL || !elR || !elS) return;
-
-    const fr = 25;
-    const op = 105;
-    const durationMs = (op / fr) * 1000;
-
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
-
-    function easeInOut(t: number) {
-      t = clamp01(t);
-      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-    }
-
-    function findSegment(kfs: {t: number, s: any}[], frame: number): [any, any, number] {
-      if (frame <= kfs[0].t) return [kfs[0], kfs[0], 0];
-      for (let i = 0; i < kfs.length - 1; i++) {
-        const k0 = kfs[i],
-          k1 = kfs[i + 1];
-        if (frame >= k0.t && frame <= k1.t) {
-          const span = (k1.t - k0.t) || 1;
-          const tn = (frame - k0.t) / span;
-          return [k0, k1, tn];
-        }
-      }
-      return [kfs[kfs.length - 1], kfs[kfs.length - 1], 0];
-    }
-
-    function sampleVec2(kfs: {t: number, s: number[]}[], frame: number) {
-      const [k0, k1, tn0] = findSegment(kfs, frame);
-      const tn = easeInOut(tn0 as number);
-      return [lerp(k0.s[0], k1.s[0], tn), lerp(k0.s[1], k1.s[1], tn)];
-    }
-
-    function sampleScalar(kfs: {t: number, s: number}[], frame: number) {
-      const [k0, k1, tn0] = findSegment(kfs, frame);
-      const tn = easeInOut(tn0 as number);
-      return lerp(k0.s, k1.s, tn);
-    }
-
-    const BASE_L = { x: 42, y: 8, rot: -14 };
-    const BASE_R = { x: 88, y: 6, rot: 14 };
-    const AX = 0, AY = 110;
-
-    const KF_L_POS = [ { t: 0, s: [0, 0] }, { t: 10, s: [0, 0] }, { t: 14, s: [3, -2] }, { t: 17, s: [-1, 1] }, { t: 24, s: [0, 0] }, { t: 105, s: [0, 0] }, ];
-    const KF_R_POS = [ { t: 0, s: [0, 0] }, { t: 10, s: [0, 0] }, { t: 14, s: [-3, -2] }, { t: 17, s: [1, 1] }, { t: 24, s: [0, 0] }, { t: 105, s: [0, 0] }, ];
-    const KF_L_ROT = [ { t: 0, s: 0 }, { t: 10, s: 0 }, { t: 14, s: 10 }, { t: 17, s: -3 }, { t: 24, s: 0 }, { t: 105, s: 0 }, ];
-    const KF_R_ROT = [ { t: 0, s: 0 }, { t: 10, s: 0 }, { t: 14, s: -10 }, { t: 17, s: 3 }, { t: 24, s: 0 }, { t: 105, s: 0 }, ];
-    const KF_SPARK_O = [ { t: 0, s: 0 }, { t: 12, s: 0 }, { t: 14, s: 1 }, { t: 20, s: 1 }, { t: 28, s: 0 }, { t: 105, s: 0 }, ];
-    const KF_SPARK_S = [ { t: 0, s: 0.9 }, { t: 14, s: 1.15 }, { t: 20, s: 1.0 }, { t: 28, s: 0.9 }, { t: 105, s: 0.9 }, ];
-
-    function setGlassTransform(el: SVGGElement, base: {x:number, y:number, rot:number}, dxy: number[], rotDelta: number) {
-      const x = base.x + dxy[0];
-      const y = base.y + dxy[1];
-      const rot = base.rot + rotDelta;
-      el.setAttribute("transform", `translate(${x},${y}) translate(${AX},${AY}) rotate(${rot}) translate(${-AX},${-AY})`);
-    }
-
-    function setSparkles(frame: number) {
-      const o = sampleScalar(KF_SPARK_O, frame);
-      const s = sampleScalar(KF_SPARK_S, frame);
-      elS.setAttribute("opacity", String(o));
-      elS.setAttribute("transform", `translate(65,22) scale(${s}) translate(-65,-22)`);
-    }
-
-    const t0 = performance.now();
-    let animationFrameId: number;
-
-    function tick(now: number) {
-      const elapsed = (now - t0) % durationMs;
-      const frame = (elapsed / 1000) * fr;
-      const dL = sampleVec2(KF_L_POS, frame);
-      const dR = sampleVec2(KF_R_POS, frame);
-      const rL = sampleScalar(KF_L_ROT, frame);
-      const rR = sampleScalar(KF_R_ROT, frame);
-      setGlassTransform(elL, BASE_L, dL, rL);
-      setGlassTransform(elR, BASE_R, dR, rR);
-      setSparkles(frame);
-      animationFrameId = requestAnimationFrame(tick);
-    }
-    animationFrameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
-
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" aria-label="Copas brindando" className={cn("w-14 h-14", className)}>
-      <g ref={sparklesRef} className="sparkles" opacity="0" transform="translate(65,22) scale(0.9) translate(-65,-22)" fill="currentColor" stroke="none">
-        <path d="M65 13 L66.5 18.5 L72 20 L66.5 21.5 L65 27 L63.5 21.5 L58 20 L63.5 18.5 Z"></path>
-        <path d="M52 22 L52.8 24.6 L55.4 25.4 L52.8 26.2 L52 28.8 L51.2 26.2 L48.6 25.4 L51.2 24.6 Z"></path>
-        <path d="M78 24 L78.7 26.2 L80.9 26.9 L78.7 27.6 L78 29.8 L77.3 27.6 L75.1 26.9 L77.3 26.2 Z"></path>
-        <path d="M60 33 L60.6 35 L62.6 35.6 L60.6 36.2 L60 38.2 L59.4 36.2 L57.4 35.6 L59.4 35 Z"></path>
-        <path d="M70 34 L70.6 36 L72.6 36.6 L70.6 37.2 L70 39.2 L69.4 37.2 L67.4 36.6 L69.4 36 Z"></path>
+export const ClinkingGlassesIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    className={cn("w-16 h-16", className)}
+  >
+    <g 
+      stroke="currentColor"
+      fill="none"
+      strokeWidth="5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Left Glass */}
+      <g transform="rotate(-10 50 50) translate(-12 0)">
+        <path d="M25 40C25 25 55 25 55 40L50 80L30 80Z" />
+        <path d="M40 80L40 95" />
+        <path d="M30 95L50 95" />
       </g>
-      <g
-        ref={glassLeftRef}
-        className="glassLeft"
-        transform="translate(42,8) translate(0,110) rotate(-14) translate(0,-110)"
-        stroke="currentColor"
-        fill="none"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      >
-        <path d="M-16 10 L16 10 L12 44 Q8 72 0 76 Q-8 72 -12 44 Z"></path>
-        <line x1="-13" y1="24" x2="13" y2="27"></line>
-        <line x1="0" y1="76" x2="0" y2="110"></line>
-        <path d="M-18 110 L18 110"></path>
-        <circle className="cap" cx="-13" cy="24" r="2.0" fill="currentColor" stroke="none"></circle>
-        <circle className="cap" cx="13"  cy="27" r="2.0" fill="currentColor" stroke="none"></circle>
-        <circle className="cap" cx="0" cy="76" r="2.05" fill="currentColor" stroke="none"></circle>
-        <circle className="cap" cx="0" cy="110" r="2.05" fill="currentColor" stroke="none"></circle>
+      
+      {/* Right Glass */}
+      <g transform="rotate(10 50 50) translate(12 0)">
+        <path d="M45 40C45 25 75 25 75 40L70 80L50 80Z" />
+        <path d="M60 80L60 95" />
+        <path d="M50 95L70 95" />
       </g>
-      <g
-        ref={glassRightRef}
-        className="glassRight"
-        transform="translate(88,6) translate(0,110) rotate(14) translate(0,-110)"
-        stroke="currentColor"
-        fill="none"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        vectorEffect="non-scaling-stroke"
-      >
-        <path d="M-16 10 L16 10 L12 44 Q8 72 0 76 Q-8 72 -12 44 Z"></path>
-        <line x1="-13" y1="24" x2="13" y2="27"></line>
-        <line x1="0" y1="76" x2="0" y2="110"></line>
-        <path d="M-18 110 L18 110"></path>
-        <circle className="cap" cx="-13" cy="24" r="2.0" fill="currentColor" stroke="none"></circle>
-        <circle className="cap" cx="13" cy="27" r="2.0" fill="currentColor" stroke="none"></circle>
-        <circle className="cap" cx="0" cy="76" r="2.05" fill="currentColor" stroke="none"></circle>
-        <circle className="cap" cx="0" cy="110" r="2.05" fill="currentColor" stroke="none"></circle>
-      </g>
-    </svg>
-  );
-};
+    </g>
+    
+    {/* Liquid */}
+    <g 
+      stroke="hsl(var(--primary))"
+      fill="none"
+      strokeWidth="5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+       <path d="M30 50 C 35 47, 40 47, 45 50" transform="rotate(-10 50 50) translate(-12 0)" />
+       <path d="M55 50 C 60 47, 65 47, 70 50" transform="rotate(10 50 50) translate(12 0)" />
+    </g>
+    
+    {/* Heart */}
+    <path
+      d="M50 35 C45 28 40 32 40 40 C40 48 50 55 50 55 C50 55 60 48 60 40 C60 32 55 28 50 35Z"
+      fill="hsl(var(--primary))"
+      stroke="none"
+    />
+    
+    {/* Dots */}
+    <g fill="currentColor" stroke="none">
+        <circle cx="50" cy="18" r="2.5" />
+        <circle cx="43" cy="25" r="2" />
+        <circle cx="57" cy="25" r="2" />
+    </g>
+  </svg>
+);
+
 
 export const DinnerIcon = ({ className }: { className?: string }) => (
     <svg {...commonProps} className={cn("w-14 h-14", className)}>
@@ -589,13 +499,59 @@ export const DinnerIcon = ({ className }: { className?: string }) => (
 );
 
 export const PartyIcon = ({ className }: { className?: string }) => (
-    <svg {...commonProps} className={cn("w-14 h-14 animate-[disco-rotate_5s_linear_infinite]", className)}>
-        <circle cx="32" cy="32" r="14" />
-        <path d="M18 32H46" />
-        <path d="M32 18V46" />
-        <path d="M21.6 21.6L42.4 42.4" />
-        <path d="M21.6 42.4L42.4 21.6" />
-    </svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    className={cn("w-16 h-16", className)}
+  >
+    <g 
+      stroke="currentColor"
+      fill="none"
+      strokeWidth="5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Left Glass */}
+      <g transform="rotate(-10 50 50) translate(-12 0)">
+        <path d="M25 40C25 25 55 25 55 40L50 80L30 80Z" />
+        <path d="M40 80L40 95" />
+        <path d="M30 95L50 95" />
+      </g>
+      
+      {/* Right Glass */}
+      <g transform="rotate(10 50 50) translate(12 0)">
+        <path d="M45 40C45 25 75 25 75 40L70 80L50 80Z" />
+        <path d="M60 80L60 95" />
+        <path d="M50 95L70 95" />
+      </g>
+    </g>
+    
+    {/* Liquid */}
+    <g 
+      stroke="hsl(var(--primary))"
+      fill="none"
+      strokeWidth="5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+       <path d="M30 50 C 35 47, 40 47, 45 50" transform="rotate(-10 50 50) translate(-12 0)" />
+       <path d="M55 50 C 60 47, 65 47, 70 50" transform="rotate(10 50 50) translate(12 0)" />
+    </g>
+    
+    {/* Heart */}
+    <path
+      d="M50 35 C45 28 40 32 40 40 C40 48 50 55 50 55 C50 55 60 48 60 40 C60 32 55 28 50 35Z"
+      fill="hsl(var(--primary))"
+      stroke="none"
+    />
+    
+    {/* Dots */}
+    <g fill="currentColor" stroke="none">
+        <circle cx="50" cy="18" r="2.5" />
+        <circle cx="43" cy="25" r="2" />
+        <circle cx="57" cy="25" r="2" />
+    </g>
+  </svg>
 );
 
 export const EndOfPartyIcon = ({ className }: { className?: string }) => (
@@ -615,7 +571,7 @@ export const AnimatedBusIcon = ({ className }: { className?: string }) => (
   >
     <g className="busMove">
       <g transform="translate(0,512) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
-        <path d="M89 3931 c-31 -19 -53 -44 -68 -73 l-21 -45 2 -1021 3 -1020 30 -43 c51 -72 86 -83 266 -87 l155 -4 12 -54 c39 -186 208 -359 398 -408 78 -20 212 -21 287 -1 200 52 354 212 407 423 l11 42 852 0 853 0 11 -53 c39 -188 208 -362 399 -411 78 -20 212 -21 287 -1 200 52 354 212 407 423 l11 42 192 0 c110 0 209 5 232 11 55 15 120 82 135 139 9 33 11 136 7 385 -5 377 -13 444 -74 645 -65 212 -153 513 -153 522 0 4 33 8 73 8 l73 0 52 -164 c54 -172 69 -196 120 -196 28 0 72 42 72 68 0 11 -27 104 -60 208 -78 244 -67 234 -245 234 -119 0 -134 2 -139 18 -40 140 -71 225 -94 262 -39 61 -103 117 -171 149 l-56 26 -2110 3 -2111 2 -45 -29z m4248 -136 c52 -22 100 -61 118 -96 l16 -29 -2161 0 -2160 0 0 58 c0 32 5 63 12 70 9 9 484 12 2075 12 1830 0 2068 -2 2100 -15z m-3727 -630 l0 -355 -230 0 -230 0 0 355 0 355 230 0 230 0 0 -355z m290 0 l0 -355 -70 0 -70 0 0 355 0 355 70 0 70 0 0 -355z m660 0 l0 -355 -255 0 -255 0 0 355 0 355 255 0 255 0 0 -355z m280 0 l0 -355 -65 0 -65 0 0 355 0 355 65 0 65 0 0 -355z m668 3 l-3 -353 -255 0 -255 0 -3 353 -2 352 260 0 260 0 -2 -352z m282 253 c0 -55 3 -107 6 -116 10 -24 60 -46 89 -39 45 11 55 39 55 151 l0 103 255 0 255 0 0 -355 0 -355 -255 0 -255 0 0 102 c0 91 -2 104 -22 125 -30 33 -80 31 -107 -3 -18 -23 -21 -41 -21 -125 l0 -99 -65 0 -65 0 0 355 0 355 65 0 65 0 0 -99z m950 -256 l0 -356 -67 3 -68 3 -3 353 -2 352 70 0 70 0 0 -355z m799 288 c11 -38 61 -207 112 -378 122 -410 138 -473 146 -572 l6 -83 -214 0 c-181 0 -220 3 -250 18 -20 9 -129 91 -243 182 l-206 165 0 368 0 367 315 0 314 0 20 -67z m-698 -822 c24 -15 64 -47 89 -69 l45 -41 -719 -1 -720 0 -23 -22 c-28 -26 -30 -67 -4 -99 l19 -24 821 -3 821 -2 46 -35 c75 -57 119 -65 371 -65 l223 0 0 -218 c0 -181 -3 -221 -16 -240 -15 -21 -20 -22 -209 -22 l-195 0 -6 28 c-26 124 -74 214 -160 298 -202 201 -529 217 -746 37 -94 -77 -166 -193 -193 -308 l-12 -50 -851 -3 -852 -2 -6 27 c-18 83 -51 159 -95 222 -170 242 -492 310 -752 158 -112 -66 -222 -218 -252 -349 l-11 -53 -136 -3 c-114 -2 -139 0 -152 13 -14 14 -16 53 -16 291 l0 274 1035 0 c736 0 1041 3 1058 11 24 11 47 47 47 73 0 7 -9 25 -21 40 l-20 26 -1050 0 -1049 0 0 70 0 70 1823 0 1823 0 45 -29z m-2726 -517 c119 -30 216 -111 269 -224 39 -83 48 -208 21 -291 -36 -113 -116 -204 -224 -256 -79 -38 -220 -45 -302 -14 -166 63 -264 193 -276 367 -9 125 36 234 132 322 109 100 240 133 380 96z m2820 0 c120 -31 215 -110 268 -222 30 -63 32 -74 32 -177 0 -101 -2 -115 -29 -170 -38 -77 -124 -163 -201 -200 -84 -40 -223 -47 -307 -15 -161 60 -263 193 -275 360 -10 126 36 241 132 328 109 100 240 133 380 96z" />
+        <path d="M89 3931 c-31 -19 -53 -44 -68 -73 l-21 -45 2 -1021 3 -1020 30 -43 c51 -72 86 -83 266 -87 l155 -4 12 -54 c39 -186 208 -359 398 -408 78 -20 212 -21 287 -1 200 52 354 212 407 423 l11 42 852 0 853 0 11 -53 c39 -188 208 -362 399 -411 78 -20 212 -21 287 -1 200 52 354 212 407 423 l11 42 192 0 c110 0 209 5 232 11 55 15 120 82 135 139 9 33 11 136 7 385 -5 377 -13 444 -74 645 -65 212 -153 513 -153 522 0 4 33 8 73 8 l73 0 52 -164 c54 -172 69 -196 120 -196 28 0 72 42 72 68 0 11 -27 104 -60 208 -78 244 -67 234 -245 234 -119 0 -134 2 -139 18 -40 140 -71 225 -94 262 -39 61 -103 117 -171 149 l-56 26 -2110 3 -2111 2 -45 -29z m4248 -136 c52 -22 100 -61 118 -96 l16 -29 -2161 0 -2160 0 0 58 c0 32 5 63 12 70 9 9 484 12 2075 12 1830 0 2068 -2 2100 -15z m-3727 -630 l0 -355 -230 0 -230 0 0 355 0 355 230 0 230 0 0 -355z m290 0 l0 -355 -70 0 -70 0 0 355 0 355 70 0 70 0 0 -355z m660 0 l0 -355 -255 0 -255 0 0 355 0 355 255 0 255 0 0 -355z m280 0 l0 -355 -65 0 -65 0 0 355 0 355 65 0 65 0 0 -355z m668 3 l-3 -353 -255 0 -255 0 -3 353 -2 352 260 0 260 0 -2 -352z m282 253 c0 -55 3 -107 6 -116 10 -24 60 -46 89 -39 45 11 55 39 55 151 l0 103 255 0 255 0 0 -355 0 -355 -255 0 -255 0 0 102 c0 91 -2 104 -22 125 -30 33 -80 31 -107 -3 -18 -23 -21 -41 -21 -125 l0 -99 -65 0 -65 0 0 355 0 355 65 0 65 0 0 -99z m950 -256 l0 -356 -67 3 -68 3 -3 353 -2 352 70 0 70 0 0 -355z m799 288 c11 -38 61 -207 112 -378 122 -410 138 -473 146 -572 l6 -83 -214 0 c-181 0 -220 3 -250 18 -20 9 -129 91 -243 182 l-206 165 0 368 0 367 315 0 314 0 20 -67z m-698 -822 c24 -15 64 -47 89 -69 l45 -41 -719 -1 -720 0 -23 -22 c-28 -26 -30 -67 -4 -99 l19 -24 821 -3 821 -2 46 -35 c75 -57 119 -65 371 -65 l223 0 0 -218 c0 -181 -3 -221 -16 -240 -15 -21 -20 -22 -209 -22 l-195 0 -6 28 c-26 124 -74 214 -160 298 -202 201 -529 217 -746 37 -94 -77 -166 -193 -193 -308 l-12 -50 -851 -3 -852 -2 -6 27 c-18 83 -51 159 -95 222 -170 242 -492 310 -752 158 -112 -66 -222 -218 -252 -349 l-11 -53 -136 -3 c-114 -2 -139 0 -152 13 -14 14 -16 53 -16 291 l0 274 1035 0 c736 0 1041 3 1058 11 24 11 47 47 47 73 0 7 -9 25 -21 40 l-20 26 -1050 0 -1049 0 0 70 0 70 1823 0 1823 0 45 -29z m-2726 -517 c119 -30 216 -111 269 -224 59 -83 48 -208 21 -291 -36 -113 -116 -204 -224 -256 -79 -38 -220 -45 -302 -14 -166 63 -264 193 -276 367 -9 125 36 234 132 322 109 100 240 133 380 96z m2820 0 c120 -31 215 -110 268 -222 30 -63 32 -74 32 -177 0 -101 -2 -115 -29 -170 -38 -77 -124 -163 -201 -200 -84 -40 -223 -47 -307 -15 -161 60 -263 193 -275 360 -10 126 36 241 132 328 109 100 240 133 380 96z" />
         <path className="wheel" d="M931 2025 c-70 -20 -111 -46 -160 -101 -135 -154 -86 -393 102 -491 45 -24 64 -28 137 -28 73 0 93 4 142 28 63 31 116 86 150 156 33 65 32 185 -1 258 -27 61 -103 136 -164 163 -61 27 -142 32 -206 15z m121 -145 c148 -41 172 -236 38 -307 -71 -38 -138 -28 -196 29 -87 83 -53 233 61 273 49 17 51 17 97 5z" />
         <path className="wheel" d="M3751 2025 c-70 -20 -111 -46 -160 -101 -135 -154 -85 -393 102 -492 45 -23 64 -27 137 -27 73 0 93 4 142 28 63 31 116 86 150 156 33 65 32 185 -1 258 -27 61 -103 136 -164 163 -61 27 -142 32 -206 15z m122 -146 c50 -13 103 -61 118 -106 25 -77 -14 -172 -85 -204 -72 -33 -136 -22 -192 33 -87 83 -53 233 61 273 49 17 51 17 98 4z" />
       </g>
@@ -623,4 +579,5 @@ export const AnimatedBusIcon = ({ className }: { className?: string }) => (
   </svg>
 );
     
+
 
