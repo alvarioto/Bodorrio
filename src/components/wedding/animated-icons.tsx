@@ -540,50 +540,52 @@ export const ClinkingGlassesIcon = ({ className }: { className?: string }) => {
   return (
     <IconWrapper>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" width="36" height="36" aria-label="Copas brindando" className={className}>
-        <style>{`
-          g > path, g > line {
-            stroke: hsl(140, 8%, 25%);
-            fill: none;
-            stroke-width: 3.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            vector-effect: non-scaling-stroke;
-          }
-          .sparkles path {
-            fill: hsl(140, 8%, 25%);
-            stroke: none;
-          }
-          .cap {
-            fill: hsl(140, 8%, 25%);
-            stroke: none;
-          }
-        `}</style>
-        <g ref={sparklesRef} className="sparkles" opacity="0" transform="translate(65,22) scale(0.9) translate(-65,-22)">
+        <g ref={sparklesRef} className="sparkles" opacity="0" transform="translate(65,22) scale(0.9) translate(-65,-22)" fill="hsl(140, 8%, 25%)" stroke="none">
           <path d="M65 13 L66.5 18.5 L72 20 L66.5 21.5 L65 27 L63.5 21.5 L58 20 L63.5 18.5 Z"></path>
           <path d="M52 22 L52.8 24.6 L55.4 25.4 L52.8 26.2 L52 28.8 L51.2 26.2 L48.6 25.4 L51.2 24.6 Z"></path>
           <path d="M78 24 L78.7 26.2 L80.9 26.9 L78.7 27.6 L78 29.8 L77.3 27.6 L75.1 26.9 L77.3 26.2 Z"></path>
           <path d="M60 33 L60.6 35 L62.6 35.6 L60.6 36.2 L60 38.2 L59.4 36.2 L57.4 35.6 L59.4 35 Z"></path>
           <path d="M70 34 L70.6 36 L72.6 36.6 L70.6 37.2 L70 39.2 L69.4 37.2 L67.4 36.6 L69.4 36 Z"></path>
         </g>
-        <g ref={glassLeftRef} className="glassLeft" transform="translate(42,8) translate(0,110) rotate(-14) translate(0,-110)">
+        <g
+          ref={glassLeftRef}
+          className="glassLeft"
+          transform="translate(42,8) translate(0,110) rotate(-14) translate(0,-110)"
+          stroke="hsl(140, 8%, 25%)"
+          fill="none"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+        >
           <path d="M-16 10 L16 10 L12 44 Q8 72 0 76 Q-8 72 -12 44 Z"></path>
           <line x1="-13" y1="24" x2="13" y2="27"></line>
           <line x1="0" y1="76" x2="0" y2="110"></line>
           <path d="M-18 110 L18 110"></path>
-          <circle className="cap" cx="-13" cy="24" r="2.0"></circle>
-          <circle className="cap" cx="13"  cy="27" r="2.0"></circle>
-          <circle className="cap" cx="0" cy="76" r="2.05"></circle>
-          <circle className="cap" cx="0" cy="110" r="2.05"></circle>
+          <circle className="cap" cx="-13" cy="24" r="2.0" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
+          <circle className="cap" cx="13"  cy="27" r="2.0" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
+          <circle className="cap" cx="0" cy="76" r="2.05" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
+          <circle className="cap" cx="0" cy="110" r="2.05" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
         </g>
-        <g ref={glassRightRef} className="glassRight" transform="translate(88,6) translate(0,110) rotate(14) translate(0,-110)">
+        <g
+          ref={glassRightRef}
+          className="glassRight"
+          transform="translate(88,6) translate(0,110) rotate(14) translate(0,-110)"
+          stroke="hsl(140, 8%, 25%)"
+          fill="none"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          vectorEffect="non-scaling-stroke"
+        >
           <path d="M-16 10 L16 10 L12 44 Q8 72 0 76 Q-8 72 -12 44 Z"></path>
           <line x1="-13" y1="24" x2="13" y2="27"></line>
           <line x1="0" y1="76" x2="0" y2="110"></line>
           <path d="M-18 110 L18 110"></path>
-          <circle className="cap" cx="-13" cy="24" r="2.0"></circle>
-          <circle className="cap" cx="13" cy="27" r="2.0"></circle>
-          <circle className="cap" cx="0" cy="76" r="2.05"></circle>
-          <circle className="cap" cx="0" cy="110" r="2.05"></circle>
+          <circle className="cap" cx="-13" cy="24" r="2.0" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
+          <circle className="cap" cx="13" cy="27" r="2.0" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
+          <circle className="cap" cx="0" cy="76" r="2.05" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
+          <circle className="cap" cx="0" cy="110" r="2.05" fill="hsl(140, 8%, 25%)" stroke="none"></circle>
         </g>
       </svg>
     </IconWrapper>
