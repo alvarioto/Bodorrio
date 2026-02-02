@@ -4,12 +4,6 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { ClinkingGlassesIcon, DinnerIcon, PartyIcon, EndOfPartyIcon, RingsIcon } from './animated-icons';
 
-const TimelineIconWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-background border-2 border-primary shadow-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-105 z-10">
-    {children}
-  </div>
-);
-
 const AnimatedBusIcon = () => (
     <>
         <style>{`
@@ -38,7 +32,7 @@ const AnimatedBusIcon = () => (
             }
         `}</style>
         <svg
-            className="w-20 h-20 text-foreground"
+            className="w-24 h-24 text-foreground"
             viewBox="-20 -20 552 552"
             preserveAspectRatio="xMidYMid meet"
             aria-label="Autobús animado"
@@ -55,33 +49,33 @@ const AnimatedBusIcon = () => (
 );
 
 const timelineEvents = [
-  { time: '18:00', title: 'Ceremonia', icon: <TimelineIconWrapper><RingsIcon className="w-16 h-16" /></TimelineIconWrapper> },
-  { time: '19:30', title: 'Salida del autobús', icon: <TimelineIconWrapper><AnimatedBusIcon /></TimelineIconWrapper> },
-  { time: '20:00', title: 'Recepción', icon: <TimelineIconWrapper><ClinkingGlassesIcon className="w-16 h-16"/></TimelineIconWrapper> },
-  { time: '22:00', title: 'Cena', icon: <TimelineIconWrapper><DinnerIcon /></TimelineIconWrapper> },
-  { time: '01:00', title: '¡Fiesta!', icon: <TimelineIconWrapper><PartyIcon /></TimelineIconWrapper> },
-  { time: '03:00', title: 'Salida primer autobús', icon: <TimelineIconWrapper><AnimatedBusIcon /></TimelineIconWrapper> },
-  { time: '06:00', title: 'Fin de fiesta', icon: <TimelineIconWrapper><EndOfPartyIcon /></TimelineIconWrapper> },
-  { time: '06:05', title: 'Salida último autobús', icon: <TimelineIconWrapper><AnimatedBusIcon /></TimelineIconWrapper> },
+  { time: '18:00', title: 'Ceremonia', icon: <RingsIcon className="w-24 h-24" /> },
+  { time: '19:30', title: 'Salida del autobús', icon: <AnimatedBusIcon /> },
+  { time: '20:00', title: 'Recepción', icon: <ClinkingGlassesIcon className="w-24 h-24" /> },
+  { time: '22:00', title: 'Cena', icon: <DinnerIcon className="w-24 h-24" /> },
+  { time: '01:00', title: '¡Fiesta!', icon: <PartyIcon className="w-24 h-24" /> },
+  { time: '03:00', title: 'Salida primer autobús', icon: <AnimatedBusIcon /> },
+  { time: '06:00', title: 'Fin de fiesta', icon: <EndOfPartyIcon className="w-24 h-24" /> },
+  { time: '06:05', title: 'Salida último autobús', icon: <AnimatedBusIcon /> },
 ];
 
 const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: string, icon: React.ReactNode, isRight: boolean }) => (
-    <div className="relative flex items-center w-full">
+    <div className="relative flex items-center w-full my-12">
         {isRight ? (
             <>
                 <div className="w-1/2 flex justify-end pr-10 md:pr-16" />
                 <div className="absolute left-1/2 -translate-x-1/2 z-10">{icon}</div>
-                <div className="w-1/2 pl-10 md:pl-16">
+                <div className="w-1/2 pl-20 md:pl-28">
                     <p className="font-bold text-xl md:text-2xl text-primary">{time}</p>
-                    <h4 className="font-headline text-4xl md:text-5xl mt-2">{title}</h4>
+                    <h4 className="font-headline text-5xl md:text-6xl mt-2">{title}</h4>
                 </div>
             </>
         ) : (
             <>
-                <div className="w-1/2 flex justify-end pr-10 md:pr-16 text-right">
+                <div className="w-1/2 flex justify-end pr-20 md:pr-28 text-right">
                     <div>
                         <p className="font-bold text-xl md:text-2xl text-primary">{time}</p>
-                        <h4 className="font-headline text-4xl md:text-5xl mt-2">{title}</h4>
+                        <h4 className="font-headline text-5xl md:text-6xl mt-2">{title}</h4>
                     </div>
                 </div>
                 <div className="absolute left-1/2 -translate-x-1/2 z-10">{icon}</div>
@@ -100,7 +94,7 @@ const TimelineSection = () => {
       </div>
       <div className="relative max-w-4xl mx-auto">
         <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
-        <div className="space-y-20">
+        <div className="space-y-4">
           {timelineEvents.map((event, index) => (
             <TimelineItem
               key={index}
