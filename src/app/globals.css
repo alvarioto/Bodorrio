@@ -67,4 +67,28 @@
     background-image: radial-gradient(hsl(130 15% 80% / 0.2) 0.5px, transparent 0.5px);
     background-size: 15px 15px;
   }
+
+  .icon-bus .busMove{
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: drive 1.6s ease-in-out infinite;
+  }
+
+  .icon-bus .wheel{
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: spin .45s linear infinite;
+  }
+
+  @keyframes drive{
+    0%   { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
+    25%  { transform: translateX(-2px)  translateY(1px) rotate(0deg); }
+    50%  { transform: translateX(10px)  translateY(0px) rotate(1deg); }
+    75%  { transform: translateX(2px)   translateY(1px) rotate(0deg); }
+    100% { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
+  }
+
+  @keyframes spin{
+    to { transform: rotate(360deg); }
+  }
 }
