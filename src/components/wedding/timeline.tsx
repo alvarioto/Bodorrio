@@ -22,8 +22,8 @@ const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: str
         <div className="w-1/2" />
         <div className="w-1/2 pl-24 md:pl-32 flex justify-start items-center">
           <div className="text-left">
-            <p className="font-bold text-lg text-primary">{time}</p>
-            <h4 className="font-headline text-2xl mt-1">{title}</h4>
+            <p className="font-bold text-xl text-primary">{time}</p>
+            <h4 className="font-headline text-3xl mt-1">{title}</h4>
           </div>
         </div>
       </>
@@ -31,8 +31,8 @@ const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: str
       <>
         <div className="w-1/2 pr-24 md:pr-32 flex justify-end items-center">
           <div className="text-right">
-            <p className="font-bold text-lg text-primary">{time}</p>
-            <h4 className="font-headline text-2xl mt-1">{title}</h4>
+            <p className="font-bold text-xl text-primary">{time}</p>
+            <h4 className="font-headline text-3xl mt-1">{title}</h4>
           </div>
         </div>
         <div className="w-1/2" />
