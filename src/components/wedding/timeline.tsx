@@ -56,7 +56,7 @@ const TimelineSection = () => {
       </div>
       <div className="relative max-w-4xl mx-auto">
         <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
-        <div className="space-y-24">
+        <div className="space-y-32">
           {timelineEvents.map((event, index) => (
             <TimelineItem
               key={index}
