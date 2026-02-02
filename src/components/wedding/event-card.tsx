@@ -41,7 +41,7 @@ const EventCard: React.FC<EventCardProps> = ({
   return (
     <Card className="bg-card text-card-foreground rounded-3xl shadow-sm border-border overflow-hidden flex flex-col">
       <CardContent className="p-8 sm:p-12 flex-grow flex flex-col text-center items-center">
-        <div className="mb-6 h-16 w-16 flex items-center justify-center bg-secondary rounded-full">
+        <div className="mb-6 h-16 w-16 flex items-center justify-center">
           {icon}
         </div>
         <h3 className="font-headline text-4xl mb-8">{title}</h3>
