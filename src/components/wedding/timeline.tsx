@@ -39,7 +39,7 @@ const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: str
       </>
     )}
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-      <div className="w-28 h-28 rounded-full bg-background border-2 border-primary shadow-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+      <div className="w-28 h-28 rounded-full bg-secondary border-2 border-primary shadow-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
         {icon}
       </div>
     </div>
