@@ -22,10 +22,7 @@ const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: str
     useEffect(() => {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.unobserve(entry.target);
-          }
+          setIsVisible(entry.isIntersecting);
         },
         {
           rootMargin: '0px',
