@@ -32,7 +32,7 @@ const AnimatedBusIcon = () => (
             }
         `}</style>
         <svg
-            className="w-24 h-24 text-foreground"
+            className="w-24 h-24"
             viewBox="-20 -20 552 552"
             preserveAspectRatio="xMidYMid meet"
             aria-label="Autobús animado"
@@ -60,25 +60,33 @@ const timelineEvents = [
 ];
 
 const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: string, icon: React.ReactNode, isRight: boolean }) => (
-    <div className="relative flex items-center w-full my-12">
+    <div className="relative flex items-center w-full my-16 group">
         {isRight ? (
             <>
                 <div className="w-1/2 flex justify-end pr-10 md:pr-16" />
-                <div className="absolute left-1/2 -translate-x-1/2 z-10">{icon}</div>
-                <div className="w-1/2 pl-20 md:pl-28">
-                    <p className="font-bold text-xl md:text-2xl text-primary">{time}</p>
-                    <h4 className="font-headline text-5xl md:text-6xl mt-2">{title}</h4>
+                <div className="absolute left-1/2 -translate-x-1/2 z-10">
+                    <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-primary-foreground transition-transform duration-300 group-hover:scale-105">
+                        {icon}
+                    </div>
+                </div>
+                <div className="w-1/2 pl-24 md:pl-32">
+                    <p className="font-bold text-2xl md:text-3xl text-primary">{time}</p>
+                    <h4 className="font-headline text-6xl md:text-7xl mt-2">{title}</h4>
                 </div>
             </>
         ) : (
             <>
-                <div className="w-1/2 flex justify-end pr-20 md:pr-28 text-right">
+                <div className="w-1/2 flex justify-end pr-24 md:pr-32 text-right">
                     <div>
-                        <p className="font-bold text-xl md:text-2xl text-primary">{time}</p>
-                        <h4 className="font-headline text-5xl md:text-6xl mt-2">{title}</h4>
+                        <p className="font-bold text-2xl md:text-3xl text-primary">{time}</p>
+                        <h4 className="font-headline text-6xl md:text-7xl mt-2">{title}</h4>
                     </div>
                 </div>
-                <div className="absolute left-1/2 -translate-x-1/2 z-10">{icon}</div>
+                <div className="absolute left-1/2 -translate-x-1/2 z-10">
+                    <div className="w-32 h-32 rounded-full bg-primary flex items-center justify-center text-primary-foreground transition-transform duration-300 group-hover:scale-105">
+                        {icon}
+                    </div>
+                </div>
                 <div className="w-1/2 pl-10 md:pl-16" />
             </>
         )}
