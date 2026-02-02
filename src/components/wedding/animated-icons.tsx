@@ -133,7 +133,7 @@ export const RingsIcon = ({ className }: { className?: string }) => {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 150 150"
       preserveAspectRatio="xMidYMid meet"
-      className={cn("w-14 h-14", className)}
+      className={cn("w-16 h-16", className)}
       style={{ overflow: "visible" }}
     >
       <g stroke="hsl(140, 8%, 25%)" fill="none">
@@ -319,7 +319,7 @@ export const PartyHatIcon = ({ className }: { className?: string }) => {
   }, []);
 
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" preserveAspectRatio="xMidYMid meet" className={cn("w-14 h-14", className)} style={{ overflow: "visible" }}>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 130" preserveAspectRatio="xMidYMid meet" className={cn("w-16 h-16", className)} style={{ overflow: "visible" }}>
         <defs>
             <clipPath id="__lottie_element_party_popper">
                 <rect width="130" height="130" x="0" y="0"></rect>
@@ -511,5 +511,3 @@ export const BusAwayIcon = () => (
         </svg>
     </IconWrapper>
 )
-
-    
