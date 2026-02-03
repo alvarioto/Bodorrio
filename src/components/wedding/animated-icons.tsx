@@ -592,85 +592,126 @@ export const AnimatedBusIcon = ({ className }: { className?: string }) => (
 );
     
 export const LordiconClinkingGlasses = ({ className }: { className?: string }) => {
-  const areaRef = useRef<HTMLDivElement>(null);
+  const cupsRef = useRef<any>(null);
+  const heartIconRef = useRef<any>(null);
   const heartFxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const area = areaRef.current;
+    const cupsEl = cupsRef.current;
+    const heartEl = heartIconRef.current;
     const heartFx = heartFxRef.current;
 
-    if (!area || !heartFx) return;
+    if (!cupsEl || !heartEl || !heartFx) return;
 
-    const delayMs = 450;
-    let t: NodeJS.Timeout;
-
-    function showHeart() {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        if (heartFx) {
-            heartFx.classList.remove("show");
-            void heartFx.offsetWidth;
-            heartFx.classList.add("show");
-        }
-      }, delayMs);
+    function playFromStart(player: any) {
+      if (!player) return;
+      if (typeof player.playFromStart === 'function') return player.playFromStart();
+      if (typeof player.playFromBeginning === 'function') return player.playFromBeginning();
+      if (typeof player.goToFirstFrame === 'function') player.goToFirstFrame();
+      if (typeof player.play === 'function') return player.play();
     }
 
-    area.addEventListener("mouseenter", showHeart);
-    area.addEventListener("click", showHeart);
+    function popHeart() {
+      if (!heartFx || !heartEl) return;
+      heartFx.classList.remove('show');
+      void heartFx.offsetWidth;
+      heartFx.classList.add('show');
+
+      if (heartEl.playerInstance) playFromStart(heartEl.playerInstance);
+    }
+    
+    let removeFrameListener: (() => void) | undefined;
+    
+    const onCupsReady = () => {
+      const p = cupsEl.playerInstance;
+      if (!p) return;
+
+      const clinkFrame = Math.round(p.frames * 0.45);
+
+      let fired = false;
+      let lastFrame = 0;
+
+      const frameListener = () => {
+        if (!p) return;
+        const f = p.frame;
+        if (f < lastFrame) {
+          fired = false;
+        }
+        lastFrame = f;
+
+        if (!fired && f >= clinkFrame) {
+          fired = true;
+          popHeart();
+        }
+      };
+
+      p.addEventListener('frame', frameListener);
+      
+      removeFrameListener = () => {
+        p.removeEventListener('frame', frameListener);
+      };
+    };
+
+    cupsEl.addEventListener('ready', onCupsReady);
 
     return () => {
-      if(area){
-        area.removeEventListener("mouseenter", showHeart);
-        area.removeEventListener("click", showHeart);
+      if (cupsEl) {
+        cupsEl.removeEventListener('ready', onCupsReady);
       }
-      clearTimeout(t);
+      if (removeFrameListener) {
+        removeFrameListener();
+      }
     };
   }, []);
 
   return (
-    <div className={cn('w-24 h-24', className)}>
+    <div className={cn('w-24 h-24 relative', className)} style={{ display: 'inline-block', overflow: 'visible' }}>
       <style>{`
         .heart {
           position:absolute;
           left:50%;
           top:10%;
-          transform:translateX(-50%);
+          transform:translate(-50%, 0);
           opacity:0;
           visibility:hidden;
           pointer-events:none;
           z-index:9999;
         }
 
-        .heart.show {
+        .heart lord-icon{
+          width:45px !important;
+          height:45px !important;
+        }
+
+        .heart.show{
           visibility:visible;
           animation: floatUp 900ms ease-out forwards;
         }
 
         @keyframes floatUp{
-          0%   { opacity:0; transform:translate(-50%, 10px) scale(0.9); }
+          0%   { opacity:0; transform:translate(-50%, 12px) scale(0.9); }
           15%  { opacity:1; transform:translate(-50%, 0px)  scale(1); }
           100% { opacity:0; transform:translate(-50%, -70px) scale(1); }
         }
       `}</style>
-      <div ref={areaRef} className="wrap" style={{ position: 'relative', width: '100%', height: '100%', display: 'inline-block', overflow: 'visible' }}>
-        <div ref={heartFxRef} className="heart">
-          <lord-icon
-            src="https://cdn.lordicon.com/nvsfzbop.json"
-            trigger="loop"
-            stroke="light"
-            colors="primary:currentColor,secondary:currentColor"
-            style={{ width: '50px', height: '50px' }}>
-          </lord-icon>
-        </div>
-
+      <div ref={heartFxRef} className="heart">
         <lord-icon
-          src="https://cdn.lordicon.com/yvgmrqny.json"
-          trigger="hover"
+          ref={heartIconRef}
+          src="https://cdn.lordicon.com/nvsfzbop.json"
+          trigger="loop"
           stroke="light"
           colors="primary:currentColor,secondary:currentColor"
-          style={{ width: '100%', height: '100%' }}>
-        </lord-icon>
+        ></lord-icon>
       </div>
+
+      <lord-icon
+        ref={cupsRef}
+        src="https://cdn.lordicon.com/yvgmrqny.json"
+        trigger="loop"
+        stroke="light"
+        colors="primary:currentColor,secondary:currentColor"
+        style={{ width: '100%', height: '100%' }}
+      ></lord-icon>
     </div>
   );
 };
