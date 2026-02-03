@@ -11,6 +11,7 @@ declare namespace JSX {
       stroke?: string;
       colors?: string;
       style?: React.CSSProperties;
+      class?: string;
     }, HTMLElement>;
   }
 }
@@ -511,59 +512,13 @@ export const DinnerIcon = ({ className }: { className?: string }) => (
 );
 
 export const PartyIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 100 100"
-    className={cn("w-16 h-16", className)}
-  >
-    <g 
-      stroke="currentColor"
-      fill="none"
-      strokeWidth="5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {/* Left Glass */}
-      <g transform="rotate(-10 50 50) translate(-12 0)">
-        <path d="M25 40C25 25 55 25 55 40L50 80L30 80Z" />
-        <path d="M40 80L40 95" />
-        <path d="M30 95L50 95" />
-      </g>
-      
-      {/* Right Glass */}
-      <g transform="rotate(10 50 50) translate(12 0)">
-        <path d="M45 40C45 25 75 25 75 40L70 80L50 80Z" />
-        <path d="M60 80L60 95" />
-        <path d="M50 95L70 95" />
-      </g>
-    </g>
-    
-    {/* Liquid */}
-    <g 
-      stroke="hsl(var(--primary))"
-      fill="none"
-      strokeWidth="5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-       <path d="M30 50 C 35 47, 40 47, 45 50" transform="rotate(-10 50 50) translate(-12 0)" />
-       <path d="M55 50 C 60 47, 65 47, 70 50" transform="rotate(10 50 50) translate(12 0)" />
-    </g>
-    
-    {/* Heart */}
-    <path
-      d="M50 35 C45 28 40 32 40 40 C40 48 50 55 50 55 C50 55 60 48 60 40 C60 32 55 28 50 35Z"
-      fill="hsl(var(--primary))"
-      stroke="none"
-    />
-    
-    {/* Dots */}
-    <g fill="currentColor" stroke="none">
-        <circle cx="50" cy="18" r="2.5" />
-        <circle cx="43" cy="25" r="2" />
-        <circle cx="57" cy="25" r="2" />
-    </g>
-  </svg>
+  <lord-icon
+      src="https://cdn.lordicon.com/jjqwsavk.json"
+      trigger="loop"
+      stroke="light"
+      colors="primary:currentColor,secondary:currentColor"
+      className={cn("w-20 h-20", className)}>
+  </lord-icon>
 );
 
 export const EndOfPartyIcon = ({ className }: { className?: string }) => (
@@ -626,7 +581,10 @@ export const LordiconClinkingGlasses = ({ className }: { className?: string }) =
       const p = cupsEl.playerInstance;
       if (!p) return;
 
-      const clinkFrame = Math.round(p.frames * 0.45);
+      let clinkFrame = Number(localStorage.getItem("clinkFrame"));
+      if (!clinkFrame || !isFinite(clinkFrame)) {
+        clinkFrame = Math.round(p.frames * 0.45);
+      }
 
       let fired = false;
       let lastFrame = 0;
@@ -650,6 +608,12 @@ export const LordiconClinkingGlasses = ({ className }: { className?: string }) =
       removeFrameListener = () => {
         p.removeEventListener('frame', frameListener);
       };
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key.toLowerCase() !== "c" || !p) return;
+        clinkFrame = Math.round(p.frame);
+        localStorage.setItem("clinkFrame", String(clinkFrame));
+      });
     };
 
     cupsEl.addEventListener('ready', onCupsReady);
@@ -661,6 +625,7 @@ export const LordiconClinkingGlasses = ({ className }: { className?: string }) =
       if (removeFrameListener) {
         removeFrameListener();
       }
+      // We might need a way to remove the keydown listener too
     };
   }, []);
 
