@@ -3,6 +3,18 @@
 import { cn } from "@/lib/utils";
 import React, { useRef, useEffect } from "react";
 
+declare namespace JSX {
+  interface IntrinsicElements {
+    'lord-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+      src?: string;
+      trigger?: string;
+      stroke?: string;
+      colors?: string;
+      style?: React.CSSProperties;
+    }, HTMLElement>;
+  }
+}
+
 const commonProps = {
   viewBox: "0 0 64 64",
   fill: "none",
@@ -363,7 +375,7 @@ export const PartyHatIcon = ({ className }: { className?: string }) => {
                 </g>
                 <g opacity="1" transform="matrix(1,0,0,1,0,0)">
                     <path strokeLinecap="round" strokeLinejoin="miter" fill="none" strokeMiterlimit="10" stroke="currentColor" strokeOpacity="1" strokeWidth="3.531"
-                        d=" M97.88800048828125,52.356998443603516 C97.88800048828125,52.356998443603516 100.50399780273438,52.356998443603516 100.50399780273438,52.356998443603516" />
+                        d=" M97.88800048828125,52.356998443603516 C97.88800048828125,52.3569998443603516 100.50399780273438,52.356998443603516 100.50399780273438,52.356998443603516" />
                 </g>
                 <g opacity="1" transform="matrix(1,0,0,1,96.9729995727539,46.66899871826172)">
                     <path strokeLinecap="round" strokeLinejoin="miter" fill="none" strokeMiterlimit="10" stroke="currentColor" strokeOpacity="1" strokeWidth="3.531"
@@ -579,5 +591,86 @@ export const AnimatedBusIcon = ({ className }: { className?: string }) => (
   </svg>
 );
     
+export const LordiconClinkingGlasses = ({ className }: { className?: string }) => {
+  const areaRef = useRef<HTMLDivElement>(null);
+  const heartFxRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const area = areaRef.current;
+    const heartFx = heartFxRef.current;
 
+    if (!area || !heartFx) return;
+
+    const delayMs = 450;
+    let t: NodeJS.Timeout;
+
+    function showHeart() {
+      clearTimeout(t);
+      t = setTimeout(() => {
+        if (heartFx) {
+            heartFx.classList.remove("show");
+            void heartFx.offsetWidth;
+            heartFx.classList.add("show");
+        }
+      }, delayMs);
+    }
+
+    area.addEventListener("mouseenter", showHeart);
+    area.addEventListener("click", showHeart);
+
+    return () => {
+      if(area){
+        area.removeEventListener("mouseenter", showHeart);
+        area.removeEventListener("click", showHeart);
+      }
+      clearTimeout(t);
+    };
+  }, []);
+
+  return (
+    <div className={cn('w-24 h-24', className)}>
+      <style>{`
+        .heart {
+          position:absolute;
+          left:50%;
+          top:10%;
+          transform:translateX(-50%);
+          opacity:0;
+          visibility:hidden;
+          pointer-events:none;
+          z-index:9999;
+        }
+
+        .heart.show {
+          visibility:visible;
+          animation: floatUp 900ms ease-out forwards;
+        }
+
+        @keyframes floatUp{
+          0%   { opacity:0; transform:translate(-50%, 10px) scale(0.9); }
+          15%  { opacity:1; transform:translate(-50%, 0px)  scale(1); }
+          100% { opacity:0; transform:translate(-50%, -70px) scale(1); }
+        }
+      `}</style>
+      <div ref={areaRef} className="wrap" style={{ position: 'relative', width: '100%', height: '100%', display: 'inline-block', overflow: 'visible' }}>
+        <div ref={heartFxRef} className="heart">
+          <lord-icon
+            src="https://cdn.lordicon.com/nvsfzbop.json"
+            trigger="loop"
+            stroke="light"
+            colors="primary:currentColor,secondary:currentColor"
+            style={{ width: '50px', height: '50px' }}>
+          </lord-icon>
+        </div>
+
+        <lord-icon
+          src="https://cdn.lordicon.com/yvgmrqny.json"
+          trigger="hover"
+          stroke="light"
+          colors="primary:currentColor,secondary:currentColor"
+          style={{ width: '100%', height: '100%' }}>
+        </lord-icon>
+      </div>
+    </div>
+  );
+};

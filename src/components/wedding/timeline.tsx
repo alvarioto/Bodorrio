@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import { ClinkingGlassesIcon, DinnerIcon, PartyIcon, EndOfPartyIcon, RingsIcon, AnimatedBusIcon } from './animated-icons';
+import { LordiconClinkingGlasses, DinnerIcon, PartyIcon, EndOfPartyIcon, RingsIcon, AnimatedBusIcon, ClinkingGlassesIcon } from './animated-icons';
 
 const timelineEvents = [
   { time: '18:00', title: 'Ceremonia', icon: <RingsIcon className="w-20 h-20" /> },
   { time: '19:30', title: 'Salida del autobús', icon: <AnimatedBusIcon className="w-24 h-24" /> },
-  { time: '20:00', title: 'Recepción', icon: <ClinkingGlassesIcon className="w-16 h-16" /> },
+  { time: '20:00', title: 'Recepción', icon: <LordiconClinkingGlasses className="w-24 h-24" /> },
   { time: '22:00', title: 'Cena', icon: <DinnerIcon className="w-16 h-16" /> },
   { time: '01:00', title: '¡Fiesta!', icon: <PartyIcon className="w-16 h-16" /> },
   { time: '03:00', title: 'Salida primer autobús', icon: <AnimatedBusIcon className="w-24 h-24" /> },
@@ -22,7 +22,11 @@ const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: str
     useEffect(() => {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          setIsVisible(entry.isIntersecting);
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          } else {
+            setIsVisible(false);
+          }
         },
         {
           rootMargin: '0px',
@@ -54,24 +58,24 @@ const TimelineItem = ({ time, title, icon, isRight }: { time: string, title: str
           <>
             <div className="w-1/2" />
             <div className={cn(
-              "w-1/2 pl-28 flex justify-start items-center transition-transform duration-700 ease-out",
+              "w-1/2 pl-20 flex justify-start items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "-translate-x-10"
             )}>
               <div className="text-left">
-                <p className="font-bold text-2xl text-primary">{time}</p>
-                <h4 className="font-headline text-4xl mt-1">{title}</h4>
+                <p className="font-bold text-lg text-primary">{time}</p>
+                <h4 className="font-headline text-3xl mt-1">{title}</h4>
               </div>
             </div>
           </>
         ) : (
           <>
             <div className={cn(
-              "w-1/2 pr-28 flex justify-end items-center transition-transform duration-700 ease-out",
+              "w-1/2 pr-20 flex justify-end items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "translate-x-10"
             )}>
               <div className="text-right">
-                <p className="font-bold text-2xl text-primary">{time}</p>
-                <h4 className="font-headline text-4xl mt-1">{title}</h4>
+                <p className="font-bold text-lg text-primary">{time}</p>
+                <h4 className="font-headline text-3xl mt-1">{title}</h4>
               </div>
             </div>
             <div className="w-1/2" />
