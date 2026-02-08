@@ -63,7 +63,7 @@ const HeroSection = () => {
           className="w-auto h-auto opacity-70"
         />
       </div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 flex flex-col items-center">
         <div className="max-w-4xl mx-auto mb-12">
             <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
             <h1 className="font-headline text-gray-800">
