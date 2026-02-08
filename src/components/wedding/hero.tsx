@@ -47,15 +47,17 @@ const HeroSection = () => {
   return (
     <header className="w-full text-center py-20 md:py-32">
       <div className="container mx-auto px-4">
-        <p className="text-lg text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
-        <h1 className="font-headline text-6xl md:text-8xl lg:text-9xl text-gray-800">
-          Álvaro <span className="ampersand">&amp;</span> Carmen
-        </h1>
-        <h2 className="text-2xl md:text-3xl text-muted-foreground mt-4">Nuestra Boda</h2>
-        <p className="font-headline text-4xl md:text-5xl text-primary my-8">08 · 08 · 2026</p>
-        <p className="max-w-xl mx-auto text-muted-foreground mb-12">
-          Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
-        </p>
+        <div className="bg-[url('/paper-texture.jpg')] bg-cover bg-center rounded-3xl p-8 md:p-12 shadow-lg max-w-4xl mx-auto mb-12">
+            <p className="text-lg text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
+            <h1 className="font-headline text-6xl md:text-8xl lg:text-9xl text-gray-800">
+              Álvaro <span className="ampersand">&amp;</span> Carmen
+            </h1>
+            <h2 className="text-2xl md:text-3xl text-muted-foreground mt-4">Nuestra Boda</h2>
+            <p className="font-headline text-4xl md:text-5xl text-primary my-8">08 · 08 · 2026</p>
+            <p className="max-w-xl mx-auto text-muted-foreground">
+              Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
+            </p>
+        </div>
         <Countdown />
       </div>
     </header>
