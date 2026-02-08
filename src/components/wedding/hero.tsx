@@ -47,7 +47,7 @@ const Countdown = () => {
 const HeroSection = () => {
   return (
     <header
-      className="relative w-full text-center pt-12 md:pt-20 pb-16 rounded-t-2xl"
+      className="relative w-full text-center pt-12 md:pt-20 pb-24 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
         backgroundSize: 'cover',
