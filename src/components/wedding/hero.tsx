@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 const Countdown = () => {
   const weddingDate = new Date('2026-08-08T18:00:00');
@@ -64,6 +65,16 @@ const HeroSection = () => {
             <p className="max-w-xl mx-auto text-muted-foreground">
               Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
             </p>
+            <div className="mt-8">
+              <Image
+                src="/floral-banner.png"
+                alt="Decoración floral"
+                width={813}
+                height={171}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
         </div>
         <Countdown />
       </div>
