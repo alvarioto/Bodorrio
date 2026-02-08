@@ -35,8 +35,8 @@ const Countdown = () => {
     <div className="flex justify-center gap-4 md:gap-8 text-center">
       {Object.entries(timeLeft).map(([unit, value]) => (
         <div key={unit} className="flex flex-col items-center">
-          <span className="font-headline text-4xl md:text-6xl text-primary">{String(value).padStart(2, '0')}</span>
-          <span className="text-sm text-muted-foreground uppercase tracking-widest">{unit}</span>
+          <h2 className="font-headline text-primary">{String(value).padStart(2, '0')}</h2>
+          <span className="text-muted-foreground uppercase tracking-widest">{unit}</span>
         </div>
       ))}
     </div>
@@ -45,17 +45,22 @@ const Countdown = () => {
 
 const HeroSection = () => {
   return (
-    <header 
+    <header
       className="w-full text-center py-12 md:py-20"
+      style={{
+        backgroundImage: 'url(/paper-texture.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
     >
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto mb-12">
-            <p className="text-lg text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
+            <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
             <h1 className="font-headline text-gray-800">
               Álvaro <span className="ampersand">&amp;</span> Carmen
             </h1>
             <h2 className="text-muted-foreground mt-4">Nuestra Boda</h2>
-            <p className="font-headline text-4xl md:text-5xl text-primary my-8">08 · 08 · 2026</p>
+            <h3 className="font-headline text-primary my-8">08 · 08 · 2026</h3>
             <p className="max-w-xl mx-auto text-muted-foreground">
               Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
             </p>
