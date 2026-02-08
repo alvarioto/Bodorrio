@@ -24,6 +24,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       startTime: new Date('2026-08-08T18:00:00'),
       endTime: new Date('2026-08-08T19:00:00'),
     },
+    backgroundImage: '/iglesia.png',
   };
 
   const celebrationDetails = {

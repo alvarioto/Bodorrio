@@ -53,7 +53,7 @@ const EventCard: React.FC<EventCardProps> = ({
         backgroundPosition: 'center',
       } : {}}
     >
-      {backgroundImage && <div className="absolute inset-0 bg-card/70 backdrop-blur-sm" />}
+      {backgroundImage && <div className="absolute inset-0 bg-card/80 backdrop-blur-md" />}
       <CardContent className="p-8 sm:p-12 flex-grow flex flex-col text-center items-center relative">
         <div className="mb-6 h-24 w-24 flex items-center justify-center">
           {icon}
