@@ -22,7 +22,6 @@ type EventCardProps = {
     startTime: Date;
     endTime: Date;
   };
-  backgroundImage?: string;
 };
 
 const EventCard: React.FC<EventCardProps> = ({
@@ -35,7 +34,6 @@ const EventCard: React.FC<EventCardProps> = ({
   mapsLink,
   onRsvpClick,
   calendar,
-  backgroundImage,
 }) => {
   const handleAddToCalendar = () => {
     createAndDownloadIcsFile(calendar);
@@ -43,17 +41,8 @@ const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <Card 
-      className={cn(
-        "text-card-foreground rounded-3xl shadow-sm border-border overflow-hidden flex flex-col relative",
-        !backgroundImage && "bg-card"
-      )}
-      style={backgroundImage ? {
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : {}}
+      className="text-card-foreground rounded-3xl shadow-none border-none flex flex-col bg-card/80 backdrop-blur-md"
     >
-      {backgroundImage && <div className="absolute inset-0 bg-card/80 backdrop-blur-md" />}
       <CardContent className="p-8 sm:p-12 flex-grow flex flex-col text-center items-center relative">
         <div className="mb-6 h-24 w-24 flex items-center justify-center">
           {icon}

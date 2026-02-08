@@ -24,7 +24,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       startTime: new Date('2026-08-08T18:00:00'),
       endTime: new Date('2026-08-08T19:00:00'),
     },
-    backgroundImage: '/iglesia.png',
   };
 
   const celebrationDetails = {
@@ -42,14 +41,30 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       startTime: new Date('2026-08-08T20:00:00'),
       endTime: new Date('2026-08-09T06:05:00'),
     },
-    backgroundImage: '/convento.png',
   };
 
   return (
     <section id="detalles" className="py-16 sm:py-24 w-full">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 lg:gap-12">
-        <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
-        <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+      <div className="max-w-6xl mx-auto flex flex-col gap-16 md:gap-24">
+        
+        <div className="flex justify-start md:justify-end">
+          <div
+            className="w-full md:w-3/4 lg:w-7/12 rounded-3xl shadow-lg bg-cover bg-center overflow-hidden"
+            style={{ backgroundImage: `url(/iglesia.png)` }}
+          >
+            <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+          </div>
+        </div>
+
+        <div className="flex justify-start">
+          <div
+            className="w-full md:w-3/4 lg:w-7/12 rounded-3xl shadow-lg bg-cover bg-center overflow-hidden"
+            style={{ backgroundImage: `url(/convento.png)` }}
+          >
+            <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+          </div>
+        </div>
+
       </div>
     </section>
   );
