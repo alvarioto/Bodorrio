@@ -47,7 +47,7 @@ const Countdown = () => {
 const HeroSection = () => {
   return (
     <header
-      className="relative w-full text-center pt-24 md:pt-32 pb-48 rounded-t-2xl"
+      className="relative w-full text-center pt-32 pb-48 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
         backgroundSize: 'cover',
@@ -60,22 +60,24 @@ const HeroSection = () => {
           alt="Decoración floral superior"
           width={500}
           height={105}
-          className="w-auto h-auto opacity-70"
+          className="w-auto h-auto max-w-[500px] opacity-70"
         />
       </div>
       <div className="container mx-auto px-4 flex flex-col items-center">
-        <div className="max-w-4xl mx-auto mb-12">
-            <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
-            <h1 className="font-headline text-gray-800">
-              Álvaro <span className="ampersand">&amp;</span> Carmen
-            </h1>
-            <h2 className="text-muted-foreground mt-4">Nuestra Boda</h2>
-            <h3 className="font-headline text-primary my-8">08 · 08 · 2026</h3>
-            <p className="max-w-xl mx-auto text-muted-foreground">
-              Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
-            </p>
+        <div>
+          <div className="max-w-4xl mx-auto mb-12">
+              <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
+              <h1 className="font-headline text-gray-800">
+                Álvaro <span className="ampersand">&amp;</span> Carmen
+              </h1>
+              <h2 className="text-muted-foreground mt-4">Nuestra Boda</h2>
+              <h3 className="font-headline text-primary my-8">08 · 08 · 2026</h3>
+              <p className="max-w-xl mx-auto text-muted-foreground">
+                Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
+              </p>
+          </div>
+          <Countdown />
         </div>
-        <Countdown />
       </div>
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10">
         <Image
