@@ -33,6 +33,17 @@
     --ring: 130 20% 65%;
     
     --radius: 1.5rem;
+
+    /* New layout variables */
+    --card-max-width: 680px;
+    --page-padding: clamp(1rem, 5vw, 3rem);
+    --card-padding-x: clamp(1.5rem, 5vw, 3rem);
+    --card-padding-y: clamp(2rem, 6vw, 4rem);
+    --font-size-base: clamp(1rem, 0.25vw + 0.9rem, 1.125rem);
+    --font-size-h1: clamp(2.5rem, 6vw + 1rem, 5rem);
+    --font-size-h2: clamp(2.25rem, 4vw + 1rem, 3.5rem);
+    --font-size-h3: clamp(1.75rem, 3vw + 1rem, 2.5rem);
+    --font-size-h4: clamp(1.25rem, 2vw + 0.8rem, 2rem);
   }
 
   .dark {
@@ -61,12 +72,20 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(hsl(130 15% 80% / 0.2) 0.5px, transparent 0.5px);
+    background-image: radial-gradient(hsl(var(--border)) 0.5px, transparent 0.5px);
     background-size: 15px 15px;
+    font-size: var(--font-size-base);
   }
+
+  h1 { font-size: var(--font-size-h1); }
+  h2 { font-size: var(--font-size-h2); }
+  h3 { font-size: var(--font-size-h3); }
+  h4 { font-size: var(--font-size-h4); }
+
 
   .icon-bus .busMove{
     transform-box: fill-box;
@@ -94,5 +113,31 @@
 
   @keyframes spin{
     to { transform: rotate(360deg); }
+  }
+}
+
+@layer components {
+  .page-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: var(--page-padding);
+  }
+
+  .invitation-card {
+    width: 100%;
+    max-width: var(--card-max-width);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px -10px hsla(var(--foreground), 0.2);
+    overflow: hidden;
+    background-image: url(/paper-texture.png);
+    background-size: cover;
+    background-position: center;
+  }
+
+  .card-content-wrapper {
+    padding-left: var(--card-padding-x);
+    padding-right: var(--card-padding-x);
   }
 }

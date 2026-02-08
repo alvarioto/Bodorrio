@@ -15,7 +15,7 @@ const PhotosSection: React.FC<PhotosSectionProps> = ({ onPhotoClick }) => {
   return (
     <section id="fotos" className="py-16 sm:py-24 w-full">
       <div className="text-center mb-12">
-        <h2 className="font-headline text-5xl md:text-6xl">Fotos</h2>
+        <h2 className="font-headline">Fotos</h2>
         <p className="text-muted-foreground mt-2">Un vistazo a nuestros momentos.</p>
       </div>
 

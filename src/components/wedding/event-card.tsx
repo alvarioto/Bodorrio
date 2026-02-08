@@ -44,7 +44,7 @@ const EventCard: React.FC<EventCardProps> = ({
         <div className="mb-6 h-24 w-24 flex items-center justify-center">
           {icon}
         </div>
-        <h3 className="font-headline text-4xl mb-8">{title}</h3>
+        <h3 className="font-headline mb-8">{title}</h3>
         
         <div className="space-y-6 text-muted-foreground flex-grow">
           <div>

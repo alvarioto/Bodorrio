@@ -106,7 +106,7 @@ function TimelineItem({
           >
             <div className="text-left">
               <p className="font-bold text-lg text-primary">{time}</p>
-              <h4 className="font-headline text-3xl mt-1">{title}</h4>
+              <h4 className="font-headline mt-1">{title}</h4>
             </div>
           </div>
         </>
@@ -120,7 +120,7 @@ function TimelineItem({
           >
             <div className="text-right">
               <p className="font-bold text-lg text-primary">{time}</p>
-              <h4 className="font-headline text-3xl mt-1">{title}</h4>
+              <h4 className="font-headline mt-1">{title}</h4>
             </div>
           </div>
           <div className="w-1/2" />
@@ -160,7 +160,7 @@ export default function TimelineSection() {
   return (
     <section id="cronologia" className="py-24 sm:py-32 w-full overflow-x-hidden">
       <div className="text-center mb-24">
-        <h2 className="font-headline text-5xl md:text-6xl">Cronología</h2>
+        <h2 className="font-headline">Cronología</h2>
         <p className="text-muted-foreground mt-4 text-lg">El plan para nuestro gran día.</p>
       </div>
 

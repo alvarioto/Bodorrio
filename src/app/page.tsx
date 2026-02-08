@@ -15,17 +15,19 @@ export default function WeddingPage() {
   const [lightboxImage, setLightboxImage] = useState<ImagePlaceholder | null>(null);
 
   return (
-    <div className="flex flex-col items-center overflow-x-hidden">
-      <HeroSection />
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <Divider />
-        <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
-        <Divider />
-        <PhotosSection onPhotoClick={setLightboxImage} />
-        <Divider />
-        <TimelineSection />
-        <div className="h-24" />
-      </main>
+    <main className="page-container">
+      <div className="invitation-card">
+        <HeroSection />
+        <div className="card-content-wrapper">
+          <Divider />
+          <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
+          <Divider />
+          <PhotosSection onPhotoClick={setLightboxImage} />
+          <Divider />
+          <TimelineSection />
+        </div>
+        <div className="h-12 md:h-24" />
+      </div>
 
       <RsvpModal isOpen={isRsvpOpen} onOpenChange={setRsvpOpen} />
       
@@ -34,6 +36,6 @@ export default function WeddingPage() {
         onOpenChange={(isOpen) => !isOpen && setLightboxImage(null)}
         image={lightboxImage}
       />
-    </div>
+    </main>
   );
 }
