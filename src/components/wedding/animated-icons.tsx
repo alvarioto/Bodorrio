@@ -434,26 +434,16 @@ export const PartyHatIcon: React.FC<BaseIconProps> = ({
   style,
   title,
 }) => {
-  const html = `<!doctype html><html><head><meta charset="utf-8">
-  <style>html,body{margin:0;background:transparent;overflow:hidden}</style>
-  <script src="https://cdn.lordicon.com/lordicon.js"></script>
-  </head><body>
-  <lord-icon
-    src="https://cdn.lordicon.com/ohcuigqh.json"
-    trigger="hover"
-    state="hover-pinch"
-    stroke="light"
-    colors="primary:#121331,secondary:#000000"
-    style="width:100%;height:100%">
-  </lord-icon>
-  </body></html>`;
-
   return (
-    <iframe
+    <LordIcon
+      src="https://cdn.lordicon.com/ohcuigqh.json"
+      trigger="hover"
+      state="hover-pinch"
+      stroke="light"
+      colors="primary:#121331,secondary:#000000"
       className={className}
-      style={{ width: size, height: size, border: 0, background: "transparent", ...(style ?? {}) }}
-      srcDoc={html}
-      title={title ?? "Celebración"}
+      style={{ width: size, height: size, ...(style ?? {}) }}
+      aria-label={title ?? "Celebración"}
     />
   );
 };
