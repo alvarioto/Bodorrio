@@ -5,7 +5,7 @@ const Divider = () => {
   return (
     <div className="w-full flex justify-center py-4">
       <Image
-        src="/floral-banner.png"
+        src="/banner_divisor_horizontal.png"
         alt="Separador floral"
         width={300}
         height={63}
