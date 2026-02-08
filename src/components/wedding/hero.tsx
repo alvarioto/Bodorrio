@@ -47,7 +47,7 @@ const Countdown = () => {
 const HeroSection = () => {
   return (
     <header
-      className="relative w-full text-center pt-24 md:pt-32 pb-24 rounded-t-2xl"
+      className="relative w-full text-center pt-24 md:pt-32 pb-32 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
         backgroundSize: 'cover',
@@ -56,7 +56,7 @@ const HeroSection = () => {
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
         <Image
-          src="/banner_floral_top.png"
+          src="/divisor-top.png"
           alt="Decoración floral superior"
           width={500}
           height={105}
