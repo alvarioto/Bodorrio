@@ -47,7 +47,7 @@ const Countdown = () => {
 const HeroSection = () => {
   return (
     <header
-      className="relative w-full text-center pt-32 pb-48 rounded-t-2xl"
+      className="relative w-full text-center pt-36 pb-40 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
         backgroundSize: 'cover',
@@ -65,13 +65,13 @@ const HeroSection = () => {
       </div>
       <div className="container mx-auto px-4 flex flex-col items-center">
         <div>
-          <div className="max-w-4xl mx-auto mb-12">
+          <div className="max-w-4xl mx-auto mb-8">
               <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
               <h1 className="font-headline text-gray-800">
                 Álvaro <span className="ampersand">&amp;</span> Carmen
               </h1>
               <h2 className="text-muted-foreground mt-4">Nuestra Boda</h2>
-              <h3 className="font-headline text-primary my-8">08 · 08 · 2026</h3>
+              <h3 className="font-headline text-primary my-6">08 · 08 · 2026</h3>
               <p className="max-w-xl mx-auto text-muted-foreground">
                 Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
               </p>
