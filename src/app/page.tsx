@@ -20,8 +20,9 @@ export default function WeddingPage() {
         <HeroSection />
 
         <div className="bg-card rounded-b-2xl">
+          <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
+
           <div className="card-content-wrapper">
-            <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
             <Divider />
             <PhotosSection onPhotoClick={setLightboxImage} />
             <Divider />
