@@ -17,20 +17,10 @@ export default function WeddingPage() {
   return (
     <main className="page-container">
       <div className="invitation-card">
-        <div
-          className="rounded-t-2xl"
-          style={{
-            backgroundImage: 'url(/paper-texture.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          <HeroSection />
-        </div>
+        <HeroSection />
 
         <div className="bg-card rounded-b-2xl">
           <div className="card-content-wrapper">
-            <Divider />
             <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
             <Divider />
             <PhotosSection onPhotoClick={setLightboxImage} />
