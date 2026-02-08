@@ -47,7 +47,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
     <section id="detalles" className="py-16 sm:py-24 w-full">
       <div className="max-w-6xl mx-auto flex flex-col gap-16 md:gap-24">
         
-        <div className="flex justify-start md:justify-end">
+        <div className="flex justify-start">
           <div
             className="w-full md:w-3/4 lg:w-7/12 rounded-3xl shadow-lg bg-cover bg-center overflow-hidden"
             style={{ backgroundImage: `url(/iglesia.png)` }}
@@ -56,7 +56,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
           </div>
         </div>
 
-        <div className="flex justify-start">
+        <div className="flex justify-end">
           <div
             className="w-full md:w-3/4 lg:w-7/12 rounded-3xl shadow-lg bg-cover bg-center overflow-hidden"
             style={{ backgroundImage: `url(/convento.png)` }}
