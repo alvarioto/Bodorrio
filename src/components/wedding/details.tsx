@@ -52,7 +52,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
             className="w-full md:w-3/4 lg:w-7/12 rounded-3xl shadow-lg bg-cover bg-center overflow-hidden"
             style={{ backgroundImage: `url(/iglesia.png)` }}
           >
-            <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+            <div className="p-4 sm:p-6">
+              <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+            </div>
           </div>
         </div>
 
@@ -61,7 +63,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
             className="w-full md:w-3/4 lg:w-7/12 rounded-3xl shadow-lg bg-cover bg-center overflow-hidden"
             style={{ backgroundImage: `url(/convento.png)` }}
           >
-            <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+            <div className="p-4 sm:p-6">
+              <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+            </div>
           </div>
         </div>
 
