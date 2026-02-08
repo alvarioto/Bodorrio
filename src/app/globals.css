@@ -80,6 +80,10 @@
     animation: spin .45s linear infinite;
   }
 
+  .ampersand {
+    @apply font-body font-normal text-primary text-5xl md:text-7xl lg:text-8xl;
+  }
+
   @keyframes drive{
     0%   { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
     25%  { transform: translateX(-2px)  translateY(1px) rotate(0deg); }

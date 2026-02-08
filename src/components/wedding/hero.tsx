@@ -49,7 +49,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4">
         <p className="text-lg text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
         <h1 className="font-headline text-6xl md:text-8xl lg:text-9xl text-gray-800">
-          Álvaro & Carmen
+          Álvaro <span className="ampersand">&amp;</span> Carmen
         </h1>
         <h2 className="text-2xl md:text-3xl text-muted-foreground mt-4">Nuestra Boda</h2>
         <p className="font-headline text-4xl md:text-5xl text-primary my-8">08 · 08 · 2026</p>
