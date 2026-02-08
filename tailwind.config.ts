@@ -12,6 +12,7 @@ export default {
       fontFamily: {
         body: ['"PT Sans"', 'sans-serif'],
         headline: ['"Forum"', 'serif'],
+        nunito: ['"Nunito"', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

@@ -81,7 +81,7 @@
   }
 
   .ampersand {
-    @apply inline-flex items-center justify-center w-14 h-14 md:w-20 md:h-20 bg-primary text-primary-foreground rounded-full font-headline text-4xl md:text-6xl mx-4 align-middle;
+    @apply inline-flex items-center justify-center w-14 h-14 md:w-20 md:h-20 bg-primary text-primary-foreground rounded-full font-nunito font-bold text-4xl md:text-6xl mx-4 align-middle;
   }
 
   @keyframes drive{
