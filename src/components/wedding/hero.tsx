@@ -47,7 +47,7 @@ const Countdown = () => {
 const HeroSection = () => {
   return (
     <header
-      className="relative w-full text-center pt-24 md:pt-32 pb-32 rounded-t-2xl"
+      className="relative w-full text-center pt-24 md:pt-32 pb-48 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
         backgroundSize: 'cover',
@@ -81,8 +81,8 @@ const HeroSection = () => {
         <Image
           src="/banner_divisor_horizontal.png"
           alt="Separador floral"
-          width={300}
-          height={63}
+          width={500}
+          height={105}
           className="w-auto h-auto opacity-70"
         />
       </div>
