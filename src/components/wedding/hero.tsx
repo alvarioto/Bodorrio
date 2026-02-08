@@ -45,7 +45,7 @@ const Countdown = () => {
 
 const HeroSection = () => {
   return (
-    <header className="w-full text-center py-20 md:py-32 bg-[url('/paper-texture.jpg')] bg-cover bg-center">
+    <header className="w-full text-center py-20 md:py-32 bg-secondary">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto mb-12">
             <p className="text-lg text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
