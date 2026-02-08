@@ -51,7 +51,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       >
         <div className="card-content-wrapper py-16 sm:py-24">
           <div className="max-w-6xl mx-auto flex justify-start">
-            <div className="w-full md:w-2/3 lg:w-1/2">
+            <div className="w-full md:w-2/3 lg:w-2/5">
                 <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
             </div>
           </div>
@@ -66,7 +66,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       >
         <div className="card-content-wrapper py-16 sm:py-24">
           <div className="max-w-6xl mx-auto flex justify-end">
-            <div className="w-full md:w-2/3 lg:w-1/2">
+            <div className="w-full md:w-2/3 lg:w-2/5">
                 <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
             </div>
           </div>
