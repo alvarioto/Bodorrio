@@ -17,7 +17,15 @@ export default function WeddingPage() {
   return (
     <main className="page-container">
       <div className="invitation-card">
-        <HeroSection />
+        <div
+          style={{
+            backgroundImage: 'url(/paper-texture.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <HeroSection />
+        </div>
         <div className="card-content-wrapper">
           <Divider />
           <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />

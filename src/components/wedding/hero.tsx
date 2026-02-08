@@ -48,11 +48,6 @@ const HeroSection = () => {
   return (
     <header
       className="w-full text-center py-12 md:py-20"
-      style={{
-        backgroundImage: 'url(/paper-texture.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
     >
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto mb-12">
