@@ -47,13 +47,22 @@ const Countdown = () => {
 const HeroSection = () => {
   return (
     <header
-      className="relative w-full text-center pt-12 md:pt-20 pb-24 rounded-t-2xl"
+      className="relative w-full text-center pt-24 md:pt-32 pb-24 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
     >
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
+        <Image
+          src="/banner_floral_top.png"
+          alt="Decoración floral superior"
+          width={500}
+          height={105}
+          className="w-auto h-auto opacity-70"
+        />
+      </div>
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto mb-12">
             <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
