@@ -81,7 +81,7 @@
   }
 
   .ampersand {
-    @apply font-body font-normal text-primary text-5xl md:text-7xl lg:text-8xl;
+    @apply inline-flex items-center justify-center w-14 h-14 md:w-20 md:h-20 bg-primary text-primary-foreground rounded-full font-headline text-4xl md:text-6xl mx-4 align-middle;
   }
 
   @keyframes drive{
