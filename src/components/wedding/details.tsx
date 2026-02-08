@@ -41,6 +41,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       startTime: new Date('2026-08-08T20:00:00'),
       endTime: new Date('2026-08-09T06:05:00'),
     },
+    backgroundImage: '/public.png',
   };
 
   return (
