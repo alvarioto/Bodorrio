@@ -162,7 +162,7 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <div id="itinerario" className="bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl w-full flex flex-col text-card-foreground">
+    <div id="itinerario" className="w-full flex flex-col text-foreground">
       <div className="p-6 flex-grow flex flex-col">
         <div className="w-full overflow-x-hidden h-full flex flex-col">
           <div className="text-center mb-10">
