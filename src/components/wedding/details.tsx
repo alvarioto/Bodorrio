@@ -49,7 +49,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   return (
     <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24">
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 lg:items-stretch">
+      <div className="flex flex-col lg:flex-row gap-12 lg:items-stretch">
         {/* Columna Izquierda: Cronología */}
         <div className="w-full lg:w-2/5 flex">
           <TimelineSection />
@@ -57,7 +57,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
         {/* Columna Derecha: Ceremonia y Celebración */}
         <div className="w-full lg:w-3/5">
-          <div className="space-y-12">
+          <div className="space-y-12 h-full flex flex-col justify-between">
             <div
               className="w-full bg-cover bg-center rounded-2xl"
               style={{ backgroundImage: `url(/iglesia.png)` }}
