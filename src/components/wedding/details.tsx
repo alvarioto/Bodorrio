@@ -22,7 +22,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
     address: "(ver ubicación)",
     mapsLink: "https://maps.app.goo.gl/CFG4xPPQNPtCyMJB8",
     calendar: {
-      title: "Ceremonia Álvaro y Carmen",
+      title: "Ceremonia Carmen y Álvaro",
       description:
         "Ceremonia de la boda de Álvaro y Carmen en la Parroquia Sagrado Corazón de Jesús.",
       location: "Parroquia Sagrado Corazón de Jesús",
