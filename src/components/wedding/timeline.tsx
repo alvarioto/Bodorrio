@@ -37,14 +37,14 @@ type TimelineEvent = {
  * ======================================================================================= */
 
 const timelineEvents: TimelineEvent[] = [
-  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: 0 },
-  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: 2 },
-  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 44, iconSize: 28 },
-  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 44, iconSize: 26 },
-  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: -2 },
-  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 44, iconSize: 28 },
-  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: -2 },
-  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 44, iconSize: 28 },
+  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: 0 },
+  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: 2 },
+  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 56, iconSize: 36 },
+  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 56, iconSize: 34 },
+  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: -2 },
+  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 56, iconSize: 36 },
+  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: -2 },
+  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 56, iconSize: 36 },
 ];
 
 /* =======================================================================================
@@ -58,8 +58,8 @@ function TimelineItem({
   title,
   Icon,
   isRight,
-  bubbleSize = 44,
-  iconSize = 28,
+  bubbleSize = 56,
+  iconSize = 36,
   iconOffsetX = 0,
   iconOffsetY = 0,
 }: TimelineEvent & { isRight: boolean }) {
@@ -104,13 +104,13 @@ function TimelineItem({
           <div className="w-1/2" />
           <div
             className={cn(
-              "w-1/2 pl-12 flex justify-start items-center transition-transform duration-700 ease-out",
+              "w-1/2 pl-16 flex justify-start items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "-translate-x-10"
             )}
           >
             <div className="text-left">
-              <p className="font-bold text-sm text-primary">{time}</p>
-              <h4 className="font-headline mt-1 text-lg">{title}</h4>
+              <p className="font-bold text-base text-primary">{time}</p>
+              <h4 className="font-headline mt-1 text-xl">{title}</h4>
             </div>
           </div>
         </>
@@ -118,13 +118,13 @@ function TimelineItem({
         <>
           <div
             className={cn(
-              "w-1/2 pr-12 flex justify-end items-center transition-transform duration-700 ease-out",
+              "w-1/2 pr-16 flex justify-end items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "translate-x-10"
             )}
           >
             <div className="text-right">
-              <p className="font-bold text-sm text-primary">{time}</p>
-              <h4 className="font-headline mt-1 text-lg">{title}</h4>
+              <p className="font-bold text-base text-primary">{time}</p>
+              <h4 className="font-headline mt-1 text-xl">{title}</h4>
             </div>
           </div>
           <div className="w-1/2" />
@@ -164,17 +164,17 @@ function TimelineItem({
 export default function TimelineSection() {
   return (
     <Card id="itinerario" className="bg-card/95 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full h-full">
-      <CardContent className="p-6">
-        <div className="w-full overflow-x-hidden">
+      <CardContent className="p-6 h-full">
+        <div className="w-full overflow-x-hidden h-full flex flex-col">
           <div className="text-center mb-10">
-            <h2 className="font-headline text-2xl">Itinerario de nuestra boda</h2>
-            <p className="text-muted-foreground mt-2 text-base">El plan para nuestro gran día.</p>
+            <h2 className="font-headline text-3xl">Itinerario de nuestra boda</h2>
+            <p className="text-muted-foreground mt-2 text-lg">El plan para nuestro gran día.</p>
           </div>
 
-          <div className="relative">
+          <div className="relative flex-grow">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
 
-            <div className="space-y-2">
+            <div className="space-y-2 h-full flex flex-col justify-around">
               {timelineEvents.map((event, index) => (
                 <TimelineItem
                   key={`${event.time}-${event.title}`}
