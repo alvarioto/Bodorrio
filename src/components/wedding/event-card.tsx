@@ -41,15 +41,15 @@ const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <Card 
-      className="text-card-foreground flex flex-col bg-card/90 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full max-w-sm"
+      className="text-card-foreground flex flex-col bg-card/95 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full max-w-sm"
     >
-      <CardContent className="p-6 sm:p-10 flex-grow flex flex-col text-center items-center relative">
-        <div className="mb-4 h-20 w-20 flex items-center justify-center">
+      <CardContent className="p-6 flex-grow flex flex-col text-center items-center relative">
+        <div className="mb-2 h-16 w-16 flex items-center justify-center">
           {icon}
         </div>
-        <h3 className="font-headline mb-6">{title}</h3>
+        <h3 className="font-headline mb-4">{title}</h3>
         
-        <div className="w-full space-y-6 text-muted-foreground flex-grow flex flex-col items-center">
+        <div className="w-full space-y-4 text-muted-foreground flex-grow flex flex-col items-center">
           <div className="w-full">
             <p className="font-bold text-foreground">Día</p>
             <p>{day} - {time}</p>
