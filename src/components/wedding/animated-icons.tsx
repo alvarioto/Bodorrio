@@ -792,6 +792,48 @@ export const PartyIcon: React.FC<BaseIconProps & { color?: string }> = ({
   />
 );
 
+/* ------------------------ FADING PARTY (Lordicon) ------------------------ */
+
+export const FadingPartyIcon: React.FC<BaseIconProps & { color?: string }> = ({
+  className,
+  size = 96,
+  style,
+  color = "currentColor",
+}) => {
+  return (
+    <div
+      className={cn("fading-party-icon", className)}
+      style={{ width: size, height: size, ...(style ?? {}) }}
+    >
+      <style>{`
+        .fading-party-icon {
+          animation: fadeOutAndShrink 4s ease-in-out infinite;
+        }
+        @keyframes fadeOutAndShrink {
+          0%, 50% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(0.7);
+          }
+        }
+        @media (prefers-reduced-motion: reduce){
+          .fading-party-icon { animation: none !important; opacity: 1; transform: none; }
+        }
+      `}</style>
+      <LordIcon
+        src="https://cdn.lordicon.com/jjqwsavk.json"
+        trigger="loop"
+        stroke="light"
+        colors={`primary:${color},secondary:${color}`}
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
+  );
+};
+
 /* ------------------------ END (SVG simple) ------------------------ */
 
 export const EndOfPartyIcon: React.FC<BaseIconProps> = ({
