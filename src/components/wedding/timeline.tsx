@@ -64,7 +64,6 @@ function TimelineItem({
 }: TimelineEvent & { isRight: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
   const itemRef = useRef<HTMLDivElement>(null);
-  const hasShownRef = useRef(false);
 
   useEffect(() => {
     const el = itemRef.current;
@@ -72,18 +71,18 @@ function TimelineItem({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasShownRef.current) {
-          hasShownRef.current = true;
-          setIsVisible(true);
-          observer.unobserve(el);
-          observer.disconnect();
-        }
+        setIsVisible(entry.isIntersecting);
       },
       { threshold: 0.25 }
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+
+    return () => {
+      if (el) {
+        observer.unobserve(el);
+      }
+    };
   }, []);
 
   return (
