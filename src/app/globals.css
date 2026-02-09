@@ -39,7 +39,7 @@
     --radius: 1.5rem;
 
     /* New layout variables */
-    --card-max-width: 960px;
+    --card-max-width: 1280px;
     --page-padding: clamp(1rem, 5vw, 3rem);
     --card-padding-x: clamp(1.5rem, 5vw, 3rem);
     --card-padding-y: clamp(2rem, 6vw, 4rem);
