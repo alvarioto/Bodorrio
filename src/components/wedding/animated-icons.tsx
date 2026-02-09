@@ -138,7 +138,7 @@ export const CeremonyIcon: React.FC<BaseIconProps> = ({
     <LordIcon
       src="https://cdn.lordicon.com/fshosubk.json"
       trigger="loop"
-      colors="primary:#121631,secondary:#545454"
+      colors="primary:currentColor,secondary:currentColor"
       className={className}
       style={{ width: size, height: size, ...(style ?? {}) }}
       aria-label={title ?? "Ceremonia"}
@@ -440,7 +440,7 @@ export const PartyHatIcon: React.FC<BaseIconProps> = ({
       trigger="hover"
       state="hover-pinch"
       stroke="light"
-      colors="primary:#121331,secondary:#000000"
+      colors="primary:currentColor,secondary:currentColor"
       className={className}
       style={{ width: size, height: size, ...(style ?? {}) }}
       aria-label={title ?? "Celebración"}
@@ -492,7 +492,7 @@ export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> =
   size = 96,
   style,
   title,
-  color = "#000000",
+  color = "currentColor",
 }) => {
   const cupsRef = React.useRef<LordIconEl | null>(null);
   const heartIconRefs = React.useRef<(LordIconEl | null)[]>([]);
