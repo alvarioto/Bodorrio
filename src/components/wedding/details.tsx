@@ -48,7 +48,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
   };
 
   return (
-    <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24">
+    <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24 lg:pl-0">
       <div className="flex flex-col lg:flex-row gap-12 lg:items-stretch">
         {/* Columna Izquierda: Cronología */}
         <div className="w-full lg:w-2/5 flex">
