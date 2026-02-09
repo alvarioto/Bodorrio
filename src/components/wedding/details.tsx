@@ -80,7 +80,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       <div className="h-16 md:h-24"></div>
 
       <div className="card-content-wrapper pb-16 sm:pb-24">
-        <div className="max-w-6xl mx-auto flex justify-start">
+        <div className="max-w-6xl mx-auto flex justify-end">
           <div className="w-full md:w-2/3 lg:w-2/5">
             <TimelineSection />
           </div>
