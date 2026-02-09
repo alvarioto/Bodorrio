@@ -19,13 +19,13 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
     day: "08 de Agosto de 2026",
     time: "18:00",
     place: "Parroquia Sagrado Corazón de Jesús",
-    address: "(ver ubicación)",
+    address: "C. Presbítero Pablo Rodríguez, 3 Huelva",
     mapsLink: "https://maps.app.goo.gl/CFG4xPPQNPtCyMJB8",
     calendar: {
       title: "Ceremonia Carmen y Álvaro",
       description:
         "Ceremonia de la boda de Álvaro y Carmen en la Parroquia Sagrado Corazón de Jesús.",
-      location: "Parroquia Sagrado Corazón de Jesús",
+      location: "C. Presbítero Pablo Rodríguez, 3 Huelva",
       startTime: new Date("2026-08-08T18:00:00"),
       endTime: new Date("2026-08-08T19:00:00"),
     },
