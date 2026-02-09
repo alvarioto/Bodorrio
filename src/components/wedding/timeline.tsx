@@ -164,9 +164,9 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <section id="cronologia" className="py-12 sm:py-20 w-full overflow-x-hidden">
+    <section id="itinerario" className="py-12 sm:py-20 w-full overflow-x-hidden">
       <div className="text-center mb-10">
-        <h2 className="font-headline text-3xl">Cronología</h2>
+        <h2 className="font-headline text-3xl">Itinerario de nuestra boda</h2>
         <p className="text-muted-foreground mt-2 text-sm">El plan para nuestro gran día.</p>
       </div>
 
