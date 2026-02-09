@@ -49,29 +49,31 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   return (
     <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24">
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-stretch">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 lg:items-stretch">
         {/* Columna Izquierda: Cronología */}
-        <div className="w-full lg:w-2/5">
+        <div className="w-full lg:w-2/5 flex">
           <TimelineSection />
         </div>
 
         {/* Columna Derecha: Ceremonia y Celebración */}
-        <div className="w-full lg:w-3/5 space-y-12">
-          <div
-            className="w-full bg-cover bg-center rounded-2xl"
-            style={{ backgroundImage: `url(/iglesia.png)` }}
-          >
-            <div className="p-8 flex justify-end">
-              <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+        <div className="w-full lg:w-3/5">
+          <div className="space-y-12">
+            <div
+              className="w-full bg-cover bg-center rounded-2xl"
+              style={{ backgroundImage: `url(/iglesia.png)` }}
+            >
+              <div className="p-8 flex justify-end">
+                <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+              </div>
             </div>
-          </div>
 
-          <div
-            className="w-full bg-cover bg-center rounded-2xl"
-            style={{ backgroundImage: `url(/convento.png)` }}
-          >
-            <div className="p-8 flex justify-start">
-              <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+            <div
+              className="w-full bg-cover bg-center rounded-2xl"
+              style={{ backgroundImage: `url(/convento.png)` }}
+            >
+              <div className="p-8 flex justify-start">
+                <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+              </div>
             </div>
           </div>
         </div>
