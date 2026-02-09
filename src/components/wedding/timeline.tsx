@@ -163,8 +163,8 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <Card id="itinerario" className="bg-card/95 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full h-full">
-      <CardContent className="p-6 h-full">
+    <Card id="itinerario" className="bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl w-full flex flex-col border-none">
+      <CardContent className="p-6 flex-grow flex flex-col">
         <div className="w-full overflow-x-hidden h-full flex flex-col">
           <div className="text-center mb-10">
             <h2 className="font-headline text-3xl">Itinerario de nuestra boda</h2>
