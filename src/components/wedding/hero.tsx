@@ -76,6 +76,7 @@ const HeroSection = () => {
                 Con gran alegría queremos compartir este día tan especial con vosotros. Vuestra presencia es nuestro mejor regalo.
               </p>
           </div>
+          <h4 className="text-muted-foreground tracking-widest uppercase mb-4">¡FALTAN!</h4>
           <Countdown />
         </div>
       </div>
