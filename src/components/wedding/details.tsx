@@ -48,41 +48,31 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
   };
 
   return (
-    <section id="detalles" className="w-full">
-      <div
-        className="w-full bg-cover bg-center"
-        style={{ backgroundImage: `url(/iglesia.png)` }}
-      >
-        <div className="card-content-wrapper py-16 sm:py-24">
-          <div className="max-w-6xl mx-auto flex justify-end">
-            <div className="w-full md:w-2/3 lg:w-2/5">
+    <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-start">
+        {/* Columna Izquierda: Cronología */}
+        <div className="w-full lg:w-2/5">
+          <TimelineSection />
+        </div>
+
+        {/* Columna Derecha: Ceremonia y Celebración */}
+        <div className="w-full lg:w-3/5 space-y-12">
+          <div
+            className="w-full bg-cover bg-center rounded-2xl"
+            style={{ backgroundImage: `url(/iglesia.png)` }}
+          >
+            <div className="p-8 flex justify-end">
               <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="h-16 md:h-24"></div>
-
-      <div
-        className="w-full bg-cover bg-center"
-        style={{ backgroundImage: `url(/convento.png)` }}
-      >
-        <div className="card-content-wrapper py-16 sm:py-24">
-          <div className="max-w-6xl mx-auto flex justify-start">
-            <div className="w-full md:w-2/3 lg:w-2/5">
+          <div
+            className="w-full bg-cover bg-center rounded-2xl"
+            style={{ backgroundImage: `url(/convento.png)` }}
+          >
+            <div className="p-8 flex justify-start">
               <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="h-16 md:h-24"></div>
-
-      <div className="card-content-wrapper pb-16 sm:pb-24">
-        <div className="max-w-6xl mx-auto flex justify-end">
-          <div className="w-full md:w-2/3 lg:w-2/5">
-            <TimelineSection />
           </div>
         </div>
       </div>
