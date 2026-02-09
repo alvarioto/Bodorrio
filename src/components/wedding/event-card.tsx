@@ -41,41 +41,38 @@ const EventCard: React.FC<EventCardProps> = ({
 
   return (
     <Card 
-      className="text-card-foreground flex flex-col bg-card/90 border border-border shadow-lg rounded-2xl"
+      className="text-card-foreground flex flex-col bg-card/90 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full max-w-sm"
     >
-      <CardContent className="p-8 sm:p-12 flex-grow flex flex-col text-center items-center relative">
-        <div className="mb-6 h-24 w-24 flex items-center justify-center">
+      <CardContent className="p-6 sm:p-10 flex-grow flex flex-col text-center items-center relative">
+        <div className="mb-4 h-20 w-20 flex items-center justify-center">
           {icon}
         </div>
-        <h3 className="font-headline mb-8">{title}</h3>
+        <h3 className="font-headline mb-6">{title}</h3>
         
-        <div className="space-y-6 text-muted-foreground flex-grow">
-          <div>
+        <div className="w-full space-y-6 text-muted-foreground flex-grow flex flex-col items-center">
+          <div className="w-full">
             <p className="font-bold text-foreground">Día</p>
             <p>{day} - {time}</p>
+            <Button onClick={handleAddToCalendar} className="w-full max-w-xs rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md transition-all mt-3">
+              Agendar
+            </Button>
           </div>
-          <div>
+          <div className="w-full">
             <p className="font-bold text-foreground">Lugar</p>
             <p>{place}</p>
+            <Button onClick={onRsvpClick} className="w-full max-w-xs rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md transition-all mt-3">
+              Confirmar asistencia
+            </Button>
           </div>
-          <div>
+          <div className="w-full">
             <p className="font-bold text-foreground">Dirección</p>
             <p>{address}</p>
+            <Button asChild className="w-full max-w-xs rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md transition-all mt-3">
+              <a href={mapsLink} target="_blank" rel="noopener noreferrer">
+                ¿Cómo llegar?
+              </a>
+            </Button>
           </div>
-        </div>
-
-        <div className="mt-10 w-full space-y-3 flex flex-col items-center">
-          <Button onClick={handleAddToCalendar} className="w-full max-w-xs rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md transition-all">
-            Agendar
-          </Button>
-          <Button onClick={onRsvpClick} className="w-full max-w-xs rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md transition-all">
-            Confirmar asistencia
-          </Button>
-          <Button asChild className="w-full max-w-xs rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md transition-all">
-            <a href={mapsLink} target="_blank" rel="noopener noreferrer">
-              ¿Cómo llegar?
-            </a>
-          </Button>
         </div>
       </CardContent>
     </Card>
