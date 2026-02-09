@@ -66,7 +66,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 flex flex-col items-center">
         <div>
           <div className="max-w-4xl mx-auto mb-8">
-              <p className="text-muted-foreground mb-4">Bienvenidos a la invitación de</p>
+              <p className="text-muted-foreground mt-8 mb-4">Bienvenidos a la invitación de</p>
               <h1 className="font-headline text-foreground">
                 Álvaro <span className="ampersand">&amp;</span> Carmen
               </h1>
