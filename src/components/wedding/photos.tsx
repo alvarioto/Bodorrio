@@ -24,7 +24,7 @@ const PhotosSection: React.FC<PhotosSectionProps> = ({ onPhotoClick }) => {
           <CardContent className="p-8 sm:p-12">
             <div className="flex justify-center mb-8">
               <div className="h-16 w-16 flex items-center justify-center bg-secondary rounded-full">
-                <CameraIcon />
+                <CameraIcon className="text-primary" />
               </div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

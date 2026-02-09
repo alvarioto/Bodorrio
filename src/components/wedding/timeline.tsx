@@ -145,6 +145,7 @@ function TimelineItem({
           <Icon
             size={iconSize}
             style={{ transform: `translate(${iconOffsetX}px, ${iconOffsetY}px)` }}
+            className="text-primary"
           />
         </div>
       </div>
