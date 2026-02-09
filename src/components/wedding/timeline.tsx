@@ -73,8 +73,8 @@ function TimelineItem({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
+          if (entry.isIntersecting || entry.boundingClientRect.top > 0) {
+            setIsVisible(entry.isIntersecting);
           }
         });
       },
@@ -104,13 +104,13 @@ function TimelineItem({
           <div className="w-1/2" />
           <div
             className={cn(
-              "w-1/2 pl-8 flex justify-start items-center transition-transform duration-700 ease-out",
+              "w-1/2 pl-12 flex justify-start items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "-translate-x-10"
             )}
           >
             <div className="text-left">
-              <p className="font-bold text-xs text-primary">{time}</p>
-              <h4 className="font-headline mt-1 text-base">{title}</h4>
+              <p className="font-bold text-sm text-primary">{time}</p>
+              <h4 className="font-headline mt-1 text-lg">{title}</h4>
             </div>
           </div>
         </>
@@ -118,13 +118,13 @@ function TimelineItem({
         <>
           <div
             className={cn(
-              "w-1/2 pr-8 flex justify-end items-center transition-transform duration-700 ease-out",
+              "w-1/2 pr-12 flex justify-end items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "translate-x-10"
             )}
           >
             <div className="text-right">
-              <p className="font-bold text-xs text-primary">{time}</p>
-              <h4 className="font-headline mt-1 text-base">{title}</h4>
+              <p className="font-bold text-sm text-primary">{time}</p>
+              <h4 className="font-headline mt-1 text-lg">{title}</h4>
             </div>
           </div>
           <div className="w-1/2" />
@@ -163,12 +163,12 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <Card id="itinerario" className="bg-card/95 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full">
+    <Card id="itinerario" className="bg-card/95 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full h-full">
       <CardContent className="p-6">
         <div className="w-full overflow-x-hidden">
           <div className="text-center mb-10">
-            <h2 className="font-headline text-lg">Itinerario de nuestra boda</h2>
-            <p className="text-muted-foreground mt-2 text-xs">El plan para nuestro gran día.</p>
+            <h2 className="font-headline text-2xl">Itinerario de nuestra boda</h2>
+            <p className="text-muted-foreground mt-2 text-base">El plan para nuestro gran día.</p>
           </div>
 
           <div className="relative">

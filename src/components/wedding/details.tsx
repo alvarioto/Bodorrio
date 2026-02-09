@@ -49,7 +49,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   return (
     <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24">
-      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-start">
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-stretch">
         {/* Columna Izquierda: Cronología */}
         <div className="w-full lg:w-2/5">
           <TimelineSection />
