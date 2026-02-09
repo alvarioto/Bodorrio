@@ -11,7 +11,7 @@ interface DetailsSectionProps {
 const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
   const ceremonyDetails = {
     title: 'Ceremonia',
-    icon: <RingsIcon size={64} />,
+    icon: <RingsIcon size={51} />,
     day: '08 de Agosto de 2026',
     time: '18:00',
     place: 'Parroquia Sagrado Corazón de Jesús',
@@ -28,7 +28,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   const celebrationDetails = {
     title: 'Celebración',
-    icon: <PartyHatIcon size={64} />,
+    icon: <PartyHatIcon size={51} />,
     day: '08 de Agosto de 2026',
     time: '20:00',
     place: 'Convento de la Luz',

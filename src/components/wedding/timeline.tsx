@@ -36,14 +36,14 @@ type TimelineEvent = {
  * ======================================================================================= */
 
 const timelineEvents: TimelineEvent[] = [
-  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 89, iconSize: 64, iconOffsetY: 0 },
-  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 89, iconSize: 64, iconOffsetY: 2 },
-  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 89, iconSize: 64 },
-  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 89, iconSize: 56 },
-  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 89, iconSize: 64, iconOffsetY: -2 },
-  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 89, iconSize: 64 },
-  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 89, iconSize: 64, iconOffsetY: -2 },
-  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 89, iconSize: 64 },
+  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 71, iconSize: 51, iconOffsetY: 0 },
+  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 71, iconSize: 51, iconOffsetY: 2 },
+  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 71, iconSize: 51 },
+  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 71, iconSize: 45 },
+  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 71, iconSize: 51, iconOffsetY: -2 },
+  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 71, iconSize: 51 },
+  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 71, iconSize: 51, iconOffsetY: -2 },
+  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 71, iconSize: 51 },
 ];
 
 /* =======================================================================================
