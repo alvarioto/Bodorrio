@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import HeroSection from '@/components/wedding/hero';
 import DetailsSection from '@/components/wedding/details';
 import PhotosSection from '@/components/wedding/photos';
-import TimelineSection from '@/components/wedding/timeline';
 import RsvpModal from '@/components/wedding/rsvp-modal';
 import LightboxModal from '@/components/wedding/lightbox-modal';
 import { type ImagePlaceholder } from '@/lib/placeholder-images';
@@ -34,7 +33,6 @@ export default function WeddingPage() {
 
           <div className="card-content-wrapper">
             <PhotosSection onPhotoClick={handlePhotoClick} />
-            <TimelineSection />
           </div>
           <div className="h-12 md:h-24" />
         </div>

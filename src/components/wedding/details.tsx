@@ -3,18 +3,17 @@
 import React from "react";
 import EventCard from "./event-card";
 import { RingsIcon, PartyHatIcon } from "./animated-icons";
+import TimelineSection from "./timeline";
 
 interface DetailsSectionProps {
   onRsvpClick: () => void;
 }
 
 const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
-  // ✅ Un solo sitio para definir el color de TODOS los iconos
   const iconClass = "text-primary";
 
   const ceremonyDetails = {
     title: "Ceremonia",
-    // ✅ mismo color que RingsIcon (y que el resto)
     icon: <RingsIcon size={51} className={iconClass} />,
     day: "08 de Agosto de 2026",
     time: "18:00",
@@ -33,7 +32,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   const celebrationDetails = {
     title: "Celebración",
-    // ✅ mismo color que RingsIcon
     icon: <PartyHatIcon size={51} className={iconClass} />,
     day: "08 de Agosto de 2026",
     time: "20:00",
@@ -75,6 +73,16 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
             <div className="w-full md:w-2/3 lg:w-2/5">
               <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="h-16 md:h-24"></div>
+
+      <div className="card-content-wrapper pb-16 sm:pb-24">
+        <div className="max-w-6xl mx-auto flex justify-start">
+          <div className="w-full md:w-2/3 lg:w-2/5">
+            <TimelineSection />
           </div>
         </div>
       </div>

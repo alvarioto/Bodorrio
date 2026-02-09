@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 
 import type { BaseIconProps } from "./animated-icons";
 import {
@@ -36,14 +37,14 @@ type TimelineEvent = {
  * ======================================================================================= */
 
 const timelineEvents: TimelineEvent[] = [
-  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 52, iconSize: 36, iconOffsetY: 0 },
-  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 52, iconSize: 36, iconOffsetY: 2 },
-  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 52, iconSize: 36 },
-  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 52, iconSize: 32 },
-  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 52, iconSize: 36, iconOffsetY: -2 },
-  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 52, iconSize: 36 },
-  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 52, iconSize: 36, iconOffsetY: -2 },
-  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 52, iconSize: 36 },
+  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: 0 },
+  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: 2 },
+  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 44, iconSize: 28 },
+  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 44, iconSize: 26 },
+  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: -2 },
+  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 44, iconSize: 28 },
+  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 44, iconSize: 28, iconOffsetY: -2 },
+  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 44, iconSize: 28 },
 ];
 
 /* =======================================================================================
@@ -57,8 +58,8 @@ function TimelineItem({
   title,
   Icon,
   isRight,
-  bubbleSize = 52,
-  iconSize = 32,
+  bubbleSize = 44,
+  iconSize = 28,
   iconOffsetX = 0,
   iconOffsetY = 0,
 }: TimelineEvent & { isRight: boolean }) {
@@ -74,8 +75,6 @@ function TimelineItem({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-          } else {
-            setIsVisible(false);
           }
         });
       },
@@ -105,13 +104,13 @@ function TimelineItem({
           <div className="w-1/2" />
           <div
             className={cn(
-              "w-1/2 pl-12 flex justify-start items-center transition-transform duration-700 ease-out",
+              "w-1/2 pl-8 flex justify-start items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "-translate-x-10"
             )}
           >
             <div className="text-left">
-              <p className="font-bold text-sm text-primary">{time}</p>
-              <h4 className="font-headline mt-1 text-xl">{title}</h4>
+              <p className="font-bold text-xs text-primary">{time}</p>
+              <h4 className="font-headline mt-1 text-base">{title}</h4>
             </div>
           </div>
         </>
@@ -119,13 +118,13 @@ function TimelineItem({
         <>
           <div
             className={cn(
-              "w-1/2 pr-12 flex justify-end items-center transition-transform duration-700 ease-out",
+              "w-1/2 pr-8 flex justify-end items-center transition-transform duration-700 ease-out",
               isVisible ? "translate-x-0" : "translate-x-10"
             )}
           >
             <div className="text-right">
-              <p className="font-bold text-sm text-primary">{time}</p>
-              <h4 className="font-headline mt-1 text-xl">{title}</h4>
+              <p className="font-bold text-xs text-primary">{time}</p>
+              <h4 className="font-headline mt-1 text-base">{title}</h4>
             </div>
           </div>
           <div className="w-1/2" />
@@ -164,25 +163,29 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <section id="itinerario" className="py-12 sm:py-20 w-full overflow-x-hidden">
-      <div className="text-center mb-10">
-        <h2 className="font-headline text-3xl">Itinerario de nuestra boda</h2>
-        <p className="text-muted-foreground mt-2 text-sm">El plan para nuestro gran día.</p>
-      </div>
+    <Card id="itinerario" className="bg-card/95 backdrop-blur-sm border-border/80 shadow-lg rounded-2xl w-full">
+      <CardContent className="p-6">
+        <div className="w-full overflow-x-hidden">
+          <div className="text-center mb-10">
+            <h2 className="font-headline text-lg">Itinerario de nuestra boda</h2>
+            <p className="text-muted-foreground mt-2 text-xs">El plan para nuestro gran día.</p>
+          </div>
 
-      <div className="relative max-w-4xl mx-auto">
-        <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
+          <div className="relative">
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
 
-        <div className="space-y-8">
-          {timelineEvents.map((event, index) => (
-            <TimelineItem
-              key={`${event.time}-${event.title}`}
-              {...event}
-              isRight={index % 2 !== 0}
-            />
-          ))}
+            <div className="space-y-2">
+              {timelineEvents.map((event, index) => (
+                <TimelineItem
+                  key={`${event.time}-${event.title}`}
+                  {...event}
+                  isRight={index % 2 !== 0}
+                />
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   );
 }
