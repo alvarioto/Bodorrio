@@ -48,31 +48,41 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
   };
 
   return (
-    <section id="detalles" className="w-full card-content-wrapper py-16 sm:py-24 pl-0">
-      <div className="flex flex-col lg:flex-row gap-12 lg:items-stretch">
-        {/* Columna Izquierda: Cronología */}
-        <div className="w-full lg:w-2/5 flex">
-          <TimelineSection />
-        </div>
+    <section 
+      id="detalles" 
+      className="w-full"
+      style={{
+        backgroundImage: "url('/paper-texture.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <div className="card-content-wrapper py-16 sm:py-24">
+        <div className="flex flex-col lg:flex-row gap-12 lg:items-stretch">
+          {/* Columna Izquierda: Cronología */}
+          <div className="w-full lg:w-2/5 flex">
+            <TimelineSection />
+          </div>
 
-        {/* Columna Derecha: Ceremonia y Celebración */}
-        <div className="w-full lg:w-3/5">
-          <div className="space-y-12 h-full flex flex-col justify-between">
-            <div
-              className="w-full bg-cover bg-center rounded-2xl"
-              style={{ backgroundImage: `url(/iglesia.png)` }}
-            >
-              <div className="p-8 flex justify-end">
-                <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+          {/* Columna Derecha: Ceremonia y Celebración */}
+          <div className="w-full lg:w-3/5">
+            <div className="space-y-12 h-full flex flex-col justify-between">
+              <div
+                className="w-full bg-cover bg-center rounded-2xl"
+                style={{ backgroundImage: `url(/iglesia.png)` }}
+              >
+                <div className="p-8 flex justify-end">
+                  <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
+                </div>
               </div>
-            </div>
 
-            <div
-              className="w-full bg-cover bg-center rounded-2xl"
-              style={{ backgroundImage: `url(/convento.png)` }}
-            >
-              <div className="p-8 flex justify-start">
-                <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+              <div
+                className="w-full bg-cover bg-center rounded-2xl"
+                style={{ backgroundImage: `url(/convento.png)` }}
+              >
+                <div className="p-8 flex justify-start">
+                  <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
+                </div>
               </div>
             </div>
           </div>
