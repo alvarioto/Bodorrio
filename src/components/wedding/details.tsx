@@ -50,11 +50,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
     <section 
       id="detalles" 
       className="w-full"
-      style={{
-        backgroundImage: "url('/paper-texture.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
     >
       <div className="card-content-wrapper py-16 sm:py-24">
         <div className="flex flex-col lg:flex-row gap-12 justify-center items-stretch">

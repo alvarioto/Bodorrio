@@ -28,42 +28,31 @@ export default function WeddingPage() {
   return (
     <main className="page-container">
       <header>
-        <div className="invitation-card">
+        <div 
+          className="invitation-card"
+          style={{
+            backgroundImage: "url('/paper-texture.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
           <HeroSection />
 
-          <div className="bg-card rounded-b-2xl">
+          <div className="rounded-b-2xl">
             <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
 
-            <section 
-              style={{
-                backgroundImage: "url('/paper-texture.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            >
+            <section>
               <Divider />
               <div className="card-content-wrapper py-16 sm:py-24">
                 <TimelineSection />
               </div>
             </section>
 
-            <div 
-              style={{
-                backgroundImage: "url('/paper-texture.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-              className="card-content-wrapper"
-            >
+            <div className="card-content-wrapper">
               <PhotosSection onPhotoClick={handlePhotoClick} />
             </div>
             <div 
               className="h-12 md:h-24"
-              style={{
-                backgroundImage: "url('/paper-texture.png')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
             />
           </div>
         </div>

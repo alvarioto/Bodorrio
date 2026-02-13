@@ -48,11 +48,6 @@ const HeroSection = () => {
   return (
     <div
       className="relative w-full text-center pt-36 pb-40 rounded-t-2xl"
-      style={{
-        backgroundImage: 'url(/paper-texture.png)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
     >
       <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
         <Image
