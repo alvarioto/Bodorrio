@@ -3,7 +3,6 @@
 import React from "react";
 import EventCard from "./event-card";
 import { RingsIcon, PartyHatIcon } from "./animated-icons";
-import TimelineSection from "./timeline";
 
 interface DetailsSectionProps {
   onRsvpClick: () => void;
@@ -58,20 +57,15 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       }}
     >
       <div className="card-content-wrapper py-16 sm:py-24">
-        <div className="flex flex-col lg:flex-row gap-12 lg:items-stretch">
-          {/* Columna Izquierda: Cronología */}
-          <div className="w-full lg:w-2/5 flex">
-            <TimelineSection />
-          </div>
-
+        <div className="flex flex-col lg:flex-row gap-12 justify-center items-stretch">
           {/* Columna Derecha: Ceremonia y Celebración */}
-          <div className="w-full lg:w-3/5">
-            <div className="space-y-12 h-full flex flex-col justify-between">
+          <div className="w-full">
+            <div className="space-y-12 h-full flex flex-col lg:flex-row gap-12 justify-between">
               <div
                 className="w-full bg-cover bg-center rounded-2xl"
                 style={{ backgroundImage: `url(/iglesia.png)` }}
               >
-                <div className="p-8 flex justify-end">
+                <div className="p-8 flex justify-center">
                   <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
                 </div>
               </div>
@@ -80,7 +74,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
                 className="w-full bg-cover bg-center rounded-2xl"
                 style={{ backgroundImage: `url(/convento.png)` }}
               >
-                <div className="p-8 flex justify-start">
+                <div className="p-8 flex justify-center">
                   <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
                 </div>
               </div>
