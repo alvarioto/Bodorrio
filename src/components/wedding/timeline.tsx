@@ -163,17 +163,17 @@ function TimelineItem({
 export default function TimelineSection() {
   return (
     <div id="itinerario" className="w-full flex flex-col text-foreground">
-      <div className="p-6 flex-grow flex flex-col">
-        <div className="w-full overflow-x-hidden h-full flex flex-col">
+      <div className="p-6">
+        <div className="w-full overflow-x-hidden">
           <div className="text-center mb-10">
             <h2 className="font-headline text-3xl">Itinerario de nuestra boda</h2>
             <p className="text-muted-foreground mt-2 text-lg">El plan para nuestro gran día.</p>
           </div>
 
-          <div className="relative flex-grow">
+          <div className="relative">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
 
-            <div className="space-y-28 h-full flex flex-col justify-around">
+            <div className="space-y-24 flex flex-col">
               {timelineEvents.map((event, index) => (
                 <TimelineItem
                   key={`${event.time}-${event.title}`}
