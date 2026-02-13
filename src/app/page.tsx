@@ -27,45 +27,47 @@ export default function WeddingPage() {
 
   return (
     <main className="page-container">
-      <div className="invitation-card">
-        <HeroSection />
+      <header>
+        <div className="invitation-card">
+          <HeroSection />
 
-        <div className="bg-card rounded-b-2xl">
-          <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
+          <div className="bg-card rounded-b-2xl">
+            <DetailsSection onRsvpClick={() => setRsvpOpen(true)} />
 
-          <section 
-            style={{
-              backgroundImage: "url('/paper-texture.png')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          >
-            <Divider />
-            <div className="card-content-wrapper py-16 sm:py-24">
-              <TimelineSection />
+            <section 
+              style={{
+                backgroundImage: "url('/paper-texture.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <Divider />
+              <div className="card-content-wrapper py-16 sm:py-24">
+                <TimelineSection />
+              </div>
+            </section>
+
+            <div 
+              style={{
+                backgroundImage: "url('/paper-texture.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              className="card-content-wrapper"
+            >
+              <PhotosSection onPhotoClick={handlePhotoClick} />
             </div>
-          </section>
-
-          <div 
-            style={{
-              backgroundImage: "url('/paper-texture.png')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-            className="card-content-wrapper"
-          >
-            <PhotosSection onPhotoClick={handlePhotoClick} />
+            <div 
+              className="h-12 md:h-24"
+              style={{
+                backgroundImage: "url('/paper-texture.png')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
           </div>
-          <div 
-            className="h-12 md:h-24"
-            style={{
-              backgroundImage: "url('/paper-texture.png')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
-          />
         </div>
-      </div>
+      </header>
 
       <RsvpModal isOpen={isRsvpOpen} onOpenChange={setRsvpOpen} />
       <LightboxModal

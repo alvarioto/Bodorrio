@@ -46,7 +46,7 @@ const Countdown = () => {
 
 const HeroSection = () => {
   return (
-    <header
+    <div
       className="relative w-full text-center pt-36 pb-40 rounded-t-2xl"
       style={{
         backgroundImage: 'url(/paper-texture.png)',
@@ -89,7 +89,7 @@ const HeroSection = () => {
           className="w-auto h-auto opacity-70"
         />
       </div>
-    </header>
+    </div>
   );
 };
 
