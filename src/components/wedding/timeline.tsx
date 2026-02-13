@@ -173,7 +173,7 @@ export default function TimelineSection() {
           <div className="relative flex-grow">
             <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
 
-            <div className="space-y-20 h-full flex flex-col justify-around">
+            <div className="space-y-48 h-full flex flex-col justify-around">
               {timelineEvents.map((event, index) => (
                 <TimelineItem
                   key={`${event.time}-${event.title}`}

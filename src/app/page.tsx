@@ -32,7 +32,7 @@ export default function WeddingPage() {
           className="invitation-card"
           style={{
             backgroundImage: "url('/paper-texture.png')",
-            backgroundSize: 'cover',
+            backgroundSize: '150%',
             backgroundPosition: 'center',
           }}
         >
