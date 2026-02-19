@@ -153,7 +153,7 @@ export const AnimatedIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes
         attributes='${attributes || ''}'
         stroke="${stroke || ''}"
         colors="${colors || ''}"
-        style="width: 100%; height: 100%; display: block;"
+        style="width: 100%; height: 100%; display: block; margin: 0 auto;"
     ></animated-icons>
   `;
 
@@ -167,6 +167,8 @@ export const AnimatedIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        textAlign: 'center',
+        margin: '0 auto',
         ...style
       }}
       dangerouslySetInnerHTML={{ __html: html }}
@@ -202,7 +204,7 @@ export const LordIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes<HTM
         ${state ? `state="${state}"` : ''}
         ${target ? `target="${target}"` : ''}
         colors="${colors || ''}"
-        style="width: 100%; height: 100%; display: block;"
+        style="width: 100%; height: 100%; display: block; margin: 0 auto;"
     ></lord-icon>
   `;
 
@@ -216,6 +218,8 @@ export const LordIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes<HTM
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        textAlign: 'center',
+        margin: '0 auto',
         ...style
       }}
       dangerouslySetInnerHTML={{ __html: html }}
@@ -1116,9 +1120,9 @@ export const TipsIcon: React.FC<BaseIconProps> = ({
   title = "Tips y Notas",
 }) => {
   return (
-    <span
-      className={cn("inline-block", className)}
-      style={{ width: size, height: size, color: "#063b0d", display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+    <div
+      className={cn("flex justify-center items-center", className)}
+      style={{ width: size, height: size, color: "#063b0d", margin: "0 auto", transform: "translateX(-10px)", ...(style ?? {}) }}
       role="img"
       aria-label={title}
     >
@@ -1132,7 +1136,7 @@ export const TipsIcon: React.FC<BaseIconProps> = ({
         colors="primary:#063b0d,secondary:#063b0d"
         style={{ width: "98%", height: "98%" }}
       />
-    </span>
+    </div>
   );
 };
 
@@ -1147,20 +1151,20 @@ export const HotelIcon: React.FC<BaseIconProps> = ({
   title = "Hoteles",
 }) => {
   return (
-    <span
-      className={cn("inline-block", className)}
-      style={{ width: size, height: size, color: "#063b0d", display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+    <div
+      className={cn("flex justify-center items-center", className)}
+      style={{ width: size, height: size, color: "#063b0d", margin: "10 auto", ...(style ?? {}) }}
       role="img"
       aria-label={title}
     >
       <LordIconWc
         src="https://cdn.lordicon.com/moridxxu.json"
-        trigger="hover"
+        trigger="loop"
         stroke="light"
         colors="primary:#063b0d,secondary:#063b0d"
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "98%", height: "98%" }}
       />
-    </span>
+    </div>
   );
 };
 
@@ -1175,9 +1179,9 @@ export const DresscodeIcon: React.FC<BaseIconProps> = ({
   title = "Dresscode",
 }) => {
   return (
-    <span
-      className={cn("inline-block", className)}
-      style={{ width: size, stroke: "light", height: size, color: "#063b0d", display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+    <div
+      className={cn("flex justify-center items-center", className)}
+      style={{ width: size, stroke: "light", height: size, color: "#063b0d", margin: "0 auto", transform: "translateX(-6px)", ...(style ?? {}) }}
       role="img"
       aria-label={title}
     >
@@ -1191,6 +1195,6 @@ export const DresscodeIcon: React.FC<BaseIconProps> = ({
         colors="primary:#063b0d,secondary:#063b0d"
         style={{ width: "100%", height: "100%" }}
       />
-    </span>
+    </div>
   );
 };

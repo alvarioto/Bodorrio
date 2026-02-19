@@ -1,5 +1,5 @@
 import { db } from '@/lib/firebase';
-import { collection, addDoc, getDocs, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, orderBy, query, Timestamp, deleteDoc, doc } from 'firebase/firestore';
 
 export interface Guest {
     id?: string;
@@ -25,13 +25,39 @@ const COLLECTION_NAME = 'guests';
 
 export const addGuest = async (guest: Omit<Guest, 'id' | 'createdAt'>) => {
     try {
-        const docRef = await addDoc(collection(db, COLLECTION_NAME), {
+        console.log("Intentando guardar en Firebase...", guest);
+
+        // Timeout de seguridad de 15 segundos
+        const timeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Tiempo de espera agotado. Revisa tu conexión.")), 15000)
+        );
+
+        const addPromise = addDoc(collection(db, COLLECTION_NAME), {
             ...guest,
             createdAt: Timestamp.now(),
         });
+
+        const docRef = await Promise.race([addPromise, timeout]) as any;
+        console.log("Guardado con ID: ", docRef.id);
         return docRef.id;
-    } catch (e) {
+    } catch (e: any) {
         console.error("Error adding document: ", e);
+        // Si es error de permisos o red, intentar dar más info
+        if (e.code === 'permission-denied') {
+            throw new Error("Permiso denegado. Intenta recargar la página.");
+        }
+        if (e.code === 'unavailable') {
+            throw new Error("Sin conexión con el servidor. Revisa tu internet.");
+        }
+        throw e;
+    }
+};
+
+export const deleteGuest = async (id: string) => {
+    try {
+        await deleteDoc(doc(db, COLLECTION_NAME, id));
+    } catch (e) {
+        console.error("Error deleting document: ", e);
         throw e;
     }
 };

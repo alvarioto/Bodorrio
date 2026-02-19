@@ -71,16 +71,25 @@ const Card = ({ title, icon: Icon, onClick }: { title: string; icon: any; onClic
     return (
         <motion.div
             whileHover={{ y: -5 }}
-            className="bg-card/80 backdrop-blur-sm p-8 rounded-3xl shadow-lg border border-primary/10 flex flex-col items-center text-center cursor-pointer group transition-colors hover:border-primary/40"
+            className="bg-card/80 backdrop-blur-sm p-8 rounded-3xl shadow-lg border border-primary/10 flex flex-col items-center justify-center text-center cursor-pointer group transition-colors hover:border-primary/40"
             onClick={onClick}
         >
-            <div className="mb-6 text-primary group-hover:scale-110 transition-transform duration-500">
+            <div className="mb-6 text-primary w-full flex justify-center items-center group-hover:scale-110 transition-transform duration-500">
                 <Icon size={80} />
             </div>
-            <h3 className="font-headline text-xl text-foreground group-hover:text-primary transition-colors">
+            <h3
+                className="transition-colors group-hover:text-primary w-full text-center"
+                style={{
+                    fontFamily: '"Forum", serif',
+                    fontSize: '27px',
+                    color: '#4A6360',
+                    margin: '0px auto 12.8px',
+                    fontWeight: 400
+                }}
+            >
                 {title}
             </h3>
-            <div className="mt-4 text-sm text-primary font-semibold tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0">
+            <div className="mt-4 text-sm text-primary font-semibold tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-2 group-hover:translate-y-0 w-full text-center">
                 Ver más
             </div>
         </motion.div>

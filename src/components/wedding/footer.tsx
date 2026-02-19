@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import { exportGuestsToCSV } from '@/services/rsvp';
 import { Lock, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,13 +9,8 @@ import { FooterBotanicalDivider } from './decorations';
 
 export default function Footer() {
     const handleExport = async () => {
-        // Simple confirmation or password check could go here
-        const password = window.prompt("Introduce contraseña de administrador para descargar lista:");
-        if (password === "bodorrio2026") { // Hardcoded simple password for now
-            await exportGuestsToCSV();
-        } else if (password !== null) {
-            alert("Contraseña incorrecta");
-        }
+        // Legacy export function - kept for reference but UI now redirects to /admin
+        await exportGuestsToCSV();
     };
 
     return (
@@ -36,15 +32,16 @@ export default function Footer() {
                     </p>
 
                     <div className="flex justify-center">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={handleExport}
-                            className="opacity-5 hover:opacity-50 transition-opacity h-6 w-6 rounded-full"
-                            title="Admin Zone"
-                        >
-                            <Lock className="h-3 w-3" />
-                        </Button>
+                        <Link href="/admin">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="opacity-40 hover:opacity-100 transition-opacity h-8 w-8 rounded-full"
+                                title="Admin Zone"
+                            >
+                                <Lock className="h-3 w-3" />
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>
