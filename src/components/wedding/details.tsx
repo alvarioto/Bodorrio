@@ -5,7 +5,7 @@ import EventCard from "./event-card";
 import { RingsIcon, PartyHatIcon } from "./animated-icons";
 
 interface DetailsSectionProps {
-  onRsvpClick: () => void;
+  onRsvpClick: (type: 'ceremony' | 'celebration') => void;
 }
 
 const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
@@ -13,7 +13,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   const ceremonyDetails = {
     title: "Ceremonia",
-    icon: <RingsIcon size={51} className={iconClass} />,
+    icon: <RingsIcon size={70} className={iconClass} />,
     day: "08 de Agosto de 2026",
     time: "18:00",
     place: "Parroquia Sagrado Corazón de Jesús",
@@ -31,7 +31,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
 
   const celebrationDetails = {
     title: "Celebración",
-    icon: <PartyHatIcon size={51} className={iconClass} />,
+    icon: <PartyHatIcon size={80} className={iconClass} />,
     day: "08 de Agosto de 2026",
     time: "20:00",
     place: "Convento de la Luz",
@@ -47,34 +47,35 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
   };
 
   return (
-    <section 
-      id="detalles" 
+    <section
+      id="detalles"
       className="w-full"
     >
       <div className="card-content-wrapper py-16 sm:py-24">
-        <div className="flex flex-col lg:flex-row gap-12 justify-center items-stretch">
-          {/* Columna Derecha: Ceremonia y Celebración */}
-          <div className="w-full">
-            <div className="space-y-12 h-full flex flex-col lg:flex-row gap-12 justify-between">
-              <div
-                className="w-full bg-cover bg-center rounded-2xl"
-                style={{ backgroundImage: `url(/iglesia.png)` }}
-              >
-                <div className="p-8 flex justify-center">
-                  <EventCard {...ceremonyDetails} onRsvpClick={onRsvpClick} />
-                </div>
-              </div>
+        <div className="flex flex-col gap-24">
 
-              <div
-                className="w-full bg-cover bg-center rounded-2xl"
-                style={{ backgroundImage: `url(/convento.png)` }}
-              >
-                <div className="p-8 flex justify-center">
-                  <EventCard {...celebrationDetails} onRsvpClick={onRsvpClick} />
-                </div>
-              </div>
+          {/* Ceremonia */}
+          <div className="flex flex-col lg:flex-row gap-12 items-center">
+            <div
+              className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[400px] bg-cover bg-center rounded-2xl"
+              style={{ backgroundImage: `url(/iglesia.png)` }}
+            />
+            <div className="w-full lg:w-1/2 flex justify-center">
+              <EventCard {...ceremonyDetails} onRsvpClick={() => onRsvpClick('ceremony')} />
             </div>
           </div>
+
+          {/* Celebración */}
+          <div className="flex flex-col lg:flex-row-reverse gap-12 items-center">
+            <div
+              className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[400px] bg-center bg-no-repeat rounded-2xl"
+              style={{ backgroundImage: `url(/convento.png)`, backgroundSize: 'contain' }}
+            />
+            <div className="w-full lg:w-1/2 flex justify-center">
+              <EventCard {...celebrationDetails} onRsvpClick={() => onRsvpClick('celebration')} />
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

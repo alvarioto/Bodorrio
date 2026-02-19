@@ -10,32 +10,32 @@
   :root {
     --background: 141 7% 54%;
     --foreground: 140 8% 25%;
-    
+
     --card: 90 25% 96%;
     --card-foreground: 140 8% 25%;
-    
+
     --popover: 90 25% 96%;
     --popover-foreground: 140 8% 25%;
-    
+
     --primary: 130 20% 65%;
     --primary-foreground: 0 0% 100%;
-    
+
     --secondary: 130 20% 85%;
     --secondary-foreground: 140 8% 25%;
-    
+
     --muted: 130 20% 85%;
     --muted-foreground: 140 5% 45%;
-    
+
     --accent: 130 20% 85%;
     --accent-foreground: 140 8% 25%;
-    
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    
+
     --border: 130 15% 80%;
     --input: 130 15% 80%;
     --ring: 130 20% 65%;
-    
+
     --radius: 1.5rem;
 
     /* New layout variables */
@@ -76,45 +76,90 @@
     @apply border-border;
     box-sizing: border-box;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background;
+    color: #81948B;
+    font-family: 'Nunito', sans-serif;
     background-image: radial-gradient(hsl(var(--border)) 0.5px, transparent 0.5px);
-    background-size: 12px 12px;
+    background-attachment: fixed;
     font-size: var(--font-size-base);
+    overflow-x: hidden;
   }
 
-  h1 { font-size: var(--font-size-h1); }
-  h2 { font-size: var(--font-size-h2); }
-  h3 { font-size: var(--font-size-h3); }
-  h4 { font-size: var(--font-size-h4); }
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #4a6360;
+    font-family: 'Forum', serif;
+  }
+
+  h1 {
+    font-size: var(--font-size-h1);
+  }
+
+  h2 {
+    font-size: var(--font-size-h2);
+  }
+
+  h3 {
+    font-size: var(--font-size-h3);
+  }
+
+  h4 {
+    font-size: var(--font-size-h4);
+  }
 
 
-  .icon-bus .busMove{
+  .icon-bus .busMove {
     transform-box: fill-box;
     transform-origin: center;
     animation: drive 1.6s ease-in-out infinite;
   }
 
-  .icon-bus .wheel{
+  .icon-bus .wheel {
     transform-box: fill-box;
     transform-origin: center;
     animation: spin .45s linear infinite;
   }
 
   .ampersand {
-    @apply inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-primary text-primary-foreground rounded-full font-nunito font-bold text-3xl md:text-5xl mx-2 align-middle;
+    @apply inline-flex items-center justify-center rounded-full mx-2 align-middle;
+    width: 45px;
+    height: 45px;
+    font-size: 35px;
+    font-family: 'Nunito', sans-serif;
+    background-color: #81948B;
+    color: #FFFFFF;
   }
 
-  @keyframes drive{
-    0%   { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
-    25%  { transform: translateX(-2px)  translateY(1px) rotate(0deg); }
-    50%  { transform: translateX(10px)  translateY(0px) rotate(1deg); }
-    75%  { transform: translateX(2px)   translateY(1px) rotate(0deg); }
-    100% { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
+  @keyframes drive {
+    0% {
+      transform: translateX(-10px) translateY(0px) rotate(-1deg);
+    }
+
+    25% {
+      transform: translateX(-2px) translateY(1px) rotate(0deg);
+    }
+
+    50% {
+      transform: translateX(10px) translateY(0px) rotate(1deg);
+    }
+
+    75% {
+      transform: translateX(2px) translateY(1px) rotate(0deg);
+    }
+
+    100% {
+      transform: translateX(-10px) translateY(0px) rotate(-1deg);
+    }
   }
 
-  @keyframes spin{
-    to { transform: rotate(360deg); }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
 

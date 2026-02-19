@@ -11,6 +11,7 @@ import {
   PartyIcon,
   FadingPartyIcon,
   AnimatedBusIcon,
+
 } from "./animated-icons";
 
 /* =======================================================================================
@@ -36,14 +37,17 @@ type TimelineEvent = {
  * ======================================================================================= */
 
 const timelineEvents: TimelineEvent[] = [
-  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: 0 },
-  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: 2 },
-  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 56, iconSize: 36 },
-  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 56, iconSize: 34 },
-  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: -2 },
-  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 56, iconSize: 36 },
-  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 56, iconSize: 36, iconOffsetY: -2 },
-  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 56, iconSize: 36 },
+  { time: "18:00", title: "Ceremonia", Icon: CeremonyIcon, bubbleSize: 67, iconSize: 48, iconOffsetY: 0 },
+  { time: "19:30", title: "Salida del autobús", Icon: AnimatedBusIcon, bubbleSize: 67, iconSize: 84, iconOffsetY: 2 },
+
+  { time: "20:00", title: "Recepción", Icon: LordiconClinkingGlasses, bubbleSize: 67, iconSize: 42 },
+  { time: "22:00", title: "Cena", Icon: DinnerIcon, bubbleSize: 67, iconSize: 58 },
+  { time: "01:00", title: "¡Fiesta!", Icon: PartyIcon, bubbleSize: 67, iconSize: 53, iconOffsetY: -2 },
+  { time: "03:00", title: "Salida primer autobús", Icon: AnimatedBusIcon, bubbleSize: 67, iconSize: 84 },
+
+  { time: "06:00", title: "Fin de fiesta", Icon: FadingPartyIcon, bubbleSize: 67, iconSize: 53, iconOffsetY: -2 },
+  { time: "06:05", title: "Salida último autobús", Icon: AnimatedBusIcon, bubbleSize: 67, iconSize: 84 },
+
 ];
 
 /* =======================================================================================
@@ -57,11 +61,13 @@ function TimelineItem({
   title,
   Icon,
   isRight,
+  isFirst,
+  isLast,
   bubbleSize = 56,
   iconSize = 36,
   iconOffsetX = 0,
   iconOffsetY = 0,
-}: TimelineEvent & { isRight: boolean }) {
+}: TimelineEvent & { isRight: boolean; isFirst: boolean; isLast: boolean }) {
   const [isVisible, setIsVisible] = useState(false);
   const itemRef = useRef<HTMLDivElement>(null);
 
@@ -93,10 +99,20 @@ function TimelineItem({
     <div
       ref={itemRef}
       className={cn(
-        "relative flex items-center group transition-opacity duration-1000",
+        "relative flex items-center group transition-opacity duration-1000 py-12", // Changed to balanced py-12 (3rem top + 3rem bottom = 6rem gap total between centers)
         isVisible ? "opacity-100" : "opacity-0"
       )}
     >
+      {/* LÍNEA CONECTORA */}
+      <div
+        className={cn(
+          "absolute left-1/2 -translate-x-1/2 w-px bg-primary/50 -z-10",
+          isFirst ? "top-1/2 h-1/2" : // Primero: mitad inferior
+            isLast ? "top-0 h-1/2" :    // Último: mitad superior
+              "top-0 h-full"              // Intermedios: completo
+        )}
+      />
+
       {/* Texto a izquierda / derecha */}
       {isRight ? (
         <>
@@ -162,23 +178,24 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <div id="itinerario" className="w-full flex flex-col text-foreground">
+    <div id="itinerario" className="w-full flex flex-col text-foreground overflow-x-hidden pb-16">
       <div className="p-6">
-        <div className="w-full overflow-x-hidden">
+        <div className="w-full">
           <div className="text-center mb-10">
-            <h2 className="font-headline text-3xl">Itinerario de nuestra boda</h2>
+            <h2 className="font-headline text-[32px]">Itinerario de nuestra boda</h2>
             <p className="text-muted-foreground mt-2 text-lg">El plan para nuestro gran día.</p>
           </div>
 
           <div className="relative">
-            <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-px bg-primary/50" />
-
-            <div className="space-y-24 flex flex-col">
+            {/* Eliminada línea global y space-y-24 */}
+            <div className="flex flex-col">
               {timelineEvents.map((event, index) => (
                 <TimelineItem
                   key={`${event.time}-${event.title}`}
                   {...event}
                   isRight={index % 2 !== 0}
+                  isFirst={index === 0}
+                  isLast={index === timelineEvents.length - 1}
                 />
               ))}
             </div>

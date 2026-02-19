@@ -3,6 +3,28 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lord-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        src?: string;
+        trigger?: string;
+        delay?: string | number;
+        stroke?: string;
+        state?: string;
+        colors?: string;
+      };
+      'animated-icons': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        src?: string;
+        trigger?: string;
+        attributes?: string;
+        height?: string | number;
+        width?: string | number;
+      };
+    }
+  }
+}
+
 export type BaseIconProps = {
   className?: string;
   size?: number;
@@ -105,6 +127,104 @@ export const DotLottie = React.forwardRef<DotLottieWcEl, DotLottieProps>(
 );
 DotLottie.displayName = "DotLottie";
 
+/* ------------------------ ANIMATED ICONS (AnimatedIcons.co) ------------------------ */
+
+export const AnimatedIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & {
+  src?: string;
+  trigger?: string;
+  attributes?: string;
+  height?: string | number;
+  width?: string | number;
+  stroke?: string;
+  colors?: string;
+}>(({ src, trigger, attributes, stroke, colors, height, width, style, className, ...props }, ref) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => {
+    return containerRef.current?.firstElementChild as HTMLElement;
+  });
+
+  // Construct the HTML string safely to bypass React's attribute handling issues with custom elements
+  // We use single quotes for 'attributes' to allow the JSON (which uses double quotes) to be inside.
+  const html = `
+    <animated-icons
+        src="${src || ''}"
+        trigger="${trigger || 'loop'}"
+        attributes='${attributes || ''}'
+        stroke="${stroke || ''}"
+        colors="${colors || ''}"
+        style="width: 100%; height: 100%; display: block;"
+    ></animated-icons>
+  `;
+
+  return (
+    <div
+      ref={containerRef}
+      className={className}
+      style={{
+        width: width || '100%',
+        height: height || '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...style
+      }}
+      dangerouslySetInnerHTML={{ __html: html }}
+      {...props}
+    />
+  );
+});
+AnimatedIconWc.displayName = "AnimatedIconWc";
+
+/* ------------------------ LordIconWc (Safe Wrapper) ------------------------ */
+
+export const LordIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & {
+  src?: string;
+  trigger?: string;
+  colors?: string;
+  stroke?: string;
+  delay?: string | number;
+  state?: string;
+  target?: string;
+}>(({ src, trigger, colors, stroke, delay, state, target, height, width, style, className, ...props }, ref) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => {
+    return containerRef.current?.firstElementChild as HTMLElement;
+  });
+
+  const html = `
+    <lord-icon
+        src="${src || ''}"
+        trigger="${trigger || 'hover'}"
+        ${delay ? `delay="${delay}"` : ''}
+        ${stroke ? `stroke="${stroke}"` : ''}
+        ${state ? `state="${state}"` : ''}
+        ${target ? `target="${target}"` : ''}
+        colors="${colors || ''}"
+        style="width: 100%; height: 100%; display: block;"
+    ></lord-icon>
+  `;
+
+  return (
+    <div
+      ref={containerRef}
+      className={className}
+      style={{
+        width: width || '100%',
+        height: height || '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...style
+      }}
+      dangerouslySetInnerHTML={{ __html: html }}
+      {...props}
+    />
+  );
+});
+LordIconWc.displayName = "LordIconWc";
+
 /* =======================================================================================
  * 2) COMMONS (para SVG simples)
  * ======================================================================================= */
@@ -112,7 +232,7 @@ DotLottie.displayName = "DotLottie";
 const commonProps = {
   viewBox: "0 0 64 64",
   fill: "none",
-  stroke: "currentColor",
+  stroke: "#063b0d",
   strokeWidth: "2.75",
   strokeLinecap: "round",
   strokeLinejoin: "round",
@@ -138,7 +258,8 @@ export const CeremonyIcon: React.FC<BaseIconProps> = ({
     <LordIcon
       src="https://cdn.lordicon.com/fshosubk.json"
       trigger="loop"
-      colors="primary:currentColor,secondary:currentColor"
+      stroke="light"
+      colors="primary:#063b0d,secondary:#063b0d"
       className={className}
       style={{ width: size, height: size, ...(style ?? {}) }}
       aria-label={title ?? "Ceremonia"}
@@ -150,7 +271,7 @@ export const CeremonyIcon: React.FC<BaseIconProps> = ({
 
 export const RingsIcon: React.FC<BaseIconProps> = ({
   className,
-  size = 96,
+  size = 120,
   style,
   title,
 }) => {
@@ -321,7 +442,7 @@ export const RingsIcon: React.FC<BaseIconProps> = ({
       viewBox="0 0 150 150"
       preserveAspectRatio="xMidYMid meet"
       className={cn(className)}
-      style={{ width: size, height: size, overflow: "visible", ...(style ?? {}) }}
+      style={{ width: size, height: size, color: "#063b0d", overflow: "visible", ...(style ?? {}) }}
       role="img"
       aria-label={title ?? "Anillos"}
     >
@@ -392,7 +513,7 @@ export const RingsIcon: React.FC<BaseIconProps> = ({
               strokeMiterlimit="10"
               stroke="currentColor"
               strokeOpacity="1"
-              strokeWidth="3.437"
+              strokeWidth="2"
               d="M31.128000259399414,0 C31.128000259399414,17.60300064086914 17.191999435424805,31.871999740600586 0,31.871999740600586 C-17.19099998474121,31.871999740600586 -31.128000259399414,17.60300064086914 -31.128000259399414,0 C-31.128000259399414,-17.601999282836914 -17.19099998474121,-31.871999740600586 0,-31.871999740600586 C17.191999435424805,-31.871999740600586 31.128000259399414,-17.601999282836914 31.128000259399414,0z"
             />
           </g>
@@ -416,7 +537,7 @@ export const RingsIcon: React.FC<BaseIconProps> = ({
               strokeMiterlimit="10"
               stroke="currentColor"
               strokeOpacity="1"
-              strokeWidth="3.437"
+              strokeWidth="2"
               d="M28.642000198364258,0 C28.642000198364258,16.195999145507812 15.817999839782715,29.326000213623047 -0.0010000000474974513,29.326000213623047 C-15.819000244140625,29.326000213623047 -28.641000747680664,16.195999145507812 -28.641000747680664,0 C-28.641000747680664,-16.195999145507812 -15.819000244140625,-29.326000213623047 -0.0010000000474974513,-29.326000213623047 C15.817999839782715,-29.326000213623047 28.642000198364258,-16.195999145507812 28.642000198364258,0z"
             />
           </g>
@@ -437,10 +558,10 @@ export const PartyHatIcon: React.FC<BaseIconProps> = ({
   return (
     <LordIcon
       src="https://cdn.lordicon.com/ohcuigqh.json"
-      trigger="hover"
+      trigger="loop"
       state="hover-pinch"
       stroke="light"
-      colors="primary:currentColor,secondary:currentColor"
+      colors="primary:#063b0d,secondary:#063b0d"
       className={className}
       style={{ width: size, height: size, ...(style ?? {}) }}
       aria-label={title ?? "Celebración"}
@@ -448,35 +569,42 @@ export const PartyHatIcon: React.FC<BaseIconProps> = ({
   );
 };
 
-/* ------------------------ CAMERA ------------------------ */
 
-export const CameraIcon = ({ className }: { className?: string }) => (
-  <svg {...commonProps} className={cn("w-14 h-14", className)}>
-    <style>{`
-      .flash { animation: camera-flash 2.8s ease-in-out infinite; opacity: 0; }
-      .lens { animation: camera-lens-pulse 2.8s ease-in-out infinite; transform-origin: center; }
-      @keyframes camera-flash {
-        0%, 78%, 100% { opacity: 0; }
-        80% { opacity: 1; }
-        86% { opacity: 0; }
-      }
-      @keyframes camera-lens-pulse {
-        0%, 70%, 100% { transform: scale(1); }
-        80% { transform: scale(1.08); }
-      }
-    `}</style>
-    <rect x="12" y="24" width="40" height="24" rx="4" />
-    <circle className="lens" cx="32" cy="36" r="8" />
-    <path
-      className="flash"
-      d="M28 20L24 14L32 14L28 20Z"
-      fill="currentColor"
-      stroke="none"
-    />
-    <path d="M18 24V22" />
-  </svg>
-);
 
+/* ------------------------ CAMERA (Lordicon) ------------------------ */
+
+export const CameraIcon: React.FC<BaseIconProps> = ({
+  className,
+  size = 96,
+  style,
+  title = "Cámara",
+}) => {
+  return (
+    <span
+      className={cn("inline-block", className)}
+      style={{ width: size, height: size, display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+      role="img"
+      aria-label={title}
+    >
+      <div
+        style={{ width: "100%", height: "100%" }}
+        dangerouslySetInnerHTML={{
+          __html: `
+            <lord-icon
+                src="https://cdn.lordicon.com/wsaaegar.json"
+                trigger="loop"
+                delay="2000"
+                speed="0.6"
+                stroke="light"
+                colors="primary:#063b0d,secondary:#063b0d"
+                style="width:70%;height:70%">
+            </lord-icon>
+          `,
+        }}
+      />
+    </span>
+  );
+};
 /* ------------------------ IconWrapper ------------------------ */
 
 export const IconWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -489,10 +617,10 @@ export const IconWrapper = ({ children }: { children: React.ReactNode }) => (
 
 export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> = ({
   className,
-  size = 96,
+  size = 97,
   style,
   title,
-  color = "currentColor",
+  color = "#063b0d",
 }) => {
   const cupsRef = React.useRef<LordIconEl | null>(null);
   const heartIconRefs = React.useRef<(LordIconEl | null)[]>([]);
@@ -520,7 +648,7 @@ export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> =
       });
 
       heartIconRefs.current.forEach((heart) => {
-        if (heart?.playerInstance) playFromStart(heart.playerInstance);
+
       });
     }
 
@@ -679,7 +807,7 @@ export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> =
           }}
           src="https://cdn.lordicon.com/nvsfzbop.json"
           trigger="loop"
-          stroke="light"
+          stroke="regular"
           colors={`primary:${color},secondary:${color}`}
           style={{ width: heartPxCenter, height: heartPxCenter }}
         />
@@ -700,7 +828,7 @@ export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> =
           }}
           src="https://cdn.lordicon.com/nvsfzbop.json"
           trigger="loop"
-          stroke="light"
+          stroke="regular"
           colors={`primary:${color},secondary:${color}`}
           style={{ width: heartPxSide, height: heartPxSide }}
         />
@@ -711,7 +839,7 @@ export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> =
           ref={cupsRef}
           src="https://cdn.lordicon.com/yvgmrqny.json"
           trigger="loop"
-          stroke="light"
+          stroke="regular"
           colors={`primary:${color},secondary:${color}`}
           style={{
             width: cupsPx,
@@ -734,7 +862,7 @@ export const LordiconClinkingGlasses = ClinkingGlassesIcon;
 
 export const DinnerIcon: React.FC<BaseIconProps> = ({
   className,
-  size = 96,
+  size = 180,
   style,
   title,
 }) => {
@@ -762,7 +890,6 @@ export const DinnerIcon: React.FC<BaseIconProps> = ({
           .__dinnerFade, .__dinnerPulse { animation: none !important; opacity: 1; transform: none; }
         }
       `}</style>
-
       <img
         src="/cena-romantica.png"
         alt={title ?? "Cena"}
@@ -786,7 +913,7 @@ export const PartyIcon: React.FC<BaseIconProps & { color?: string }> = ({
     src="https://cdn.lordicon.com/jjqwsavk.json"
     trigger="loop"
     stroke="light"
-    colors={`primary:${color},secondary:${color}`}
+    colors="primary:#063b0d,secondary:#063b0d"
     className={className}
     style={{ width: size, height: size, ...(style ?? {}) }}
   />
@@ -827,7 +954,7 @@ export const FadingPartyIcon: React.FC<BaseIconProps & { color?: string }> = ({
         src="https://cdn.lordicon.com/jjqwsavk.json"
         trigger="loop"
         stroke="light"
-        colors={`primary:${color},secondary:${color}`}
+        colors="primary:#063b0d,secondary:#063b0d"
         style={{ width: "100%", height: "100%" }}
       />
     </div>
@@ -854,58 +981,216 @@ export const EndOfPartyIcon: React.FC<BaseIconProps> = ({
 
 export const AnimatedBusIcon: React.FC<BaseIconProps> = ({
   className,
-  size = 90,
+  size = 120,
   style,
-  title = "Autobús animado",
+  title = "Autobús",
 }) => {
   return (
     <span
       className={cn("inline-block", className)}
-      style={{ width: size, height: size, color: "currentColor", ...(style ?? {}) }}
+      style={{ width: size, height: size * (84 / 170), color: "#063b0d", ...(style ?? {}) }}
       aria-label={title}
       role="img"
     >
       <style>{`
-        .icon-bus{ width: 100%; height: 100%; color: currentColor; display:block; }
-        .icon-bus .busMove{ transform-box: fill-box; transform-origin: center; animation: drive 1.6s ease-in-out infinite; }
-        .icon-bus .wheel{ transform-box: fill-box; transform-origin: center; animation: spin .45s linear infinite; }
-        @keyframes drive{
-          0%   { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
-          25%  { transform: translateX(-2px)  translateY(1px) rotate(0deg); }
-          50%  { transform: translateX(10px)  translateY(0px) rotate(1deg); }
-          75%  { transform: translateX(2px)   translateY(1px) rotate(0deg); }
-          100% { transform: translateX(-10px) translateY(0px) rotate(-1deg); }
+        .bus-bob {
+          animation: bus-bob 0.4s ease-in-out infinite;
+          transform-origin: center;
         }
-        @keyframes spin{ to { transform: rotate(360deg); } }
+        .bus-road {
+          stroke-dasharray: 10, 8;
+          animation: bus-road 0.6s linear infinite;
+        }
+        @keyframes bus-bob {
+          0%, 100% { transform: translateY(0px); }
+          50%      { transform: translateY(1.5px); }
+        }
+        @keyframes bus-road {
+          to { stroke-dashoffset: 18; }
+        }
         @media (prefers-reduced-motion: reduce){
-          .icon-bus .busMove, .icon-bus .wheel{ animation: none !important; }
+          .bus-bob, .bus-road { animation: none !important; }
         }
       `}</style>
-
       <svg
-        className="icon-bus"
+        version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="-20 -20 552 552"
-        preserveAspectRatio="xMidYMid meet"
+        viewBox="0 0 170 84"
+        className="w-full h-full"
       >
-        <g className="busMove">
-          <g
-            transform="translate(0,512) scale(0.100000,-0.100000)"
-            fill="currentColor"
-            stroke="none"
-          >
-            <path d="M89 3931 c-31 -19 -53 -44 -68 -73 l-21 -45 2 -1021 3 -1020 30 -43 c51 -72 86 -83 266 -87 l155 -4 12 -54 c39 -186 208 -359 398 -408 78 -20 212 -21 287 -1 200 52 354 212 407 423 l11 42 852 0 853 0 11 -53 c39 -188 208 -362 399 -411 78 -20 212 -21 287 -1 200 52 354 212 407 423 l11 42 192 0 c110 0 209 5 232 11 55 15 120 82 135 139 9 33 11 136 7 385 -5 377 -13 444 -74 645 -65 212 -153 513 -153 522 0 4 33 8 73 8 l73 0 52 -164 c54 -172 69 -196 120 -196 28 0 72 42 72 68 0 11 -27 104 -60 208 -78 244 -67 234 -245 234 -119 0 -134 2 -139 18 -40 140 -71 225 -94 262 -39 61 -103 117 -171 149 l-56 26 -2110 3 -2111 2 -45 -29z m4248 -136 c52 -22 100 -61 118 -96 l16 -29 -2161 0 -2160 0 0 58 c0 32 5 63 12 70 9 9 484 12 2075 12 1830 0 2068 -2 2100 -15z m-3727 -630 l0 -355 -230 0 -230 0 0 355 0 355 230 0 230 0 0 -355z m290 0 l0 -355 -70 0 -70 0 0 355 0 355 70 0 70 0 0 -355z m660 0 l0 -355 -255 0 -255 0 0 355 0 355 255 0 255 0 0 -355z m280 0 l0 -355 -65 0 -65 0 0 355 0 355 65 0 65 0 0 -355z m668 3 l-3 -353 -255 0 -255 0 -3 353 -2 352 260 0 260 0 -2 -352z m282 253 c0 -55 3 -107 6 -116 10 -24 60 -46 89 -39 45 11 55 39 55 151 l0 103 255 0 255 0 0 -355 0 -355 -255 0 -255 0 0 102 c0 91 -2 104 -22 125 -30 33 -80 31 -107 -3 -18 -23 -21 -41 -21 -125 l0 -99 -65 0 -65 0 0 355 0 355 65 0 65 0 0 -99z m950 -256 l0 -356 -67 3 -68 3 -3 353 -2 352 70 0 70 0 0 -355z m799 288 c11 -38 61 -207 112 -378 122 -410 138 -473 146 -572 l6 -83 -214 0 c-181 0 -220 3 -250 18 -20 9 -129 91 -243 182 l-206 165 0 368 0 367 315 0 314 0 20 -67z m-698 -822 c24 -15 64 -47 89 -69 l45 -41 -719 -1 -720 0 -23 -22 c-28 -26 -30 -67 -4 -99 l19 -24 821 -3 821 -2 46 -35 c75 -57 119 -65 371 -65 l223 0 0 -218 c0 -181 -3 -221 -16 -240 -15 -21 -20 -22 -209 -22 l-195 0 -6 28 c-26 124 -74 214 -160 298 -202 201 -529 217 -746 37 -94 -77 -166 -193 -193 -308 l-12 -50 -851 -3 -852 -2 -6 27 c-18 83 -51 159 -95 222 -170 242 -492 310 -752 158 -112 -66 -222 -218 -252 -349 l-11 -53 -136 -3 c-114 -2 -139 0 -152 13 -14 14 -16 53 -16 291 l0 274 1035 0 c736 0 1041 3 1058 11 24 11 47 47 47 73 0 7 -9 25 -21 40 l-20 26 -1050 0 -1049 0 0 70 0 70 1823 0 1823 0 45 -29z m-2726 -517 c119 -30 216 -111 269 -224 39 -83 48 -208 21 -291 -36 -113 -116 -204 -224 -256 -79 -38 -220 -45 -302 -14 -166 63 -264 193 -276 367 -9 125 36 234 132 322 109 100 240 133 380 96z m2820 0 c120 -31 215 -110 268 -222 30 -63 32 -74 32 -177 0 -101 -2 -115 -29 -170 -38 -77 -124 -163 -201 -200 -84 -40 -223 -47 -307 -15 -161 60 -263 193 -275 360 -10 126 36 241 132 328 109 100 240 133 380 96z" />
-            <path
-              className="wheel"
-              d="M931 2025 c-70 -20 -111 -46 -160 -101 -135 -154 -86 -393 102 -491 45 -24 64 -28 137 -28 73 0 93 4 142 28 63 31 116 86 150 156 33 65 32 185 -1 258 -27 61 -103 136 -164 163 -61 27 -142 32 -206 15z m121 -145 c148 -41 172 -236 38 -307 -71 -38 -138 -28 -196 29 -87 83 -53 233 61 273 49 17 51 17 97 5z"
-            />
-            <path
-              className="wheel"
-              d="M3751 2025 c-70 -20 -111 -46 -160 -101 -135 -154 -85 -393 102 -492 45 -23 64 -27 137 -27 73 0 93 4 142 28 63 31 116 86 150 156 33 65 32 185 -1 258 -27 61 -103 136 -164 163 -61 27 -142 32 -206 15z m122 -146 c50 -13 103 -61 118 -106 25 -77 -14 -172 -85 -204 -72 -33 -136 -22 -192 33 -87 83 -53 233 61 273 49 17 51 17 98 4z"
-            />
+        <defs>
+          <clipPath id="bus-clip"><rect width="170" height="84" x="0" y="0"></rect></clipPath>
+        </defs>
+
+        <g clipPath="url(#bus-clip)">
+
+          {/* suelo */}
+          <g style={{ display: "block" }}>
+            <path className="bus-road" strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+              stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+              d="M16.042999267578125,78.33300018310547 H149.37600708007812" />
           </g>
+
+          <g transform="translate(-8, 0)">
+            {/* coche (bote) */}
+            <g className="bus-bob" transform="translate(0, 1.123)" style={{ display: "block" }}>
+              <g>
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M107.336,68.555 H71.78" />
+              </g>
+
+              <g transform="translate(90.521, 40.333)">
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M-44.519,28.222 H-48.489 C-51.328,28.222 -53.63,25.716 -53.63,22.625 V-22.626 C-53.63,-25.717 -51.328,-28.222 -48.489,-28.222 H43.895 C46.735,-28.222 49.037,-25.717 49.037,-22.626 V-1.532 V22.625 C49.037,25.716 46.735,28.222 43.895,28.222 H43.481" />
+              </g>
+
+              <g transform="translate(58.669, 30.819)">
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M11.43,11.128 H-11.43 C-13.094,11.128 -14.445,9.778 -14.445,8.113 V-8.113 C-14.445,-9.778 -13.094,-11.128 -11.43,-11.128 H11.43 C13.095,-11.128 14.445,-9.778 14.445,-8.113 V8.113 C14.445,9.778 13.095,11.128 11.43,11.128" />
+              </g>
+
+              <g transform="translate(94.447, 30.819)">
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M11.431,11.128 H-11.43 C-13.094,11.128 -14.445,9.778 -14.445,8.113 V-8.113 C-14.445,-9.778 -13.094,-11.128 -11.43,-11.128 H11.431 C13.096,-11.128 14.445,-9.778 14.445,-8.113 V8.113 C14.445,9.778 13.096,11.128 11.431,11.128" />
+              </g>
+
+              <g transform="translate(129.892, 33.238)">
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M14.111,13.546 C14.111,13.546 -10.977,8.708 -10.977,8.708 C-12.708,8.708 -14.111,7.18 -14.111,5.296 V-10.135 C-14.111,-12.019 -12.708,-13.547 -10.977,-13.547 H9.667" />
+              </g>
+
+              <g>
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M58.891,20.175 V41.463" />
+              </g>
+
+              <g>
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M94.447,20.175 V41.463" />
+              </g>
+
+              <g>
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M114.669,48.645 H120.225" />
+              </g>
+            </g>
+
+            {/* ruedas (quietas) */}
+            <g style={{ display: "block" }}>
+              <g id="wheel1" transform="translate(58.826, 68.222)">
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M8.778,0 C8.778,4.848 4.848,8.778 0,8.778 C-4.848,8.778 -8.778,4.848 -8.778,0 C-8.778,-4.848 -4.848,-8.778 0,-8.778 C4.848,-8.778 8.778,-4.848 8.778,0z" />
+              </g>
+
+              <g id="wheel2" transform="translate(121.188, 68.222)">
+                <path strokeLinecap="round" strokeLinejoin="miter" fillOpacity="0" strokeMiterlimit="10"
+                  stroke="currentColor" strokeOpacity="1" strokeWidth="2.5"
+                  d="M8.778,0 C8.778,4.848 4.848,8.778 0,8.778 C-4.848,8.778 -8.778,4.848 -8.778,0 C-8.778,-4.848 -4.848,-8.778 0,-8.778 C4.848,-8.778 8.778,-4.848 8.778,0z" />
+              </g>
+            </g>
+          </g>
+
         </g>
       </svg>
+    </span>
+  );
+};
+
+
+
+/* ------------------------ TIPS & NOTES (AnimatedIcons.co) ------------------------ */
+
+export const TipsIcon: React.FC<BaseIconProps> = ({
+  className,
+  size = 96,
+  style,
+  title = "Tips y Notas",
+}) => {
+  return (
+    <span
+      className={cn("inline-block", className)}
+      style={{ width: size, height: size, color: "#063b0d", display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+      role="img"
+      aria-label={title}
+    >
+      <AnimatedIconWc
+        src="https://animatedicons.co/get-icon?name=note&style=minimalistic&token=cb234c69-9f56-4cf2-844e-2c2109b81513"
+        trigger="loop"
+        attributes='{"variationThumbColour":"#FFFFFF","variationName":"Normal","variationNumber":1,"numberOfGroups":1,"backgroundIsGroup":false,"strokeWidth":0.88,"defaultColours":{"group-1":"#063b0d","background":"#FFFFFF"}}'
+        height="100%"
+        width="100%"
+        stroke="light"
+        colors="primary:#063b0d,secondary:#063b0d"
+        style={{ width: "98%", height: "98%" }}
+      />
+    </span>
+  );
+};
+
+
+
+/* ------------------------ HOTEL (Lordicon) ------------------------ */
+
+export const HotelIcon: React.FC<BaseIconProps> = ({
+  className,
+  size = 96,
+  style,
+  title = "Hoteles",
+}) => {
+  return (
+    <span
+      className={cn("inline-block", className)}
+      style={{ width: size, height: size, color: "#063b0d", display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+      role="img"
+      aria-label={title}
+    >
+      <LordIconWc
+        src="https://cdn.lordicon.com/moridxxu.json"
+        trigger="hover"
+        stroke="light"
+        colors="primary:#063b0d,secondary:#063b0d"
+        style={{ width: "100%", height: "100%" }}
+      />
+    </span>
+  );
+};
+
+
+
+/* ------------------------ DRESSCODE (AnimatedIcons.co) ------------------------ */
+
+export const DresscodeIcon: React.FC<BaseIconProps> = ({
+  className,
+  size = 96,
+  style,
+  title = "Dresscode",
+}) => {
+  return (
+    <span
+      className={cn("inline-block", className)}
+      style={{ width: size, stroke: "light", height: size, color: "#063b0d", display: "flex", alignItems: "center", justifyContent: "center", ...(style ?? {}) }}
+      role="img"
+      aria-label={title}
+    >
+      <AnimatedIconWc
+        src="https://animatedicons.co/get-icon?name=Neck%20Tie&style=minimalistic&token=762fea02-68a8-43f8-9153-42da75726e8c"
+        trigger="loop"
+        attributes='{"variationThumbColour":"#FFFFFF","variationName":"Normal","variationNumber":1,"numberOfGroups":1,"backgroundIsGroup":false,"strokeWidth":1,"defaultColours":{"group-1":"#063b0d","background":"#FFFFFF"}}'
+        height="100%"
+        width="100%"
+        stroke="light"
+        colors="primary:#063b0d,secondary:#063b0d"
+        style={{ width: "100%", height: "100%" }}
+      />
     </span>
   );
 };
