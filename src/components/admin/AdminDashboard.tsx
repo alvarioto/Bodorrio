@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Lock, Download, RefreshCw, Bus, Utensils, Baby, Trash2, Home, UserPlus, FileDown } from 'lucide-react';
+import { Lock, Download, RefreshCw, Bus, Utensils, Baby, Trash2, Home, UserPlus, FileDown, Link as LinkIcon } from 'lucide-react';
 import { exportGuestsToCSV } from '@/services/rsvp';
 import {
     AlertDialog,
@@ -24,6 +24,24 @@ import Link from 'next/link';
 
 export default function AdminDashboard() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    // Helper to safely format dates
+    const safeFormatDate = (dateObj: any, format: 'date' | 'time') => {
+        if (!dateObj) return '';
+        try {
+            let d: Date;
+            if (typeof dateObj.toDate === 'function') d = dateObj.toDate();
+            else if (dateObj.seconds) d = new Date(dateObj.seconds * 1000);
+            else d = new Date(dateObj);
+
+            if (isNaN(d.getTime())) return '';
+
+            if (format === 'date') return d.toLocaleDateString();
+            return d.toLocaleTimeString().slice(0, 5);
+        } catch (e) {
+            return '';
+        }
+    };
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [guests, setGuests] = useState<Guest[]>([]);
@@ -94,23 +112,117 @@ export default function AdminDashboard() {
     };
 
     const calculateStats = (data: Guest[]) => {
-        const stats = {
-            total: data.length,
-            ceremony: data.filter(g => g.rsvpType === 'ceremony' && g.attendance === 'yes').length,
-            celebration: data.filter(g => g.rsvpType === 'celebration' && g.attendance === 'yes').length,
-            busIda: data.filter(g => (g.bus === 'ida' || g.bus === 'ambos') && g.attendance === 'yes').length,
-            busVuelta: data.filter(g => (g.bus === 'vuelta' || g.bus === 'ambos') && g.attendance === 'yes').length,
-            intolerances: data.filter(g => (g.hasIntolerance || g.companionHasIntolerance) && g.attendance === 'yes').length,
-            children: data.filter(g => g.children && g.children.trim() !== "").length,
-        };
+        let cerSet = new Set<string>();
+        let celSet = new Set<string>();
+        let busIdaSet = new Set<string>();
+        let busVueltaSet = new Set<string>();
+        let intolSet = new Set<string>();
+        let childSet = new Set<string>();
+        let legacyChildCount = 0;
+
+        const normalizeName = (name: string) => name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
         data.forEach(g => {
-            if (g.rsvpType === 'celebration' && g.attendance === 'yes' && g.hasCompanion) {
-                stats.celebration++;
-                if (g.bus === 'ida' || g.bus === 'ambos') stats.busIda++;
-                if (g.bus === 'vuelta' || g.bus === 'ambos') stats.busVuelta++;
+            const normName = normalizeName(g.name);
+
+            if (g.ceremonyAttendance === 'yes') {
+                cerSet.add(normName);
+                if (g.companions) g.companions.forEach(c => cerSet.add(normalizeName(c.name)));
+                if (g.hasCompanion && g.companionName) cerSet.add(normalizeName(g.companionName));
+            }
+
+            if (g.celebrationAttendance === 'yes') {
+                celSet.add(normName);
+                if (g.companions) g.companions.forEach(c => celSet.add(normalizeName(c.name)));
+                if (g.hasCompanion && g.companionName) celSet.add(normalizeName(g.companionName));
+
+                if (g.bus === 'ida' || g.bus === 'ambos') {
+                    busIdaSet.add(normName);
+                    if (g.companions) g.companions.forEach(c => busIdaSet.add(normalizeName(c.name)));
+                    if (g.hasCompanion && g.companionName) busIdaSet.add(normalizeName(g.companionName));
+                }
+                if (g.bus === 'vuelta' || g.bus === 'ambos') {
+                    busVueltaSet.add(normName);
+                    if (g.companions) g.companions.forEach(c => busVueltaSet.add(normalizeName(c.name)));
+                    if (g.hasCompanion && g.companionName) busVueltaSet.add(normalizeName(g.companionName));
+                }
+            }
+
+            if (g.hasIntolerance && (g.ceremonyAttendance === 'yes' || g.celebrationAttendance === 'yes')) intolSet.add(normName);
+            if (g.companions) g.companions.forEach(c => { if (c.hasIntolerance) intolSet.add(normalizeName(c.name)); });
+            if (g.hasCompanion && g.companionHasIntolerance && g.companionName) intolSet.add(normalizeName(g.companionName));
+
+            if (g.childrenDetail && g.childrenDetail.length > 0) {
+                g.childrenDetail.forEach(c => childSet.add(normalizeName(c.name)));
+            } else if (g.children && g.children.trim() !== "") {
+                const num = parseInt(g.children);
+                if (!isNaN(num)) legacyChildCount += num;
+                else legacyChildCount += 1;
             }
         });
+
+        const stats = {
+            total: data.length,
+            ceremony: cerSet.size,
+            celebration: celSet.size,
+            busIda: busIdaSet.size,
+            busVuelta: busVueltaSet.size,
+            intolerances: intolSet.size,
+            children: childSet.size + legacyChildCount,
+        };
         setStats(stats);
+    };
+
+    const findRelations = (currentGuest: Guest, allGuests: Guest[]) => {
+        const normalizeName = (name: string) => name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const normCurrent = normalizeName(currentGuest.name);
+        const relations: string[] = [];
+
+        allGuests.forEach(otherG => {
+            if (otherG.id === currentGuest.id) return;
+            const normOther = normalizeName(otherG.name);
+
+            let isMentionedByOther = false;
+            let mentionsOther = false;
+            let shareEntity = false;
+
+            if (otherG.companions?.some(c => normalizeName(c.name) === normCurrent) ||
+                (otherG.hasCompanion && otherG.companionName && normalizeName(otherG.companionName) === normCurrent) ||
+                (otherG.childrenDetail?.some(c => normalizeName(c.name) === normCurrent))) {
+                isMentionedByOther = true;
+            }
+
+            if (currentGuest.companions?.some(c => normalizeName(c.name) === normOther) ||
+                (currentGuest.hasCompanion && currentGuest.companionName && normalizeName(currentGuest.companionName) === normOther) ||
+                (currentGuest.childrenDetail?.some(c => normalizeName(c.name) === normOther))) {
+                mentionsOther = true;
+            }
+
+            const currentEntities = [
+                ...(currentGuest.companions || []).map(c => normalizeName(c.name)),
+                ...(currentGuest.childrenDetail || []).map(c => normalizeName(c.name))
+            ];
+            if (currentGuest.hasCompanion && currentGuest.companionName) currentEntities.push(normalizeName(currentGuest.companionName));
+
+            const otherEntities = [
+                ...(otherG.companions || []).map(c => normalizeName(c.name)),
+                ...(otherG.childrenDetail || []).map(c => normalizeName(c.name))
+            ];
+            if (otherG.hasCompanion && otherG.companionName) otherEntities.push(normalizeName(otherG.companionName));
+
+            // Check if they share any entity
+            if (currentEntities.length > 0 && currentEntities.some(e => otherEntities.includes(e))) {
+                shareEntity = true;
+            }
+
+            // Also check if currentGuest and otherG are listed as companions to EACH OTHER explicitly,
+            // or if they just happen to have the same child in their forms
+            if (isMentionedByOther || mentionsOther || shareEntity) {
+                relations.push(otherG.name);
+            }
+        });
+
+        return Array.from(new Set(relations));
     };
 
     if (!isAuthenticated) {
@@ -237,12 +349,18 @@ export default function AdminDashboard() {
                                     <div>
                                         <CardTitle className="text-lg text-primary font-bold tracking-wide">{guest.name}</CardTitle>
                                         <div className="text-xs text-stone-500 mt-1 font-mono">
-                                            {guest.createdAt?.toDate().toLocaleDateString()} · {guest.createdAt?.toDate().toLocaleTimeString().slice(0, 5)}
+                                            {safeFormatDate(guest.createdAt, 'date')} · {safeFormatDate(guest.createdAt, 'time')}
                                         </div>
+                                        {findRelations(guest, guests).length > 0 && (
+                                            <div className="mt-2 text-xs flex items-center gap-1 text-primary/80 bg-primary/10 w-fit px-2 py-0.5 rounded-full border border-primary/20">
+                                                <LinkIcon className="w-3 h-3" />
+                                                Grupo: {findRelations(guest, guests).join(', ')}
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="flex flex-col items-end gap-2">
-                                        <Badge variant={guest.attendance === 'yes' ? 'default' : 'destructive'} className="uppercase text-[10px] tracking-wider">
-                                            {guest.attendance === 'yes' ? 'Asiste' : 'No asiste'}
+                                        <Badge variant={(guest.ceremonyAttendance === 'yes' || guest.celebrationAttendance === 'yes') ? 'default' : 'destructive'} className="uppercase text-[10px] tracking-wider">
+                                            {(guest.ceremonyAttendance === 'yes' || guest.celebrationAttendance === 'yes') ? 'Asiste' : 'No asiste'}
                                         </Badge>
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
@@ -267,51 +385,66 @@ export default function AdminDashboard() {
                                 </div>
                             </CardHeader>
                             <CardContent className="pt-4 text-sm space-y-3">
-                                {guest.hasCompanion && (
-                                    <div className="flex items-start gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
-                                        <UserPlus className="w-4 h-4 text-primary mt-0.5" />
-                                        <div>
-                                            <div className="text-xs uppercase tracking-wider text-stone-500 mb-0.5">Acompañante</div>
-                                            <div className="font-semibold text-white">{guest.companionName}</div>
-                                            {guest.companionHasIntolerance && (
-                                                <div className="text-amber-400 text-xs mt-1">⚠️ {guest.companionIntoleranceType}</div>
+                                {/* Grupo Familiar */}
+                                {(guest.companions?.length || guest.childrenDetail?.length) ? (
+                                    <div className="space-y-2 bg-white/5 p-3 rounded-xl border border-white/5">
+                                        <div className="text-[10px] uppercase font-bold tracking-wider text-primary/70 mb-1">Grupo Familiar</div>
+                                        {guest.companions && guest.companions.map((c, i) => (
+                                            <div key={`mob-comp-${i}`} className="flex items-center gap-2 text-stone-300 relative pl-2">
+                                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-primary/20 rounded-full" />
+                                                <UserPlus className="w-3.5 h-3.5 text-primary/70" />
+                                                <span className="font-medium">{c.name}</span>
+                                            </div>
+                                        ))}
+                                        {guest.childrenDetail && guest.childrenDetail.map((c, i) => (
+                                            <div key={`mob-child-${i}`} className="flex items-center gap-2 text-stone-300 relative pl-2 mt-1.5">
+                                                <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-400/20 rounded-full" />
+                                                <Baby className="w-3.5 h-3.5 text-blue-400/70" />
+                                                <span className="font-medium">{c.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : null}
+
+                                {/* Intolerancias */}
+                                {(guest.hasIntolerance || guest.companions?.some(c => c.hasIntolerance) || guest.childrenDetail?.some(c => c.hasIntolerance)) && (
+                                    <div className="bg-amber-400/5 border border-amber-400/10 p-3 rounded-xl">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Utensils className="w-4 h-4 text-amber-500" />
+                                            <span className="text-xs text-amber-500 font-bold uppercase tracking-wider">Intolerancias Alimentarias</span>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            {guest.hasIntolerance && (
+                                                <div className="text-amber-200/90 text-[13px] bg-amber-400/10 px-2 py-1 rounded w-fit">
+                                                    <strong className="text-amber-400">{guest.firstName || guest.name.split(' ')[0]}:</strong> {guest.intoleranceType}
+                                                </div>
                                             )}
+                                            {guest.companions?.filter(c => c.hasIntolerance).map((c, i) => (
+                                                <div key={`mob-comp-int-${i}`} className="text-amber-200/90 text-[13px] bg-amber-400/10 px-2 py-1 rounded w-fit">
+                                                    <strong className="text-amber-400">{c.name.split(' ')[0]}:</strong> {c.intoleranceType || 'Especial'}
+                                                </div>
+                                            ))}
+                                            {guest.childrenDetail?.filter(c => c.hasIntolerance).map((c, i) => (
+                                                <div key={`mob-child-int-${i}`} className="text-amber-200/90 text-[13px] bg-amber-400/10 px-2 py-1 rounded w-fit">
+                                                    <strong className="text-amber-400">{c.name.split(' ')[0]}:</strong> {c.intoleranceType || 'Especial'}
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
                                 )}
 
-                                <div className="grid grid-cols-2 gap-2">
-                                    {(guest.hasIntolerance) && (
-                                        <div className="bg-amber-900/10 border border-amber-900/20 p-2 rounded-lg">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <Utensils className="w-3 h-3 text-amber-500" />
-                                                <span className="text-xs text-amber-500 font-bold uppercase">Intolerancia</span>
-                                            </div>
-                                            <div className="text-amber-200 text-xs">{guest.intoleranceType}</div>
+                                {guest.bus && guest.bus !== 'none' && (
+                                    <div className="bg-primary/5 border border-primary/10 p-3 rounded-xl">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <Bus className="w-4 h-4 text-primary" />
+                                            <span className="text-xs text-primary font-bold uppercase tracking-wider">Autobús</span>
                                         </div>
-                                    )}
-                                    {guest.children && (
-                                        <div className="bg-blue-900/10 border border-blue-900/20 p-2 rounded-lg">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <Baby className="w-3 h-3 text-blue-400" />
-                                                <span className="text-xs text-blue-400 font-bold uppercase">Niños</span>
-                                            </div>
-                                            <div className="text-blue-200 text-xs">{guest.children}</div>
-                                        </div>
-                                    )}
-                                    {guest.bus && guest.bus !== 'none' && (
-                                        <div className="bg-primary/5 border border-primary/10 p-2 rounded-lg col-span-2">
-                                            <div className="flex items-center gap-2 mb-1">
-                                                <Bus className="w-3 h-3 text-primary" />
-                                                <span className="text-xs text-primary font-bold uppercase">Autobús</span>
-                                            </div>
-                                            <div className="text-white text-xs capitalize">{guest.bus}</div>
-                                        </div>
-                                    )}
-                                </div>
+                                        <div className="text-white text-sm capitalize">{guest.bus}</div>
+                                    </div>
+                                )}
 
                                 {guest.comment && (
-                                    <div className="italic text-stone-400 bg-black/20 p-3 rounded-md text-xs border-l-2 border-primary/30">
+                                    <div className="italic text-stone-400 bg-black/20 p-3 rounded-xl text-sm border-l-2 border-primary/30">
                                         "{guest.comment}"
                                     </div>
                                 )}
@@ -325,9 +458,8 @@ export default function AdminDashboard() {
                     <Table>
                         <TableHeader className="bg-white/5">
                             <TableRow className="border-white/5 hover:bg-white/5">
-                                <TableHead className="text-primary font-bold">Nombre</TableHead>
+                                <TableHead className="text-primary font-bold">Invitado / Familia</TableHead>
                                 <TableHead className="text-primary font-bold">Asistencia</TableHead>
-                                <TableHead className="text-primary font-bold">Acompañante</TableHead>
                                 <TableHead className="text-primary font-bold">Intolerancias</TableHead>
                                 <TableHead className="text-primary font-bold">Bus</TableHead>
                                 <TableHead className="text-primary font-bold">Comentario</TableHead>
@@ -335,60 +467,89 @@ export default function AdminDashboard() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {guests.map((guest) => (
-                                <TableRow key={guest.id} className="border-white/5 hover:bg-white/5 transition-colors">
-                                    <TableCell className="font-bold text-white text-base py-4">{guest.name}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={guest.attendance === 'yes' ? 'default' : 'destructive'} className="uppercase tracking-wider">
-                                            {guest.attendance === 'yes' ? 'SÍ' : 'NO'}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell>
-                                        {guest.hasCompanion ? (
-                                            <div className="flex flex-col">
-                                                <span className="font-semibold text-white">{guest.companionName}</span>
-                                                {guest.companionHasIntolerance && (
-                                                    <span className="text-xs text-amber-500">⚠️ {guest.companionIntoleranceType}</span>
+                            {guests.map((guest) => {
+                                const hasFamily = (guest.companions && guest.companions.length > 0) || (guest.childrenDetail && guest.childrenDetail.length > 0);
+
+                                return (
+                                    <TableRow key={guest.id} className={`border-white/5 transition-colors ${hasFamily ? 'bg-primary/5 hover:bg-primary/10' : 'hover:bg-white/5'}`}>
+                                        <TableCell className="py-4">
+                                            <div className="font-bold text-white text-base flex items-center justify-between">
+                                                <span>{guest.name}</span>
+                                                {hasFamily && <Badge variant="outline" className="ml-2 bg-primary/20 text-primary border-primary/30 text-[10px] uppercase tracking-wider">Grupo Familiar</Badge>}
+                                            </div>
+
+                                            {(guest.companions?.length || guest.childrenDetail?.length) ? (
+                                                <div className="mt-2.5 flex flex-col gap-1.5 ml-2 border-l-2 border-primary/20 pl-3">
+                                                    {guest.companions && guest.companions.map((c, i) => (
+                                                        <div key={`comp-${i}`} className="text-sm text-stone-300 flex items-center gap-2">
+                                                            <UserPlus className="w-3.5 h-3.5 text-primary/70" />
+                                                            {c.name} {c.hasIntolerance && <span className="text-amber-400 text-[10px] uppercase tracking-wider ml-1 px-1.5 bg-amber-400/10 border border-amber-400/20 rounded">Dieta</span>}
+                                                        </div>
+                                                    ))}
+                                                    {guest.childrenDetail && guest.childrenDetail.map((c, i) => (
+                                                        <div key={`child-${i}`} className="text-sm text-stone-400 flex items-center gap-2">
+                                                            <Baby className="w-3.5 h-3.5 text-blue-400/70" />
+                                                            {c.name} {c.hasIntolerance && <span className="text-amber-400 text-[10px] uppercase tracking-wider ml-1 px-1.5 bg-amber-400/10 border border-amber-400/20 rounded">Dieta</span>}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            ) : null}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Badge variant={(guest.ceremonyAttendance === 'yes' || guest.celebrationAttendance === 'yes') ? 'default' : 'destructive'} className="uppercase tracking-wider">
+                                                CER: {guest.ceremonyAttendance === 'yes' ? 'SÍ' : (guest.ceremonyAttendance === 'no' ? 'NO' : '-')} | CEL: {guest.celebrationAttendance === 'yes' ? 'SÍ' : (guest.celebrationAttendance === 'no' ? 'NO' : '-')}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-col gap-1.5 text-xs">
+                                                {guest.hasIntolerance && (
+                                                    <div className="bg-amber-400/10 text-amber-300 border border-amber-400/20 px-2 py-1 rounded w-fit">
+                                                        <strong>{guest.firstName || guest.name.split(' ')[0]}:</strong> {guest.intoleranceType}
+                                                    </div>
+                                                )}
+                                                {guest.companions?.filter(c => c.hasIntolerance).map((c, i) => (
+                                                    <div key={`comp-int-${i}`} className="bg-amber-400/10 text-amber-300 border border-amber-400/20 px-2 py-1 rounded w-fit">
+                                                        <strong>{c.name.split(' ')[0]}:</strong> {c.intoleranceType || 'Especial'}
+                                                    </div>
+                                                ))}
+                                                {guest.childrenDetail?.filter(c => c.hasIntolerance).map((c, i) => (
+                                                    <div key={`child-int-${i}`} className="bg-amber-400/10 text-amber-300 border border-amber-400/20 px-2 py-1 rounded w-fit">
+                                                        <strong>{c.name.split(' ')[0]}:</strong> {c.intoleranceType || 'Especial'}
+                                                    </div>
+                                                ))}
+                                                {(!guest.hasIntolerance && !guest.companions?.some(c => c.hasIntolerance) && !guest.childrenDetail?.some(c => c.hasIntolerance)) && (
+                                                    <span className="text-stone-600">-</span>
                                                 )}
                                             </div>
-                                        ) : (
-                                            <span className="text-stone-600">-</span>
-                                        )}
-                                    </TableCell>
-                                    <TableCell>
-                                        {guest.hasIntolerance ? (
-                                            <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-amber-500">{guest.intoleranceType}</Badge>
-                                        ) : (
-                                            <span className="text-stone-600">-</span>
-                                        )}
-                                    </TableCell>
-                                    <TableCell className="uppercase text-xs font-semibold text-stone-400">{guest.bus === 'none' ? '-' : guest.bus}</TableCell>
-                                    <TableCell className="max-w-[200px] truncate text-stone-500 italic" title={guest.comment}>
-                                        {guest.comment}
-                                    </TableCell>
-                                    <TableCell>
-                                        <AlertDialog>
-                                            <AlertDialogTrigger asChild>
-                                                <Button variant="ghost" size="icon" className="h-8 w-8 text-stone-600 hover:text-red-400 hover:bg-red-400/10">
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            </AlertDialogTrigger>
-                                            <AlertDialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
-                                                <AlertDialogHeader>
-                                                    <AlertDialogTitle className="text-white">¿Borrar registro?</AlertDialogTitle>
-                                                    <AlertDialogDescription className="text-stone-400">
-                                                        Estás a punto de borrar a <span className="text-primary font-bold">{guest.name}</span>.
-                                                    </AlertDialogDescription>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <AlertDialogCancel className="bg-transparent border-white/10 text-stone-300 hover:bg-white/5 hover:text-white">Cancelar</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => guest.id && handleDelete(guest.id)} className="bg-red-900 text-red-100 hover:bg-red-800 border border-red-800">Borrar</AlertDialogAction>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        </AlertDialog>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                                        </TableCell>
+                                        <TableCell className="uppercase text-xs font-semibold text-stone-400">{guest.bus === 'none' ? '-' : guest.bus}</TableCell>
+                                        <TableCell className="max-w-[200px] truncate text-stone-500 italic" title={guest.comment}>
+                                            {guest.comment || '-'}
+                                        </TableCell>
+                                        <TableCell>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-stone-600 hover:text-red-400 hover:bg-red-400/10">
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle className="text-white">¿Borrar registro?</AlertDialogTitle>
+                                                        <AlertDialogDescription className="text-stone-400">
+                                                            Estás a punto de borrar a <span className="text-primary font-bold">{guest.name}</span> y a sus acompañantes.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel className="bg-transparent border-white/10 text-stone-300 hover:bg-white/5 hover:text-white">Cancelar</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => guest.id && handleDelete(guest.id)} className="bg-red-900 text-red-100 hover:bg-red-800 border border-red-800">Borrar</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </TableCell>
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                 </div>

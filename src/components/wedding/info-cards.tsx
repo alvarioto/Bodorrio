@@ -16,11 +16,13 @@ const InfoModal = ({
     onClose,
     title,
     children,
+    modalClassName,
 }: {
     isOpen: boolean;
     onClose: () => void;
     title: string;
     children: React.ReactNode;
+    modalClassName?: string;
 }) => {
     if (!isOpen) return null;
 
@@ -41,19 +43,19 @@ const InfoModal = ({
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         className="fixed inset-0 z-[100] flex items-center justify-center p-4 pointer-events-none"
                     >
-                        <div className="bg-card w-full max-w-lg rounded-3xl shadow-xl overflow-hidden pointer-events-auto relative flex flex-col max-h-[90vh]">
+                        <div className={`bg-card w-full max-w-lg rounded-3xl shadow-xl overflow-hidden pointer-events-auto relative flex flex-col max-h-[90vh] -translate-y-10 md:-translate-y-16 ${modalClassName || ""}`}>
                             {/* Header */}
-                            <div className="p-6 pb-0 flex items-center justify-end">
+                            <div className="absolute top-4 right-4 z-10 flex items-center justify-end">
                                 <button
                                     onClick={onClose}
-                                    className="p-2 rounded-full hover:bg-black/5 transition-colors"
+                                    className="p-2 rounded-full hover:bg-black/5 transition-colors bg-card/80 backdrop-blur-sm"
                                 >
                                     <X className="w-6 h-6 text-muted-foreground" />
                                 </button>
                             </div>
 
                             {/* Content */}
-                            <div className="p-8 pt-4 overflow-y-auto text-center">
+                            <div className="p-8 pt-12 overflow-y-auto text-center">
                                 <h3 className="font-headline text-3xl mb-6 text-foreground">{title}</h3>
                                 <div className="prose prose-stone text-muted-foreground font-sans leading-relaxed text-lg mx-auto">
                                     {children}
@@ -128,17 +130,20 @@ export default function InfoCardsSection() {
                 isOpen={activeModal === "tips"}
                 onClose={() => setActiveModal(null)}
                 title="Tips y Notas"
+                modalClassName="-translate-y-16 md:-translate-y-24"
             >
-                <p className="mb-4">
-                    ¡Nos encantará contar con vosotros! Por favor, confirmad vuestra asistencia antes del <strong>1 de julio</strong>.
-                </p>
-                <p>
-                    Si tenéis cualquier duda, podéis llamarnos o escribirnos cuando queráis:
-                </p>
-                <ul className="mt-4 space-y-2 font-medium text-foreground list-none pl-0">
-                    <li>Carmen: 695 971 510</li>
-                    <li>Álvaro: 639 285 661</li>
-                </ul>
+                <div>
+                    <p className="mb-4">
+                        ¡Nos encantará contar con vosotros! Por favor, confirmad vuestra asistencia antes del <strong>1 de julio</strong>.
+                    </p>
+                    <p>
+                        Si tenéis cualquier duda, podéis llamarnos o escribirnos cuando queráis:
+                    </p>
+                    <ul className="mt-4 space-y-2 font-medium text-foreground list-none pl-0">
+                        <li>Carmen: 695 971 510</li>
+                        <li>Álvaro: 639 285 661</li>
+                    </ul>
+                </div>
             </InfoModal>
 
             <InfoModal

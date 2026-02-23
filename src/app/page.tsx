@@ -9,6 +9,7 @@ import LightboxModal from '@/components/wedding/lightbox-modal';
 import { type ImagePlaceholder } from '@/lib/placeholder-images';
 import TimelineSection from '@/components/wedding/timeline';
 import InfoCardsSection from '@/components/wedding/info-cards';
+import { WatercolorCorner } from '@/components/wedding/decorations';
 
 import Footer from '@/components/wedding/footer';
 
@@ -34,13 +35,19 @@ export default function WeddingPage() {
           We want a column layout for the whole page. */}
 
       <div
-        className="invitation-card mx-auto min-h-screen relative shadow-2xl"
+        className="invitation-card mx-auto min-h-screen relative shadow-2xl overflow-hidden"
         style={{
           backgroundImage: "url('/paper-texture.png')",
           backgroundSize: '100%',
           backgroundPosition: 'center',
         }}
       >
+        {/* FLORAL CORNERS */}
+        <WatercolorCorner position="top-left" className="top-0 left-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
+        <WatercolorCorner position="top-right" className="top-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
+        <WatercolorCorner position="bottom-left" className="bottom-0 left-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
+        <WatercolorCorner position="bottom-right" className="bottom-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
+
         <div className="relative z-10 font-sans">
           <HeroSection />
 
@@ -48,16 +55,16 @@ export default function WeddingPage() {
             <DetailsSection onRsvpClick={(type) => setRsvpType(type)} />
 
             <section className="relative">
-              <div className="card-content-wrapper py-16 sm:py-24">
+              <div className="card-content-wrapper py-12 sm:py-20">
                 <TimelineSection />
               </div>
             </section>
 
-            <div className="card-content-wrapper pb-12">
+            <div className="card-content-wrapper py-12">
               <PhotosSection onPhotoClick={handlePhotoClick} />
             </div>
 
-            <div className="card-content-wrapper pb-12">
+            <div className="card-content-wrapper py-12">
               <InfoCardsSection />
             </div>
 

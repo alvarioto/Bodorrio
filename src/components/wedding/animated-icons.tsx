@@ -188,6 +188,8 @@ export const LordIconWc = React.forwardRef<HTMLElement, React.HTMLAttributes<HTM
   delay?: string | number;
   state?: string;
   target?: string;
+  width?: string | number;
+  height?: string | number;
 }>(({ src, trigger, colors, stroke, delay, state, target, height, width, style, className, ...props }, ref) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -679,6 +681,7 @@ export const ClinkingGlassesIcon: React.FC<BaseIconProps & { color?: string }> =
       };
 
       const onKeyDown = (e: KeyboardEvent) => {
+        if (!e?.key) return;
         if (e.key.toLowerCase() !== "c") return;
         clinkFrame = Math.round(p.frame ?? clinkFrame);
         localStorage.setItem("clinkFrame", String(clinkFrame));

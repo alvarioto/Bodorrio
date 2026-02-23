@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export const TopBotanicalDecoration = ({ className = "" }: { className?: string }) => {
     return (
@@ -119,5 +120,50 @@ export const FooterBotanicalDivider = ({ className = "" }: { className?: string 
             <circle cx="250" cy="42" r="0.8" fill="currentColor" opacity="0.25" />
             <circle cx="350" cy="42" r="0.8" fill="currentColor" opacity="0.25" />
         </svg>
+    );
+};
+
+export const WatercolorCorner = ({ position = "top-left", className = "" }: { position?: "top-left" | "top-right" | "bottom-left" | "bottom-right", className?: string }) => {
+    // The native image floral-corner-v2 is a BOTTOM-RIGHT floral border.
+    let scaleTransform = "scale(1, 1)";
+    if (position === "top-left") scaleTransform = "scale(-1, -1)";
+    if (position === "top-right") scaleTransform = "scale(1, -1)";
+    if (position === "bottom-left") scaleTransform = "scale(-1, 1)";
+
+    return (
+        <div
+            className={`absolute pointer-events-none z-0 ${className}`}
+            style={{
+                mixBlendMode: 'multiply',
+                opacity: 0.85,
+                transform: scaleTransform,
+                transformOrigin: "center"
+            }}
+        >
+            <Image
+                src="/floral-corner-v2.png"
+                alt="Decoración floral"
+                fill
+                className="object-contain object-right-bottom"
+                priority
+            />
+        </div>
+    );
+};
+
+export const WatercolorDivider = ({ className = "" }: { className?: string }) => {
+    return (
+        <div
+            className={`relative flex justify-center items-center pointer-events-none z-0 ${className}`}
+            style={{ mixBlendMode: 'multiply', opacity: 0.85 }}
+        >
+            {/* We use two corners mirrored facing each other to create a beautiful divider */}
+            <div className="relative w-1/2 h-full">
+                <Image src="/floral-corner-v2.png" alt="Floral decor" fill className="object-contain object-right-top rotate-45 scale-x-[-1]" />
+            </div>
+            <div className="relative w-1/2 h-full">
+                <Image src="/floral-corner-v2.png" alt="Floral decor" fill className="object-contain object-left-top -rotate-45" />
+            </div>
+        </div>
     );
 };
