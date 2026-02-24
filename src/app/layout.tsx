@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Boda Álvaro & Carmen',
+  title: 'Boda Carmen & Álvaro',
   description: 'Bienvenidos a nuestra boda. 08·08·2026',
 };
 

@@ -22,7 +22,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
     calendar: {
       title: "Ceremonia Carmen y Álvaro",
       description:
-        "Ceremonia de la boda de Álvaro y Carmen en la Parroquia Sagrado Corazón de Jesús.",
+        "Ceremonia de la boda de Carmen y Álvaro en la Parroquia Sagrado Corazón de Jesús.",
       location: "C. Presbítero Pablo Rodríguez, 3 Huelva",
       startTime: new Date("2026-08-08T18:00:00"),
       endTime: new Date("2026-08-08T19:00:00"),
@@ -38,8 +38,8 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
     address: "Convento de la Luz, Lucena del Puerto, Huelva",
     mapsLink: "https://maps.app.goo.gl/Ys8WecRhzFZYynvN9",
     calendar: {
-      title: "Celebración Boda Álvaro y Carmen",
-      description: "Celebración de la boda de Álvaro y Carmen en el Convento de la Luz.",
+      title: "Celebración Boda Carmen y Álvaro",
+      description: "Celebración de la boda de Carmen y Álvaro en el Convento de la Luz.",
       location: "Convento de la Luz, Lucena del Puerto, Huelva",
       startTime: new Date("2026-08-08T20:00:00"),
       endTime: new Date("2026-08-09T06:05:00"),

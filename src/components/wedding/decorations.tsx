@@ -141,7 +141,7 @@ export const WatercolorCorner = ({ position = "top-left", className = "" }: { po
             }}
         >
             <Image
-                src="/floral-corner-v2.png"
+                src="/floral-corner-v5.png"
                 alt="Decoración floral"
                 fill
                 className="object-contain object-right-bottom"
@@ -159,10 +159,10 @@ export const WatercolorDivider = ({ className = "" }: { className?: string }) =>
         >
             {/* We use two corners mirrored facing each other to create a beautiful divider */}
             <div className="relative w-1/2 h-full">
-                <Image src="/floral-corner-v2.png" alt="Floral decor" fill className="object-contain object-right-top rotate-45 scale-x-[-1]" />
+                <Image src="/floral-corner-v5.png" alt="Floral decor" fill className="object-contain object-right-top rotate-45 scale-x-[-1]" />
             </div>
             <div className="relative w-1/2 h-full">
-                <Image src="/floral-corner-v2.png" alt="Floral decor" fill className="object-contain object-left-top -rotate-45" />
+                <Image src="/floral-corner-v5.png" alt="Floral decor" fill className="object-contain object-left-top -rotate-45" />
             </div>
         </div>
     );

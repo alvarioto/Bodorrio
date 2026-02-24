@@ -432,3 +432,109 @@ export const getGuestByName = async (firstName: string, lastNamesStr: string, cu
         return null;
     }
 };
+
+export const manualMergeGuests = async (sourceId: string, targetId: string): Promise<void> => {
+    try {
+        if (sourceId === targetId) throw new Error("No puedes fusionar un invitado consigo mismo.");
+
+        const sourceDocRef = doc(db, COLLECTION_NAME, sourceId);
+        const targetDocRef = doc(db, COLLECTION_NAME, targetId);
+
+        const allDocsSnapshot = await getDocs(query(collection(db, COLLECTION_NAME)));
+        const allGuests = allDocsSnapshot.docs.map(d => ({ id: d.id, ...d.data() } as Guest));
+
+        const sourceGuest = allGuests.find(g => g.id === sourceId);
+        const targetGuest = allGuests.find(g => g.id === targetId);
+
+        if (!sourceGuest || !targetGuest) {
+            throw new Error("No se encontraron los invitados en la base de datos.");
+        }
+
+        const normalizeName = (name: string) => name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, ' ');
+
+        const mergedCompanions = [...(targetGuest.companions || [])];
+
+        // Añadir el propio sourceGuest como acompañante del targetGuest
+        const sourceNameNorm = normalizeName(sourceGuest.name);
+        const existsAsSubmitter = mergedCompanions.some(c => normalizeName(c.name) === sourceNameNorm) || normalizeName(targetGuest.name) === sourceNameNorm;
+
+        if (!existsAsSubmitter) {
+            mergedCompanions.push({
+                name: sourceGuest.name,
+                hasIntolerance: sourceGuest.hasIntolerance,
+                intoleranceType: sourceGuest.intoleranceType
+            });
+        }
+
+        // Añadir los acompañantes que ya tuviera el sourceGuest
+        if (sourceGuest.companions) {
+            sourceGuest.companions.forEach(c => {
+                const normC = normalizeName(c.name);
+                if (normC !== normalizeName(targetGuest.name) && !mergedCompanions.some(existingC => normalizeName(existingC.name) === normC)) {
+                    mergedCompanions.push(c);
+                }
+            });
+        }
+
+        // Fallback por si sourceGuest tenía accompanyName legacy
+        if (sourceGuest.hasCompanion && sourceGuest.companionName) {
+            const normC = normalizeName(sourceGuest.companionName);
+            if (normC !== normalizeName(targetGuest.name) && !mergedCompanions.some(existingC => normalizeName(existingC.name) === normC)) {
+                mergedCompanions.push({
+                    name: sourceGuest.companionName,
+                    hasIntolerance: sourceGuest.companionHasIntolerance,
+                    intoleranceType: sourceGuest.companionIntoleranceType
+                });
+            }
+        }
+
+        const mergedChildren = [...(targetGuest.childrenDetail || [])];
+        if (sourceGuest.childrenDetail) {
+            sourceGuest.childrenDetail.forEach(newChild => {
+                const exists = mergedChildren.some(c => normalizeName(c.name) === normalizeName(newChild.name));
+                if (!exists) mergedChildren.push(newChild);
+            });
+        }
+
+        // Preparar nuevos datos actualizados
+        const updatedData: Partial<Guest> = {
+            companions: mergedCompanions,
+            hasCompanion: mergedCompanions.length > 0,
+            childrenDetail: mergedChildren,
+            // @ts-ignore
+            hasChildren: mergedChildren.length > 0,
+            children: mergedChildren.length > 0 ? `${mergedChildren.length} niños` : targetGuest.children || "",
+        };
+
+        if (sourceGuest.ceremonyAttendance === 'yes') updatedData.ceremonyAttendance = 'yes';
+        if (sourceGuest.celebrationAttendance === 'yes') updatedData.celebrationAttendance = 'yes';
+        if (!targetGuest.bus && sourceGuest.bus) updatedData.bus = sourceGuest.bus;
+
+        // Función auxiliar para quitar campos undefined de forma recursiva (vital para arrays de acompañantes)
+        const cleanUndefined = (obj: any): any => {
+            if (Array.isArray(obj)) return obj.map(cleanUndefined);
+            if (obj !== null && typeof obj === 'object') {
+                return Object.fromEntries(
+                    Object.entries(obj)
+                        .filter(([_, v]) => v !== undefined)
+                        .map(([k, v]) => [k, cleanUndefined(v)])
+                );
+            }
+            return obj;
+        };
+
+        const finalUpdatedData = cleanUndefined(updatedData);
+
+        // 1. Update Target
+        await updateDoc(targetDocRef, finalUpdatedData);
+
+        // 2. Delete Source
+        await deleteDoc(sourceDocRef);
+
+        console.log(`Fusión exitosa: ${sourceGuest.name} movido dentro de ${targetGuest.name}`);
+
+    } catch (e) {
+        console.error("Error en manualMergeGuests:", e);
+        throw e;
+    }
+};

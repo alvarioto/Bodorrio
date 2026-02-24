@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { getGuests, Guest, deleteGuest } from '@/services/rsvp';
+import { getGuests, Guest, deleteGuest, manualMergeGuests } from '@/services/rsvp';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +20,15 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import Link from 'next/link';
 
 export default function AdminDashboard() {
@@ -58,6 +67,9 @@ export default function AdminDashboard() {
     const [loginError, setLoginError] = useState("");
     const [processing, setProcessing] = useState(false);
     const [deleteId, setDeleteId] = useState<string | null>(null);
+
+    const [mergeTargetId, setMergeTargetId] = useState<string>("");
+    const [mergeProcessingId, setMergeProcessingId] = useState<string | null>(null);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -108,6 +120,23 @@ export default function AdminDashboard() {
         } catch (error) {
             console.error(error);
             alert("No se pudo borrar el registro.");
+        }
+    };
+
+    const handleMerge = async (sourceId: string) => {
+        if (!mergeTargetId || sourceId === mergeTargetId) return;
+        setMergeProcessingId(sourceId);
+        try {
+            await manualMergeGuests(sourceId, mergeTargetId);
+            // Fetch everything fresh to ensure robust state and correct stats
+            await fetchData();
+            setMergeTargetId("");
+            alert("¡Familias unidas con éxito!");
+        } catch (error: any) {
+            console.error(error);
+            alert(error.message || "No se pudo enlazar el registro.");
+        } finally {
+            setMergeProcessingId(null);
         }
     };
 
@@ -362,25 +391,69 @@ export default function AdminDashboard() {
                                         <Badge variant={(guest.ceremonyAttendance === 'yes' || guest.celebrationAttendance === 'yes') ? 'default' : 'destructive'} className="uppercase text-[10px] tracking-wider">
                                             {(guest.ceremonyAttendance === 'yes' || guest.celebrationAttendance === 'yes') ? 'Asiste' : 'No asiste'}
                                         </Badge>
-                                        <AlertDialog>
-                                            <AlertDialogTrigger asChild>
-                                                <Button variant="ghost" size="icon" className="h-6 w-6 text-red-400/50 hover:text-red-400 hover:bg-red-400/10">
-                                                    <Trash2 className="w-3 h-3" />
-                                                </Button>
-                                            </AlertDialogTrigger>
-                                            <AlertDialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
-                                                <AlertDialogHeader>
-                                                    <AlertDialogTitle className="text-white">¿Borrar registro?</AlertDialogTitle>
-                                                    <AlertDialogDescription className="text-stone-400">
-                                                        Estás a punto de borrar a <span className="text-primary font-bold">{guest.name}</span>. Esta acción no se puede deshacer.
-                                                    </AlertDialogDescription>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <AlertDialogCancel className="bg-transparent border-white/10 text-stone-300 hover:bg-white/5 hover:text-white">Cancelar</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => guest.id && handleDelete(guest.id)} className="bg-red-900 text-red-100 hover:bg-red-800 border border-red-800">Borrar</AlertDialogAction>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        </AlertDialog>
+                                        <div className="flex bg-[#1a211e] rounded border border-white/5">
+                                            <Dialog>
+                                                <DialogTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="h-7 w-7 text-stone-400 hover:text-primary hover:bg-white/5" title="Unir a otra reserva">
+                                                        <LinkIcon className="w-3.5 h-3.5" />
+                                                    </Button>
+                                                </DialogTrigger>
+                                                <DialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
+                                                    <DialogHeader>
+                                                        <DialogTitle className="text-primary text-xl">Enlazar Familias</DialogTitle>
+                                                        <DialogDescription className="text-stone-400 pt-1">
+                                                            Vas a mover a <strong className="text-white">{guest.name}</strong> y sus acompañantes dentro de otra reserva existente.
+                                                        </DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className="py-2 space-y-2">
+                                                        <label className="text-sm text-stone-300 font-medium pl-1">Selecciona destino:</label>
+                                                        <select
+                                                            className="w-full bg-[#121815] border border-white/10 rounded-md p-3 text-stone-200 focus:ring-1 focus:ring-primary/50 outline-none"
+                                                            value={mergeTargetId}
+                                                            onChange={(e) => setMergeTargetId(e.target.value)}
+                                                        >
+                                                            <option value="">-- Elige un invitado principal --</option>
+                                                            {guests.filter(g => g.id !== guest.id).map(g => (
+                                                                <option key={g.id} value={g.id}>{g.name}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <DialogFooter>
+                                                        <Button
+                                                            onClick={(e) => {
+                                                                // Close dialog handled organically if we don't control open, but we do trigger handleMerge
+                                                                guest.id && handleMerge(guest.id);
+                                                            }}
+                                                            disabled={!mergeTargetId || mergeProcessingId === guest.id}
+                                                            className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 md:mt-0"
+                                                        >
+                                                            {mergeProcessingId === guest.id ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <LinkIcon className="w-4 h-4 mr-2" />}
+                                                            Confirmar Unión
+                                                        </Button>
+                                                    </DialogFooter>
+                                                </DialogContent>
+                                            </Dialog>
+
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="ghost" size="icon" className="h-7 w-7 text-red-400/50 hover:text-red-400 hover:bg-red-400/10">
+                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                    </Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
+                                                    <AlertDialogHeader>
+                                                        <AlertDialogTitle className="text-white">¿Borrar registro?</AlertDialogTitle>
+                                                        <AlertDialogDescription className="text-stone-400">
+                                                            Estás a punto de borrar a <span className="text-primary font-bold">{guest.name}</span>. Esta acción no se puede deshacer.
+                                                        </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel className="bg-transparent border-white/10 text-stone-300 hover:bg-white/5 hover:text-white">Cancelar</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => guest.id && handleDelete(guest.id)} className="bg-red-900 text-red-100 hover:bg-red-800 border border-red-800">Borrar</AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
                                     </div>
                                 </div>
                             </CardHeader>
@@ -527,25 +600,65 @@ export default function AdminDashboard() {
                                             {guest.comment || '-'}
                                         </TableCell>
                                         <TableCell>
-                                            <AlertDialog>
-                                                <AlertDialogTrigger asChild>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-stone-600 hover:text-red-400 hover:bg-red-400/10">
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </Button>
-                                                </AlertDialogTrigger>
-                                                <AlertDialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
-                                                    <AlertDialogHeader>
-                                                        <AlertDialogTitle className="text-white">¿Borrar registro?</AlertDialogTitle>
-                                                        <AlertDialogDescription className="text-stone-400">
-                                                            Estás a punto de borrar a <span className="text-primary font-bold">{guest.name}</span> y a sus acompañantes.
-                                                        </AlertDialogDescription>
-                                                    </AlertDialogHeader>
-                                                    <AlertDialogFooter>
-                                                        <AlertDialogCancel className="bg-transparent border-white/10 text-stone-300 hover:bg-white/5 hover:text-white">Cancelar</AlertDialogCancel>
-                                                        <AlertDialogAction onClick={() => guest.id && handleDelete(guest.id)} className="bg-red-900 text-red-100 hover:bg-red-800 border border-red-800">Borrar</AlertDialogAction>
-                                                    </AlertDialogFooter>
-                                                </AlertDialogContent>
-                                            </AlertDialog>
+                                            <div className="flex bg-[#1a211e] rounded border border-white/5 w-fit">
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-stone-400 hover:text-primary hover:bg-white/5" title="Unir a otra reserva">
+                                                            <LinkIcon className="w-4 h-4" />
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
+                                                        <DialogHeader>
+                                                            <DialogTitle className="text-primary text-xl">Enlazar Familias</DialogTitle>
+                                                            <DialogDescription className="text-stone-400 pt-1">
+                                                                Vas a mover a <strong className="text-white">{guest.name}</strong> y sus acompañantes/hijos dentro de otra reserva existente.
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                        <div className="py-2 space-y-2">
+                                                            <label className="text-sm text-stone-300 font-medium pl-1">Selecciona la reserva destino:</label>
+                                                            <select
+                                                                className="w-full bg-[#121815] border border-white/10 rounded-md p-3 text-stone-200 focus:ring-1 focus:ring-primary/50 outline-none"
+                                                                value={mergeTargetId}
+                                                                onChange={(e) => setMergeTargetId(e.target.value)}
+                                                            >
+                                                                <option value="">-- Elige un invitado principal --</option>
+                                                                {guests.filter(g => g.id !== guest.id).map(g => (
+                                                                    <option key={g.id} value={g.id}>{g.name}</option>
+                                                                ))}
+                                                            </select>
+                                                        </div>
+                                                        <DialogFooter>
+                                                            <Button
+                                                                onClick={() => guest.id && handleMerge(guest.id)}
+                                                                disabled={!mergeTargetId || mergeProcessingId === guest.id}
+                                                                className="bg-primary text-primary-foreground hover:bg-primary/90 mt-4 md:mt-0"
+                                                            >
+                                                                {mergeProcessingId === guest.id ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <LinkIcon className="w-4 h-4 mr-2" />}
+                                                                Confirmar Unión
+                                                            </Button>
+                                                        </DialogFooter>
+                                                    </DialogContent>
+                                                </Dialog>
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-stone-600 hover:text-red-400 hover:bg-red-400/10">
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent className="bg-[#1a211e] border-white/10 text-stone-200">
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle className="text-white">¿Borrar registro?</AlertDialogTitle>
+                                                            <AlertDialogDescription className="text-stone-400">
+                                                                Estás a punto de borrar a <span className="text-primary font-bold">{guest.name}</span> y a sus acompañantes.
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel className="bg-transparent border-white/10 text-stone-300 hover:bg-white/5 hover:text-white">Cancelar</AlertDialogCancel>
+                                                            <AlertDialogAction onClick={() => guest.id && handleDelete(guest.id)} className="bg-red-900 text-red-100 hover:bg-red-800 border border-red-800">Borrar</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 )
