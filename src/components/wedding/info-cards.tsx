@@ -102,11 +102,11 @@ export default function InfoCardsSection() {
     const [activeModal, setActiveModal] = useState<"tips" | "hotels" | "dresscode" | null>(null);
 
     return (
-        <section className="py-24 px-4 relative">
+        <section className="py-12 sm:py-24 px-4 relative">
             {/* Decoration background if needed */}
 
             <div className="container mx-auto max-w-6xl">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                     <Card
                         title="Tips y Notas"
                         icon={TipsIcon}

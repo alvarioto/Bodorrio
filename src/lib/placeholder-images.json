@@ -1,28 +1,34 @@
 {
   "placeholderImages": [
     {
-      "id": "wedding-photo-1",
-      "description": "Couple smiling on their wedding day",
-      "imageUrl": "https://images.unsplash.com/photo-1501901609772-df0848060b33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb3VwbGUlMjB3ZWRkaW5nfGVufDB8fHx8MTc2OTY5MjQ3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "couple wedding"
+      "id": "foto-1",
+      "description": "Disney Castle",
+      "imageUrl": "/IMG_8557.JPEG",
+      "imageHint": "Disney"
     },
     {
-      "id": "wedding-photo-2",
-      "description": "Elegant wedding decorations and table setting",
-      "imageUrl": "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3ZWRkaW5nJTIwZGVjb3JhdGlvbnxlbnwwfHx8fDE3Njk2MDY4NzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "wedding decoration"
+      "id": "foto-2",
+      "description": "Momentos relajados juntos",
+      "imageUrl": "/IMG_4626.JPEG",
+      "imageHint": "Lying down"
     },
     {
-      "id": "wedding-photo-3",
-      "description": "Guests celebrating and having fun at the reception",
-      "imageUrl": "https://images.unsplash.com/photo-1523521803700-b3bcaeab0150?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3ZWRkaW5nJTIwZ3Vlc3RzfGVufDB8fHx8MTc2OTYzMDAyOXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "wedding guests"
+      "id": "foto-3",
+      "description": "Navidad y diversión",
+      "imageUrl": "/IMG_7174.JPEG",
+      "imageHint": "Reindeer"
     },
     {
-      "id": "wedding-photo-4",
-      "description": "A beautiful multi-tiered wedding cake",
-      "imageUrl": "https://images.unsplash.com/photo-1632396690014-cf7a0a2f3bbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx3ZWRkaW5nJTIwY2FrZXxlbnwwfHx8fDE3Njk2NDU5NzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "wedding cake"
+      "id": "foto-4",
+      "description": "De Romería",
+      "imageUrl": "/IMG_0619.JPEG",
+      "imageHint": "Rocio"
+    },
+    {
+      "id": "foto-5",
+      "description": "Recuerdo especial",
+      "imageUrl": "/IMG_0852.JPEG",
+      "imageHint": "Recuerdo"
     }
   ]
 }

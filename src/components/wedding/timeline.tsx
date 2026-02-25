@@ -99,7 +99,7 @@ function TimelineItem({
     <div
       ref={itemRef}
       className={cn(
-        "relative flex items-center group transition-opacity duration-1000 py-12", // Changed to balanced py-12 (3rem top + 3rem bottom = 6rem gap total between centers)
+        "relative flex items-center group transition-opacity duration-1000 py-8 md:py-12", // Changed to balanced py-12 (3rem top + 3rem bottom = 6rem gap total between centers)
         isVisible ? "opacity-100" : "opacity-0"
       )}
     >
@@ -178,12 +178,12 @@ function TimelineItem({
 
 export default function TimelineSection() {
   return (
-    <div id="itinerario" className="w-full flex flex-col text-foreground overflow-x-hidden pb-16">
-      <div className="p-6">
+    <div id="itinerario" className="w-full flex flex-col text-foreground overflow-x-hidden pb-8 sm:pb-16">
+      <div className="p-4 sm:p-6">
         <div className="w-full">
-          <div className="text-center mb-10">
-            <h2 className="font-headline text-[32px]">Itinerario de nuestra boda</h2>
-            <p className="text-muted-foreground mt-2 text-lg">El plan para nuestro gran día.</p>
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="font-headline text-[28px] sm:text-[32px]">Itinerario de nuestra boda</h2>
+            <p className="text-muted-foreground mt-2 text-base sm:text-lg">El plan para nuestro gran día.</p>
           </div>
 
           <div className="relative">

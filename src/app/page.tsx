@@ -43,10 +43,10 @@ export default function WeddingPage() {
         }}
       >
         {/* FLORAL CORNERS */}
-        <WatercolorCorner position="top-left" className="top-0 left-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
-        <WatercolorCorner position="top-right" className="top-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
-        <WatercolorCorner position="bottom-left" className="bottom-0 left-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
-        <WatercolorCorner position="bottom-right" className="bottom-0 right-0 w-[200px] h-[200px] md:w-[400px] md:h-[400px]" />
+        <WatercolorCorner position="top-left" className="top-0 left-0 w-[clamp(120px,25vw,400px)] h-[clamp(120px,25vw,400px)]" />
+        <WatercolorCorner position="top-right" className="top-0 right-0 w-[clamp(120px,25vw,400px)] h-[clamp(120px,25vw,400px)]" />
+        <WatercolorCorner position="bottom-left" className="bottom-0 left-0 w-[clamp(120px,25vw,400px)] h-[clamp(120px,25vw,400px)]" />
+        <WatercolorCorner position="bottom-right" className="bottom-0 right-0 w-[clamp(120px,25vw,400px)] h-[clamp(120px,25vw,400px)]" />
 
         <div className="relative z-10 font-sans">
           <HeroSection />

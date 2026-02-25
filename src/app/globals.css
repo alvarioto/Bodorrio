@@ -126,9 +126,9 @@
 
   .ampersand {
     @apply inline-flex items-center justify-center rounded-full mx-2 align-middle;
-    width: 45px;
-    height: 45px;
-    font-size: 35px;
+    width: clamp(2rem, 5vw, 45px);
+    height: clamp(2rem, 5vw, 45px);
+    font-size: clamp(1.25rem, 3.5vw, 35px);
     font-family: 'Nunito', sans-serif;
     background-color: #81948B;
     color: #FFFFFF;

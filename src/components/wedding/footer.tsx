@@ -14,12 +14,11 @@ export default function Footer() {
     };
 
     return (
-        <footer className="w-full py-12 pb-8 text-center text-muted-foreground relative mt-24 rounded-t-[3rem] bg-gradient-to-b from-transparent to-primary/5">
+        <footer className="w-full py-12 pb-8 text-center text-muted-foreground relative mt-12 sm:mt-24 rounded-t-[3rem] bg-gradient-to-b from-transparent to-primary/5">
 
             <div className="container mx-auto px-4 flex flex-col items-center">
                 {/* Main Footer Content */}
                 <div className="flex flex-col items-center gap-6 mb-16">
-                    <h2 className="font-headline text-4xl text-primary/80">Carmen & Álvaro</h2>
                     <p className="tracking-[0.2em] uppercase text-sm font-medium text-primary/60 border-y border-primary/20 py-2 px-6">
                         08 · 08 · 2026
                     </p>

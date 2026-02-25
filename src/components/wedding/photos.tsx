@@ -6,12 +6,29 @@ import { CameraIcon } from './animated-icons';
 import { PlaceHolderImages, type ImagePlaceholder } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import useEmblaCarousel from 'embla-carousel-react';
+import AutoScroll from 'embla-carousel-auto-scroll';
 
 interface PhotosSectionProps {
   onPhotoClick: (image: ImagePlaceholder) => void;
 }
 
 const PhotosSection: React.FC<PhotosSectionProps> = ({ onPhotoClick }) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: 'start',
+    loop: true,
+    dragFree: true,
+  }, [
+    AutoScroll({
+      playOnInit: true,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+      speed: 0.5, // Even slower speed
+    })
+  ]);
+
+
+
   return (
     <section id="fotos" className="py-24 w-full relative overflow-hidden">
       {/* Background decoration (optional/subtle) */}
@@ -39,7 +56,7 @@ const PhotosSection: React.FC<PhotosSectionProps> = ({ onPhotoClick }) => {
           </motion.p>
         </div>
 
-        <div className="bg-card/50 backdrop-blur-sm border border-primary/20 rounded-3xl p-8 shadow-sm max-w-6xl mx-auto">
+        <div className="bg-card/50 backdrop-blur-sm border border-primary/20 rounded-3xl p-8 shadow-sm w-full max-w-[95%] xl:max-w-[90rem] mx-auto">
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
@@ -51,33 +68,46 @@ const PhotosSection: React.FC<PhotosSectionProps> = ({ onPhotoClick }) => {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PlaceHolderImages.map((photo, index) => (
-              <motion.div
-                key={photo.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5, transition: { duration: 0.3 } }}
-                className="group cursor-pointer"
-                onClick={() => onPhotoClick(photo)}
-              >
-                <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-500 bg-muted">
-                  <Image
-                    src={photo.imageUrl}
-                    alt={photo.description}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-0 left-0 w-full p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <p className="font-medium text-sm">{photo.description}</p>
+          <div className="relative w-full mx-auto">
+            <div
+              className="overflow-hidden px-4"
+              ref={emblaRef}
+              style={{
+                WebkitMaskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)',
+                maskImage: 'linear-gradient(to right, transparent, black 5%, black 95%, transparent)'
+              }}
+            >
+              <div className="flex -ml-4">
+                {PlaceHolderImages.map((photo, index) => (
+                  <div key={photo.id} className="flex-[0_0_100%] sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_25%] min-w-0 pl-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ y: -5, transition: { duration: 0.3 } }}
+                      className="group cursor-pointer h-full"
+                      onClick={() => onPhotoClick(photo)}
+                    >
+                      <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-500 bg-muted h-full">
+                        <Image
+                          src={photo.imageUrl}
+                          alt={photo.description}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-110"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute bottom-0 left-0 w-full p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                          <p className="font-medium text-sm">{photo.description}</p>
+                        </div>
+                      </div>
+                    </motion.div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>

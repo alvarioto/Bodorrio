@@ -51,27 +51,27 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ onRsvpClick }) => {
       id="detalles"
       className="w-full"
     >
-      <div className="card-content-wrapper py-16 sm:py-24">
-        <div className="flex flex-col gap-24">
+      <div className="card-content-wrapper py-8 sm:py-16 md:py-24">
+        <div className="flex flex-col gap-12 md:gap-24">
 
           {/* Ceremonia */}
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
             <div
-              className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[400px] bg-cover bg-center rounded-2xl"
+              className="w-full lg:w-1/2 min-h-[300px] md:min-h-[400px] bg-cover bg-center rounded-2xl"
               style={{ backgroundImage: `url(/iglesia.png)` }}
             />
-            <div className="w-full lg:w-1/2 flex justify-center">
+            <div className="w-full lg:w-1/2 flex justify-center mt-4 lg:mt-0">
               <EventCard {...ceremonyDetails} onRsvpClick={() => onRsvpClick('ceremony')} />
             </div>
           </div>
 
           {/* Celebración */}
-          <div className="flex flex-col lg:flex-row-reverse gap-12 items-center">
+          <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-12 items-center mt-8 md:mt-0">
             <div
-              className="w-full lg:w-1/2 h-64 lg:h-auto min-h-[400px] bg-center bg-no-repeat rounded-2xl"
+              className="w-full lg:w-1/2 min-h-[300px] md:min-h-[400px] bg-center bg-no-repeat rounded-2xl"
               style={{ backgroundImage: `url(/convento.png)`, backgroundSize: 'contain' }}
             />
-            <div className="w-full lg:w-1/2 flex justify-center">
+            <div className="w-full lg:w-1/2 flex justify-center mt-4 lg:mt-0">
               <EventCard {...celebrationDetails} onRsvpClick={() => onRsvpClick('celebration')} />
             </div>
           </div>
